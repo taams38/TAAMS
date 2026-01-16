@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>TAAMS – dApp Moderne</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header>
+  <div class="logo">TAAMS dApp</div>
+  <button class="btn" id="connectButton">Connecter MetaMask</button>
+</header>
+
+<main>
+
+  <!-- IGNITION -->
+  <section class="card">
+    <h2>Ignition Airdrop</h2>
+    <p><strong>Statut :</strong> <span id="ignitionStatus">–</span></p>
+    <p><strong>Participants :</strong> <span id="ignitionParticipants">–</span></p>
+    <p><strong>Montant utilisateur :</strong> <span id="ignitionUserAmount">–</span></p>
+
+    <div class="field">
+      <button class="btn" id="btnRegisterIgnition">S’enregistrer</button>
+    </div>
+
+    <div class="field">
+      <button class="btn" id="btnClaimIgnition">Réclamer</button>
+    </div>
+
+    <p class="status" id="ignitionMsg"></p>
+  </section>
+
+  <!-- BURN -->
+  <section class="card">
+    <h2>Burn</h2>
+    <p><strong>Cycle :</strong> <span id="burnCycle">–</span></p>
+    <p><strong>Burn restant :</strong> <span id="remainingBurn">–</span></p>
+
+    <div class="field">
+      <input type="number" id="burnAmount" placeholder="Montant BL2P" />
+      <button class="btn" id="btnBurn">Burn</button>
+    </div>
+
+    <p class="status" id="burnMsg"></p>
+  </section>
+
+  <!-- STAKING -->
+  <section class="card">
+    <h2>Staking</h2>
+    <p><strong>Total staké :</strong> <span id="totalStaked">–</span></p>
+    <p><strong>Votre stake :</strong> <span id="userStake">–</span></p>
+
+    <div class="field">
+      <input type="number" id="stakeAmount" placeholder="Montant BL2P" />
+      <button class="btn" id="btnStake">Staker</button>
+    </div>
+
+    <div class="field">
+      <button class="btn" id="btnUnstake">Unstake</button>
+    </div>
+
+    <p class="status" id="stakeMsg"></p>
+  </section>
+
+  <!-- GOUVERNANCE -->
+  <section class="card">
+    <h2>Gouvernance</h2>
+    <p><strong>Dernier proposer :</strong> <span id="lastProposer">–</span></p>
+
+    <div class="field">
+      <input type="text" id="proposalDesc" placeholder="Description" />
+    </div>
+
+    <div class="field">
+      <input type="number" id="proposalValue" placeholder="Valeur (optionnel)" />
+    </div>
+
+    <div class="field">
+      <button class="btn" id="btnSubmitProposal">Soumettre</button>
+    </div>
+
+    <p class="status" id="govMsg"></p>
+  </section>
+
+  <!-- DELEGATION -->
+  <section class="card">
+    <h2>Délégation</h2>
+    <p><strong>Top delegates :</strong></p>
+    <p id="topDelegates">–</p>
+    <p class="status" id="delegateMsg"></p>
+  </section>
+
+</main>
+
+<footer>
+  TAAMS – Interface moderne et simple
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
