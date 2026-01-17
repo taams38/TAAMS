@@ -19,7 +19,7 @@
             --bg-color: #030303;
             --panel-bg: rgba(10, 10, 10, 0.85);
             --border: rgba(255, 255, 255, 0.08);
-            --accent: #00ff88; /* TAAMS Green */
+            --accent: #00ff88;
             --accent-glow: rgba(0, 255, 136, 0.15);
             --secondary: #ff00ff;
             --text-main: #ffffff;
@@ -56,7 +56,7 @@
 
         /* --- Sidebar --- */
         aside {
-            width: 300px; border-right:1px solid var(--border);
+            width: 300px; border-right: 1px solid var(--border);
             padding: 2rem; display: flex; flex-direction: column;
             z-index: 10; background: var(--bg-color);
         }
@@ -99,7 +99,7 @@
         
         .card-header { font-family: var(--font-head); font-size: 1.2rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; display: flex; justify-content: space-between;}
 
-        /* --- Vitality Meter (The "Life" of Protocol) --- */
+        /* --- Vitality Meter --- */
         .vitality-container {
             text-align: center; padding: 3rem 1rem;
             background: linear-gradient(180deg, rgba(0,255,136,0.05) 0%, transparent 100%);
@@ -121,7 +121,7 @@
         input, select, textarea {
             width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--border);
             color: #fff; padding: 1rem; font-family: var(--font-body);
-            margin-bottom:1rem; border-radius: 2px; font-size: 1rem;
+            margin-bottom: 1rem; border-radius: 2px; font-size: 1rem;
         }
         input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
@@ -132,7 +132,7 @@
             font-size: 0.9rem; display: inline-block; margin-right: 0.5rem;
             position: relative; overflow: hidden;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--accent-glow); letter-spacing:1px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--accent-glow); letter-spacing: 1px; }
         .btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; background: #333; color: #888; }
         .btn.secondary { background: transparent; border: 1px solid #fff; color: #fff; }
         .btn.secondary:hover { background: #fff; color: #000; }
@@ -151,6 +151,14 @@
 
         /* --- Footer --- */
         .protocol-footer { margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: #444; font-size: 0.8rem; }
+
+        /* Network Status Badge */
+        .network-badge {
+            display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-top: 10px;
+        }
+        .network-polygon { background: rgba(0,255,136,0.2); color: var(--accent); border: 1px solid var(--accent); }
+        .network-wrong { background: rgba(255,51,51,0.2); color: #ff3333; border: 1px solid #ff3333; cursor: pointer; }
+        .network-wrong:hover { text-decoration: underline; }
 
         /* Utility */
         .text-dim { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; display: block; line-height: 1.5; }
@@ -176,6 +184,11 @@
         </nav>
 
         <div style="margin-top: auto;">
+            <!-- Network Status Indicator -->
+            <div id="network-display" style="margin-bottom: 1rem; text-align: center; font-size: 0.8rem;">
+                Checking Network...
+            </div>
+            
             <div id="wallet-status" class="text-dim" style="text-align:center; margin-bottom:1rem;">Disconnected</div>
             <button id="connect-btn" class="btn full-width" style="width:100%" onclick="connectWallet()">CONNECT</button>
         </div>
@@ -187,7 +200,6 @@
         <!-- DASHBOARD / VITALITY -->
         <section id="dashboard" class="section active">
             
-            <!-- The Heart of Protocol -->
             <div class="card vitality-container">
                 <div class="vitality-title">PROTOCOL VITALITY</div>
                 <p class="text-dim">The system depends entirely on community participation.</p>
@@ -338,8 +350,10 @@
                 <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
                     <span class="text-dim" style="color:var(--accent)">BOOST YIELD (Optional)</span>
                     <p style="font-size:0.8rem; color:#888; margin-bottom:0.5rem;">Use your BL2P (Governance Power) to increase your TAAMS yield.</p>
-                    <input type="number" id="boost-amount" placeholder="BL2P Amount">
-                    <button class="btn secondary" onclick="handleBoost()">BOOST</button>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="number" id="boost-amount" placeholder="BL2P Amount">
+                        <button class="btn secondary" onclick="handleBoost()">BOOST</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -350,7 +364,7 @@
 
             <div class="card">
                 <div class="card-header">Create Proposal</div>
-                <span class="text-dim">Shape the future of protocol. Requires Voting Power.</span>
+                <span class="text-dim">Shape future of protocol. Requires Voting Power.</span>
                 
                 <select id="proposal-type">
                     <option value="0">Change Annual Burn Amount</option>
@@ -433,7 +447,13 @@
         // IMPORTANT: ADRESSE DU CONTRAT
         const CONTRACT_ADDRESS = "0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef"; 
 
-        const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ActivationThresholdNotMet","type":"error"},{"inputs":[],"name":"AirdropAlreadyTriggered","type":"error"},{"inputs":[],"name":"AlreadyClaimed","type":"error"},{"inputs":[],"name":"AlreadyRegistered","type":"error"},{"inputs":[],"name":"AlreadyVoted","type":"error"},{"inputs":[],"name":"AmountZero","type":"error"},{"inputs":[],"name":"BL2PNotExpired","type":"error"},{"inputs":[],"name":"BL2PNotMatured","type":"error"},{"inputs":[],"name":"BelowMinimumStake","type":"error"},{"inputs":[],"name":"BurnCycleEnded","type":"error"},{"inputs":[],"name":"BurnPhaseNotActive","type":"error"},{"inputs":[],"name":"ContractPaused","type":"error"},{"inputs":[],"name":"DelegationActive","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"allowance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientBalance","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC20InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC20InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC20InvalidSender","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"}],"name":"ERC20InvalidSpender","type":"error"},{"inputs":[],"name":"ExceedsBL2PBoostLimit","type":"error"},{"inputs":[],"name":"ExceedsBurnTarget","type":"error"},{"inputs":[],"name":"ExceedsDelegateLimit","type":"error"},{"inputs":[],"name":"GovernanceNotSet","type":"error"},{"inputs":[],"name":"InsufficientBalance","type":"error"},{"inputs":[],"name":"InsufficientContractBalance","type":"error"},{"inputs":[],"name":"InsufficientReserve","type":"error"},{"inputs":[],"name":"InvalidAddress","type":"error"},{"inputs":[],"name":"InvalidBL2PLifespan","type":"error"},{"inputs":[],"name":"InvalidBurnAmount","type":"error"},{"inputs":[],"name":"InvalidClaimConditions","type":"error"},{"inputs":[],"name":"InvalidCommit","type":"error"},{"inputs":[],"name":"InvalidDelegate","type":"error"},{"inputs":[],"name":"InvalidDelegatedPercent","type":"error"},{"inputs":[],"name":"InvalidInactivityBurnRate","type":"error"},{"inputs":[],"name":"InvalidMaturationPeriod","type":"error"},{"inputs":[],"name":"InvalidProposalPayload","type":"error"},{"inputs":[],"name":"InvalidRecipient","type":"error"},{"inputs":[],"name":"InvalidRewardRate","type":"error"},{"inputs":[],"name":"InvalidTransferConditions","type":"error"},{"inputs":[],"name":"MaxParticipantsReached","type":"error"},{"inputs":[],"name":"NoActiveStake","type":"error"},{"inputs":[],"name":"NoClaimableAmount","type":"error"},{"inputs":[],"name":"NoContractCallers","type":"error"},{"inputs":[],"name":"NoDelegation","type":"error"},{"inputs":[],"name":"NoParticipants","type":"error"},{"inputs":[],"name":"NoReward","type":"error"},{"inputs":[],"name":"NoValidBL2P","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotContract","type":"error"},{"inputs":[],"name":"NotWhitelisted","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[],"name":"ProposalCooldownActive","type":"error"},{"inputs":[],"name":"ProposalDoesNotExist","type":"error"},{"inputs":[],"name":"ProposalExecuted","type":"error"},{"inputs":[],"name":"QuorumNotMet","type":"error"},{"inputs":[],"name":"QuorumOutOfBounds","type":"error"},{"inputs":[],"name":"ReentrancyGuardReentrantCall","type":"error"},{"inputs":[],"name":"RegistrationClosed","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"inputs":[],"name":"StakeAlreadyActive","type":"error"},{"inputs":[],"name":"TooManyUsers","type":"error"},{"inputs":[],"name":"UnlockPeriodNotElapsed","type":"error"},{"inputs":[],"name":"VoteThresholdNotMet","type":"error"},{"inputs":[],"name":"VoteThresholdOutOfBounds","type":"error"},{"inputs":[],"name":"VotingPeriodInactive","type":"error"},{"inputs":[],"name":"VotingPeriodNotEnded","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"adId","type":"uint256"},{"indexed":false,"internalType":"string","name":"message","type":"string"}],"name":"AdvertisementPosted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"BL2PBonusBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"matured","type":"bool"}],"name":"BL2PMaturityUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BL2PRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"BL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"BL2PStaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"BL2PTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"uint256[]","name":"rewards","type":"uint256[]"}],"name":"BatchBL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BurnPhaseActivated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"}],"name":"DelegationRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newContract","type":"address"}],"name":"GovernanceContractUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"IgnitionAirdropClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalParticipants","type":"uint256"}],"name":"IgnitionAirdropTriggered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"participantNumber","type":"uint256"}],"name":"IgnitionParticipantRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bool","name":"isOpen","type":"bool"}],"name":"IgnitionRegistrationStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"InactiveBL2PBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"}],"name":"LockedReserveUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"},{"indexed":false,"internalType":"address","name":"newAddress","type":"address"}],"name":"ParameterUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"string","name":"reason","type":"string"}],"name":"ProposalFailed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"description","type":"string"},{"indexed":false,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"ProposalSubmitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"}],"name":"ProposalWasExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newQuorum","type":"uint256"}],"name":"QuorumUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"remainingBalance","type":"uint256"}],"name":"ReserveUnlocked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"StakingRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBurned","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"TokensBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"VoteCommitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"},{"indexed":true,"internalType":"address","name":"delegate","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VoteDelegated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bool","name":"support","type":"bool"},{"indexed":false,"internalType":"uint256","name":"weight","type":"uint256"}],"name":"VoteRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"VoteThresholdUpdated","type":"event"},{"inputs":[],"name":"ACTIVATION_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ANNUAL_BURN_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BURN_TARGET","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"IGNITION_AIRDROP_POOL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCKED_RESERVE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_SUPPLY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PROPOSAL_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"QUORUM","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STAKING_REWARD_RATE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VOTE_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"activeDelegations","outputs":[{"internalType":"address","name":"source","type":"address"},{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"bl2pAmount","type":"uint256"},{"internalType":"uint256","name":"delegationBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"advertisementCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"advertisements","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"postedBlock","type":"uint256"},{"internalType":"string","name":"message","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"batchClaimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pLifespanBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pMeta","outputs":[{"internalType":"uint256","name":"birthAndExpiry","type":"uint256"},{"internalType":"bool","name":"matured","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pRevealed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"burnContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"burnDeadlineTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"burnInactiveBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"burnPhaseActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkActivation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"commitVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currentBurnCycle","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"cycleBurnedTotal","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"delegateVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"delegatedBL2PReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"earlyAdopterCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"emergencyPaused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"executeProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getBL2PLifetime","outputs":[{"internalType":"uint256","name":"birthBlock","type":"uint256"},{"internalType":"uint256","name":"expiryBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionInfo","outputs":[{"internalType":"bool","name":"triggered","type":"bool"},{"internalType":"bool","name":"regOpen","type":"bool"},{"internalType":"uint256","name":"participants","type":"uint256"},{"internalType":"uint256","name":"maxParticipants","type":"uint256"},{"internalType":"bool","name":"userRegistered","type":"bool"},{"internalType":"uint256","name":"userAmount","type":"uint256"},{"internalType":"bool","name":"userClaimed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionParticipants","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLastProposer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemainingBurnable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingValidBL2P","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopDelegates","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionAirdropTriggered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"ignitionParticipants","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionRegistrationOpen","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionWhitelist","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"inactivityBurnRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastAdvertisementTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastBurnCycleStartTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastProposalTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUnlockTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastVoteTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockedReserveBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maturationPeriodBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxDelegatedBL2PPercent","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"participateInBurn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"proposalCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"proposals","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"endBlock","type":"uint256"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"uint256","name":"forVotes","type":"uint256"},{"internalType":"uint256","name":"againstVotes","type":"uint256"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"string","name":"description","type":"string"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referrals","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registerForIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bool","name":"support","type":"bool"},{"internalType":"bytes32","name":"secret","type":"bytes32"}],"name":"revealVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"revokeDelegation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newContract","type":"address"}],"name":"setGovernanceContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"isOpen","type":"bool"}],"name":"setIgnitionRegistrationStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"bl2pBoost","type":"uint256"},{"internalType":"bool","name":"active","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"desc","type":"string"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"submitProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"topDelegates","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBurned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"totalContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"triggerIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"trustedRecipient","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"updateBL2PMaturity","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"useBL2PForStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"verifyBL2PIntegrity","outputs":[{"internalType":"bool","name":"isValid","type":"bool"},{"internalType":"uint256","name":"totalBL2P","type":"uint256"}],"stateMutability":"view","type":"function"}];
+        // CONFIGURATION RÉSEAU POLYGON
+        const POLYGON_CHAIN_ID = 137;
+        const POLYGON_HEX_ID = "0x89";
+        const POLYGON_RPC_URL = "https://polygon-rpc.com/";
+        const POLYGON_BLOCK_EXPLORER = "https://polygonscan.com";
+
+        const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ActivationThresholdNotMet","type":"error"},{"inputs":[],"name":"AirdropAlreadyTriggered","type":"error"},{"inputs":[],"name":"AlreadyClaimed","type":"error"},{"inputs":[],"name":"AlreadyRegistered","type":"error"},{"inputs":[],"name":"AlreadyVoted","type":"error"},{"inputs":[],"name":"AmountZero","type":"error"},{"inputs":[],"name":"BL2PNotExpired","type":"error"},{"inputs":[],"name":"BL2PNotMatured","type":"error"},{"inputs":[],"name":"BelowMinimumStake","type":"error"},{"inputs":[],"name":"BurnCycleEnded","type":"error"},{"inputs":[],"name":"BurnPhaseNotActive","type":"error"},{"inputs":[],"name":"ContractPaused","type":"error"},{"inputs":[],"name":"DelegationActive","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"allowance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientBalance","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC20InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC20InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC20InvalidSender","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"}],"name":"ERC20InvalidSpender","type":"error"},{"inputs":[],"name":"ExceedsBL2PBoostLimit","type":"error"},{"inputs":[],"name":"ExceedsBurnTarget","type":"error"},{"inputs":[],"name":"ExceedsDelegateLimit","type":"error"},{"inputs":[],"name":"GovernanceNotSet","type":"error"},{"inputs":[],"name":"InsufficientBalance","type":"error"},{"inputs":[],"name":"InsufficientContractBalance","type":"error"},{"inputs":[],"name":"InsufficientReserve","type":"error"},{"inputs":[],"name":"InvalidAddress","type":"error"},{"inputs":[],"name":"InvalidBL2PLifespan","type":"error"},{"inputs":[],"name":"InvalidBurnAmount","type":"error"},{"inputs":[],"name":"InvalidClaimConditions","type":"error"},{"inputs":[],"name":"InvalidCommit","type":"error"},{"inputs":[],"name":"InvalidDelegate","type":"error"},{"inputs":[],"name":"InvalidDelegatedPercent","type":"error"},{"inputs":[],"name":"InvalidInactivityBurnRate","type":"error"},{"inputs":[],"name":"InvalidMaturationPeriod","type":"error"},{"inputs":[],"name":"InvalidProposalPayload","type":"error"},{"inputs":[],"name":"InvalidRecipient","type":"error"},{"inputs":[],"name":"InvalidRewardRate","type":"error"},{"inputs":[],"name":"InvalidTransferConditions","type":"error"},{"inputs":[],"name":"MaxParticipantsReached","type":"error"},{"inputs":[],"name":"NoActiveStake","type":"error"},{"inputs":[],"name":"NoClaimableAmount","type":"error"},{"inputs":[],"name":"NoContractCallers","type":"error"},{"inputs":[],"name":"NoDelegation","type":"error"},{"inputs":[],"name":"NoParticipants","type":"error"},{"inputs":[],"name":"NoReward","type":"error"},{"inputs":[],"name":"NoValidBL2P","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotContract","type":"error"},{"inputs":[],"name":"NotWhitelisted","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[],"name":"ProposalCooldownActive","type":"error"},{"inputs":[],"name":"ProposalDoesNotExist","type":"error"},{"inputs":[],"name":"ProposalExecuted","type":"error"},{"inputs":[],"name":"QuorumNotMet","type":"error"},{"inputs":[],"name":"QuorumOutOfBounds","type":"error"},{"inputs":[],"name":"ReentrancyGuardReentrantCall","type":"error"},{"inputs":[],"name":"RegistrationClosed","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"inputs":[],"name":"StakeAlreadyActive","type":"error"},{"inputs":[],"name":"TooManyUsers","type":"error"},{"inputs":[],"name":"UnlockPeriodNotElapsed","type":"error"},{"inputs":[],"name":"VoteThresholdNotMet","type":"error"},{"inputs":[],"name":"VoteThresholdOutOfBounds","type":"error"},{"inputs":[],"name":"VotingPeriodInactive","type":"error"},{"inputs":[],"name":"VotingPeriodNotEnded","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"adId","type":"uint256"},{"indexed":false,"internalType":"string","name":"message","type":"string"}],"name":"AdvertisementPosted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"BL2PBonusBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"matured","type":"bool"}],"name":"BL2PMaturityUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BL2PRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"BL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"BL2PStaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"BL2PTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"uint256[]","name":"rewards","type":"uint256[]"}],"name":"BatchBL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BurnPhaseActivated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"}],"name":"DelegationRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newContract","type":"address"}],"name":"GovernanceContractUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"IgnitionAirdropClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalParticipants","type":"uint256"}],"name":"IgnitionAirdropTriggered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"participantNumber","type":"uint256"}],"name":"IgnitionParticipantRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bool","name":"isOpen","type":"bool"}],"name":"IgnitionRegistrationStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"InactiveBL2PBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"}],"name":"LockedReserveUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"},{"indexed":false,"internalType":"address","name":"newAddress","type":"address"}],"name":"ParameterUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"string","name":"reason","type":"string"}],"name":"ProposalFailed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"description","type":"string"},{"indexed":false,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"ProposalSubmitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"}],"name":"ProposalWasExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newQuorum","type":"uint256"}],"name":"QuorumUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"StakingRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBurned","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"TokensBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"VoteCommitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"},{"indexed":true,"internalType":"address","name":"delegate","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VoteDelegated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bool","name":"support","type":"bool"},{"indexed":false,"internalType":"uint256","name":"weight","type":"uint256"}],"name":"VoteRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"VoteThresholdUpdated","type":"event"},{"inputs":[],"name":"ACTIVATION_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ANNUAL_BURN_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BURN_TARGET","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"IGNITION_AIRDROP_POOL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCKED_RESERVE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_SUPPLY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PROPOSAL_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"QUORUM","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STAKING_REWARD_RATE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VOTE_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"activeDelegations","outputs":[{"internalType":"address","name":"source","type":"address"},{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"bl2pAmount","type":"uint256"},{"internalType":"uint256","name":"delegationBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"advertisementCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"advertisements","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"postedBlock","type":"uint256"},{"internalType":"string","name":"message","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"batchClaimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pLifespanBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pMeta","outputs":[{"internalType":"uint256","name":"birthAndExpiry","type":"uint256"},{"internalType":"bool","name":"matured","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pRevealed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"burnContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"burnDeadlineTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"burnInactiveBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"burnPhaseActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkActivation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"commitVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currentBurnCycle","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"cycleBurnedTotal","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"delegateVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"delegatedBL2PReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"earlyAdopterCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"emergencyPaused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"executeProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getBL2PLifetime","outputs":[{"internalType":"uint256","name":"birthBlock","type":"uint256"},{"internalType":"uint256","name":"expiryBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionInfo","outputs":[{"internalType":"bool","name":"triggered","type":"bool"},{"internalType":"bool","name":"regOpen","type":"bool"},{"internalType":"uint256","name":"participants","type":"uint256"},{"internalType":"uint256","name":"maxParticipants","type":"uint256"},{"internalType":"bool","name":"userRegistered","type":"bool"},{"internalType":"uint256","name":"userAmount","type":"uint256"},{"internalType":"bool","name":"userClaimed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionParticipants","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLastProposer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemainingBurnable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingValidBL2P","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopDelegates","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionAirdropTriggered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"ignitionParticipants","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionRegistrationOpen","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionWhitelist","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"inactivityBurnRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastAdvertisementTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastBurnCycleStartTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastProposalTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUnlockTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastVoteTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockedReserveBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maturationPeriodBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxDelegatedBL2PPercent","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"participateInBurn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"proposalCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"proposals","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"endBlock","type":"uint256"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"uint256","name":"forVotes","type":"uint256"},{"internalType":"uint256","name":"againstVotes","type":"uint256"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"string","name":"description","type":"string"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referrals","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registerForIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bool","name":"support","type":"bool"},{"internalType":"bytes32","name":"secret","type":"bytes32"}],"name":"revealVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"revokeDelegation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newContract","type":"address"}],"name":"setGovernanceContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"isOpen","type":"bool"}],"name":"setIgnitionRegistrationStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"bl2pBoost","type":"uint256"},{"internalType":"bool","name":"active","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"desc","type":"string"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"submitProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"topDelegates","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBurned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"totalContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"triggerIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"trustedRecipient","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"updateBL2PMaturity","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"useBL2PForStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"verifyBL2PIntegrity","outputs":[{"internalType":"bool","name":"isValid","type":"bool"},{"internalType":"uint256","name":"totalBL2P","type":"uint256"}],"stateMutability":"view","type":"function"}];
 
         let provider, signer, userAddress, contract;
         let isConnected = false;
@@ -476,8 +496,108 @@
         });
 
         // ==========================================
-        // WEB3 LOGIC
+        // NETWORK HANDLING (NOUVEAU)
         // ==========================================
+        async function checkNetwork() {
+            if (!window.ethereum) return;
+            try {
+                const network = await provider.getNetwork();
+                const networkDiv = document.getElementById('network-display');
+                
+                // Ethers v6 retourne un BigInt pour chainId
+                const chainId = Number(network.chainId);
+
+                if (chainId !== POLYGON_CHAIN_ID) {
+                    networkDiv.innerHTML = `
+                        <span class="network-badge network-wrong" onclick="switchToPolygon()">
+                            ⚠ Wrong Network (Click to Switch to Polygon)
+                        </span>
+                    `;
+                    showToast("Veuillez changer de réseau pour Polygon", "error");
+                    return false;
+                } else {
+                    networkDiv.innerHTML = `
+                        <span class="network-badge network-polygon">
+                            ✓ Polygon Mainnet
+                        </span>
+                    `;
+                    return true;
+                }
+            } catch (e) {
+                console.error("Erreur checkNetwork", e);
+                return false;
+            }
+        }
+
+        async function switchToPolygon() {
+            if (!window.ethereum) return showToast("Metamask not found", "error");
+            
+            try {
+                showToast("Basculement vers Polygon...", "info");
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: POLYGON_HEX_ID }],
+                });
+            } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    showToast("Ajout de Polygon à Metamask...", "info");
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    chainId: POLYGON_HEX_ID,
+                                    chainName: 'Polygon Mainnet',
+                                    nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+                                    rpcUrls: [POLYGON_RPC_URL],
+                                    blockExplorerUrls: [POLYGON_BLOCK_EXPLORER]
+                                },
+                            ],
+                        });
+                    } catch (addError) {
+                        showToast("Erreur ajout réseau: " + addError.message, "error");
+                    }
+                } else {
+                    showToast("Erreur changement réseau: " + switchError.message, "error");
+                }
+            }
+        }
+
+        // ==========================================
+        // WEB3 LOGIC (AUTOMATIQUE)
+        // ==========================================
+        
+        // Ecoute les changements de compte ou de réseau
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', () => {
+                location.reload(); // Reload simple pour se reconnecter
+            });
+            window.ethereum.on('chainChanged', () => {
+                location.reload(); // Reload pour vérifier le bon réseau
+            });
+        }
+
+        // Auto-Connect au chargement de la page
+        window.addEventListener('load', async () => {
+            const savedAddress = localStorage.getItem('taams_user_address');
+            if (savedAddress && window.ethereum) {
+                console.log("Tentative de reconnexion automatique...");
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    // Si l'utilisateur a refusé avant ou a changé d'avis, on ne force pas
+                    if (accounts.length > 0) {
+                        connectWallet();
+                    } else {
+                        localStorage.removeItem('taams_user_address');
+                    }
+                } catch (e) {
+                    console.log("Auto-connect bloqué par l'utilisateur", e);
+                    localStorage.removeItem('taams_user_address');
+                }
+            }
+        });
+
         async function connectWallet() {
             if (!window.ethereum) return showToast("Metamask not found", "error");
             try {
@@ -485,6 +605,10 @@
                 await provider.send("eth_requestAccounts", []);
                 signer = await provider.getSigner();
                 userAddress = await signer.getAddress();
+                
+                // Sauvegarder la connexion
+                localStorage.setItem('taams_user_address', userAddress);
+                
                 contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
                 isConnected = true;
                 
@@ -492,7 +616,11 @@
                 document.getElementById('connect-btn').style.display = 'none';
                 showToast("Connected to Autonomous Protocol");
                 
-                // Auto-refresh loop for vitality
+                // Vérifier le réseau immédiatement après connexion
+                const isCorrectNetwork = await checkNetwork();
+                if (!isCorrectNetwork) return; // Arrête si pas le bon réseau
+
+                // Auto-refresh loop
                 setInterval(refreshData, 5000);
                 refreshData();
             } catch (err) { console.error(err); showToast("Connection Failed", "error"); }
@@ -504,7 +632,8 @@
                 // --- Vitality & Ignition ---
                 const ignInfo = await contract.getIgnitionInfo();
                 const currentCount = Number(ignInfo.participants);
-                const percent = Math.min((currentCount / 1000) * 100, 100);
+                const maxCount = 1000;
+                const percent = Math.min((currentCount / maxCount) * 100, 100);
                 
                 document.getElementById('ign-count').innerText = currentCount;
                 document.getElementById('vitality-bar').style.width = `${percent}%`;
@@ -513,18 +642,18 @@
                 if(!ignInfo.triggered) {
                     if(ignInfo.regOpen) {
                         if(ignInfo.userRegistered) {
-                            msgDiv.innerHTML = `<span class="highlight">YOU ARE REGISTERED.</span><br><span class="text-dim">Waiting for 1000 founders to ignite...</span>`;
+                            msgDiv.innerHTML = `<span class="highlight">VOUS ÊTES INSCRIT.</span><br><span class="text-dim">En attente de 1000 fondateurs...</span>`;
                         } else {
-                            msgDiv.innerHTML = `<button class="btn" onclick="handleRegisterAirdrop()">JOIN IGNITION</button>`;
+                            msgDiv.innerHTML = `<button class="btn" onclick="handleRegisterAirdrop()">REJOINDRE L'IGNITION</button>`;
                         }
                     } else {
-                        msgDiv.innerHTML = `<span style="color:var(--secondary)">REGISTRATION CLOSED</span>`;
+                        msgDiv.innerHTML = `<span style="color:var(--secondary)">INSCRIPTION FERMÉE</span>`;
                     }
                 } else {
                     if(ignInfo.userRegistered && !ignInfo.userClaimed && ignInfo.userAmount > 0n) {
-                        msgDiv.innerHTML = `<button class="btn" onclick="handleClaimAirdrop()">CLAIM YOUR TAAMS</button>`;
+                        msgDiv.innerHTML = `<button class="btn" onclick="handleClaimAirdrop()">RÉCLAMER VOS TAAMS</button>`;
                     } else {
-                        msgDiv.innerHTML = `<span class="highlight">IGNITION COMPLETE</span><br><span class="text-dim">The protocol is live.</span>`;
+                        msgDiv.innerHTML = `<span class="highlight">IGNITION TERMINÉE</span><br><span class="text-dim">Le protocole est en vie.</span>`;
                     }
                 }
 
@@ -538,8 +667,8 @@
                 document.getElementById('dash-bl2p').innerText = parseFloat(ethers.formatEther(bl2p)).toFixed(2);
                 document.getElementById('dash-burned').innerText = parseFloat(ethers.formatEther(burned)).toLocaleString();
 
-                document.getElementById('status-burn').innerText = await contract.burnPhaseActive() ? "ACTIVE" : "INACTIVE";
-                document.getElementById('status-ignition').innerText = ignInfo.triggered ? "YES" : "NO";
+                document.getElementById('status-burn').innerText = await contract.burnPhaseActive() ? "ACTIF" : "INACTIF";
+                document.getElementById('status-ignition').innerText = ignInfo.triggered ? "OUI" : "NON";
 
                 // --- Burn Info ---
                 const rem = await contract.getRemainingBurnable();
@@ -554,7 +683,9 @@
                 // 2. Stake Utilisateur
                 const stake = await contract.stakes(userAddress);
                 // Ethers.js renvoie le struct comme un tableau: [amount, startBlock, bl2pBoost, active]
-                if (stake[3]) { // Index 3 = active
+                const isActive = stake[3]; // Index 3 = bool active
+                
+                if (isActive) {
                     document.getElementById('user-stake-details').style.display = 'block';
                     document.getElementById('no-stake-msg').style.display = 'none';
                     
@@ -568,7 +699,6 @@
 
             } catch (e) {
                 console.error("Erreur Refresh:", e);
-                // On affiche l'erreur complète si le message est vide
                 const errorMsg = e.reason || e.message || JSON.stringify(e);
                 if(errorMsg && errorMsg !== "") {
                     console.warn("Erreur:", errorMsg); 
@@ -585,7 +715,7 @@
                 showToast("Processing Approval...");
                 await tx.wait();
                 showToast("Approved!");
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         async function handleTransfer() {
@@ -598,7 +728,7 @@
                 await tx.wait();
                 showToast("Transfer Complete");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         // --- IGNITION ---
@@ -609,7 +739,7 @@
                 await tx.wait();
                 showToast("Registered Successfully!");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         async function handleClaimAirdrop() {
@@ -619,7 +749,7 @@
                 await tx.wait();
                 showToast("Claimed!");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         // --- BURN ---
@@ -632,7 +762,7 @@
                 await tx.wait();
                 showToast("Burn Complete");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message || "Burn Failed", "error"); }
+            } catch(e) { showToast(e.reason || "Burn Failed", "error"); }
         }
 
         async function handleClaimBL2P() {
@@ -642,11 +772,10 @@
                 await tx.wait();
                 showToast("BL2P Claimed!");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
-        // --- STAKING (AMÉLIORÉ) ---
-        // Fonction d'approbation spécifique au staking
+        // --- STAKING ---
         async function handleApproveStake() {
             const amt = document.getElementById('stake-amount').value;
             if(!amt || parseFloat(amt) <= 0) return showToast("Entrez un montant valide", "error");
@@ -671,7 +800,6 @@
             }
         }
 
-        // Fonction de Staking
         async function handleStake() {
             const amtInput = document.getElementById('stake-amount').value;
             if(!amtInput) return showToast("Montant requis", "error");
@@ -679,10 +807,10 @@
             const amount = ethers.parseEther(amtInput);
 
             try {
-                // Vérification minimum (1e3 * 1e18)
+                // Vérification simple du minimum (1e3 * 1e18)
                 const MIN_STAKE = ethers.parseEther("1000");
                 if(amount < MIN_STAKE) {
-                    return showToast("Erreur: Le montant minimum est de 1000 TAAMS", "error");
+                    return showToast("Erreur: Le minimum est de 1000 TAAMS", "error");
                 }
 
                 const btn = document.getElementById('btn-stake-action');
@@ -705,7 +833,7 @@
                 } else if (reason.includes("ERC20InsufficientAllowance")) {
                     reason = "Vous devez d'abord cliquer sur 'APPROVE STAKING' !";
                 } else if (reason.includes("StakeAlreadyActive")) {
-                    reason = "Vous staker déjà une quantité. Faites Unstake d'abord pour changer.";
+                    reason = "Vous staker déjà une quantité. Faites Unstake pour changer.";
                 } else if (reason.includes("execution reverted")) {
                     reason = "Transaction rejetée par le contrat."; 
                 }
@@ -724,7 +852,7 @@
                 await tx.wait();
                 showToast("Boosted!");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         async function handleUnstake() {
@@ -734,7 +862,7 @@
                 await tx.wait();
                 showToast("Unstaked");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         // --- GOVERNANCE ---
@@ -743,12 +871,13 @@
             const desc = document.getElementById('proposal-desc').value;
             const val = document.getElementById('proposal-value').value;
             const addr = document.getElementById('proposal-address').value;
+            
             try {
                 const tx = await contract.submitProposal(desc, val ? ethers.parseEther(val) : 0, addr, type);
                 showToast("Submitting Proposal...");
                 await tx.wait();
                 showToast("Proposal Submitted!");
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         async function loadProposal() {
@@ -757,12 +886,13 @@
             try {
                 const p = await contract.proposals(id);
                 if(p.id == 0n) return showToast("Proposal not found", "error");
+                
                 document.getElementById('proposal-data').style.display = 'block';
                 document.getElementById('p-desc').innerText = p.description;
                 document.getElementById('p-type').innerText = ["Burn", "Reward", "Pause", "Unlock", "News", "Maturity", "Quorum"][p.proposalType];
                 document.getElementById('p-for').innerText = ethers.formatEther(p.forVotes);
                 document.getElementById('p-against').innerText = ethers.formatEther(p.againstVotes);
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         function processCommitVote(support) {
@@ -772,7 +902,7 @@
             const secretBytes = ethers.toUtf8Bytes(secret);
             const hash = ethers.solidityPackedKeccak256(["bool", "bytes", "address"], [support, secretBytes, userAddress]);
             contract.commitVote(id, hash).then(tx => { showToast("Commit..."); return tx.wait(); })
-            .then(() => { showToast("Committed !"); }).catch(e => showToast(e.reason || e.message, "error"));
+            .then(() => { showToast("Committed !"); }).catch(e => showToast(e.reason, "error"));
         }
 
         function processRevealVote(support) {
@@ -781,7 +911,7 @@
             if(!id || !secret) return alertError("ID ou Secret manquant");
             const secretBytes = ethers.toUtf8Bytes(secret);
             contract.revealVote(id, support, secretBytes).then(tx => { showToast("Reveal..."); return tx.wait(); })
-            .then(() => { showToast("Révélé !"); loadProposal(); }).catch(e => showToast(e.reason || e.message, "error"));
+            .then(() => { showToast("Révélé !"); loadProposal(); }).catch(e => showToast(e.reason, "error"));
         }
 
         function handleDelegate() {
@@ -789,12 +919,12 @@
             const amt = document.getElementById('delegate-amount').value;
             if(!to || !amt) return;
             contract.delegateVote(to, ethers.parseEther(amt)).then(tx => { showToast("Délégation..."); return tx.wait(); })
-            .then(() => { showToast("Délégué !"); }).catch(e => showToast(e.reason || e.message, "error"));
+            .then(() => { showToast("Délégué !"); }).catch(e => showToast(e.reason, "error"));
         }
 
         function handleRevokeDelegate() {
             contract.revokeDelegation().then(tx => { showToast("Révocation..."); return tx.wait(); })
-            .then(() => { showToast("Révoqué !"); }).catch(e => showToast(e.reason || e.message, "error"));
+            .then(() => { showToast("Révoqué !"); }).catch(e => showToast(e.reason, "error"));
         }
 
         function alertError(msg) {
