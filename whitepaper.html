@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>TAAMS PROTOCOL - WHITEPAPER</title>
+    
+    <style>
+        /* Style pour l'écran */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Style pour l'impression */
+        @media print {
+            body {
+                padding: 0;
+                background-color: #fff;
+                -webkit-print-color-adjust: exact;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+
+        h1 {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 24pt;
+            font-weight: bold;
+            color: #000000;
+            text-align: center;
+            text-transform: uppercase;
+            border-bottom: 3px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 18pt;
+            font-weight: bold;
+            color: #333333;
+            border-bottom: 1px solid #cccccc;
+            margin-top: 40px;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 14pt;
+            font-weight: bold;
+            color: #555555;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid #cccccc;
+            font-size: 11pt;
+        }
+
+        th, td {
+            border: 1px solid #cccccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .badge {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .container-print {
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 50px;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header-info {
+            text-align: center;
+            margin-bottom: 40px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #666;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-print">
+        
+        <!-- Button Hidden on Print -->
+        <div class="no-print" style="position:fixed; top:20px; right:20px; z-index:1000;">
+            <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background: #000; color: #fff; border: none; border-radius: 5px;">🖨️ TÉLÉCHARGER EN PDF</button>
+        </div>
+
+        <div class="header-info">
+            Date : <script>document.write(new Date().toLocaleDateString('fr-FR'));</script>
+        <br>
+            TAAMS PROTOCOL V1.0
+        <br>
+            RÉSEAU : POLYGON MAINNET
+        </div>
+
+        <h1>TAAMS PROTOCOL</h1>
+        <h2>L'Écosystème Autonome de Déflation et de Gouvernance</h2>
+        <p style="text-align: center; font-style: italic;">
+            Une interface décentralisée (DApp) complète et autonome pour l'écosystème <strong>TAAMS</strong>, construite avec du Web3 natif, Three.js et une esthétique "Glassmorphism".
+        </p>
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 30px 0;">
+        
+        <h2>1. Abstract</h2>
+        <p>
+            TAAMS est un protocole financier autonome et déflationnaire déployé sur le réseau <strong>Polygon</strong>. Contrairement aux protocoles traditionnels, TAAMS ne dépend pas d'une autorité centrale pour sa gouvernance ou son évolution. Le système vit exclusivement grâce à la participation active de sa communauté ("Vitalité du Protocole").
+        </p>
+        <p>
+            Grâce à un mécanisme de "Burn-to-Governance", la réduction de l'offre (déflation) génère du pouvoir de vote (BL2P), créant ainsi une boucle vertueuse de rareté et de contrôle décentralisé.
+        </p>
+
+        <h2>2. Introduction</h2>
+        
+        <h3>2.1 Le Problème</h3>
+        <p>La DeFi actuelle souffre de deux maux majeurs :</p>
+        <ul>
+            <li><strong>Centralisation du Pouvoir :</strong> Les gros détenteurs de jetons (Whales) dictent souvent la direction des protocoles.</li>
+            <li><strong>Inflation et Sédimentation :</strong> L'expansion continue de l'offre dilue la valeur des utilisateurs passifs, qui ne sont pas incités à agir.</li>
+        </ul>
+
+        <h3>2.2 La Solution TAAMS</h3>
+        <p>TAAMS introduit le concept de <strong>"Vitalité"</strong>. Le système ne s'active pleinement que si une masse critique d'utilisateurs (Les Fondateurs) s'engage. Une fois cette étape franchie, le protocole devient <strong>Autonome</strong> : les décisions sont prises par la DAO, et l'offre est brûlée collectivement pour garantir la pérennité.</p>
+
+        <h2>3. Architecture Technique</h2>
+        
+        <h3>3.1 Infrastructure</h3>
+        <ul>
+            <li><strong>Blockchain :</strong> Polygon (Layer 2) pour des frais de gaz négligeables et une haute vitesse.</li>
+            <li><strong>Contrat Principal :</strong> TAAMS (ERC-20, Gouvernance, Staking, Airdrop).</li>
+            <li><strong>Standard :</strong> Solidity ^0.8.20 (OpenZeppelin).</li>
+        </ul>
+
+        <h3>3.2 Sécurité</h3>
+        <p>Le contrat intègre plusieurs garde-fous de sécurité industriels :</p>
+        <ul>
+            <li><strong>ReentrancyGuard :</strong> Empêche les attaques de réentrance lors des retraits de staking.</li>
+            <li><strong>Ownable & Pausable :</strong> Mécanismes d'arrêt d'urgence en cas de bug critique.</li>
+            <li><strong>Système de Vote (Commit/Reveal) :</strong> Empêche la corruption des votes et le "front-running" par les bots.</li>
+            <li><strong>Inactivity Burn :</strong> Les droits de vote inutilisés sont détruits, encourageant la gouvernance active.</li>
+        </ul>
+
+        <h2>4. Le Token TAAMS</h2>
+        <p><strong>TAAMS</strong> est le jeton natif de l'écosystème. Il agit à la fois comme :</p>
+        <ol>
+            <li><strong>Moyen d'échange :</strong> Sur les DEX (Uniswap, QuickSwap).</li>
+            <li><strong>Carburant pour le Protocole :</strong> Utilisé pour le Staking et le Burn.</li>
+            <li><strong>Réserve de Valeur :</strong> Unité de compte pour les récompenses de gouvernance (BL2P).</li>
+        </ol>
+
+        <h3>Spécifications :</h3>
+        <ul>
+            <li><strong>Nom :</strong> TAAMS</li>
+            <li><strong>Symbole :</strong> TAAMS</li>
+            <li><strong>Décimales :</strong> 18</li>
+            <li><strong>Offre Totale :</strong> 10,000,000,000 TAAMS (10 Milliards)</li>
+        </ul>
+
+        <h2>5. La Phase d'Ignition (Airdrop)</h2>
+        <p>Avant que la gouvernance ne soit transférée à la communauté, le protocole doit prouver sa vitalité.</p>
+
+        <h3>5.1 Le Concept des Fondateurs</h3>
+        <p>L'inscription est ouverte aux 1000 premiers participants (Founders). Ce groupe d'initiés est crucial car ils sont les premiers à bénéficier de la redistribution massive de l'offre (le Burn).</p>
+
+        <h3>5.2 L'Allumage (Trigger)</h3>
+        <p>Une fois que 1000 utilisateurs se sont inscrits et que l'offre en circulation atteint le seuil d'activation (1 Milliard de TAAMS), l'<strong>Ignition Airdrop</strong> est déclenché automatiquement.</p>
+
+        <ul>
+            <li><strong>Pool Airdrop :</strong> 500,000,000 TAAMS (5% de l'offre totale).</li>
+            <li><strong>Distribution :</strong>
+                <ul>
+                    <li>Rang 1-100 : 150% de la part de base.</li>
+                    <li>Rang 101-200 : 125% de la part de base.</li>
+                    <li>Rang 201-1000 : 100% de la part de base.</li>
+                </ul>
+            </li>
+        </ul>
+        <p>Une fois l'Ignition terminée, la propriété du contrat est transférée à la DAO, rendant le système <strong>100% Autonome</strong>.</p>
+
+        <h2>6. Mécanisme de Burn & BL2P</h2>
+        <p>C'est le cœur économique du protocole. C'est ici que l'utilisateur transforme sa richesse (TAAMS) en pouvoir (BL2P).</p>
+
+        <h3>6.1 Le BL2P (Gouvernance Power)</h3>
+        <p>Le <strong>BL2P</strong> n'est pas un jeton standard sur la blockchain, mais une valeur de comptabilité interne au contrat qui représente le pouvoir de vote. Il agit comme un "soulbound token" (lié à l'âme) jusqu'à maturité.</p>
+
+        <h3>6.2 Le Cycle de Burn</h3>
+        <p>Le protocole vise à brûler <strong>1 Milliard de TAAMS</strong> au total.</p>
+        <ul>
+            <li><strong>Mécanisme :</strong> L'utilisateur "brûle" des TAAMS au contrat pour destruction.</li>
+            <li><strong>Récompense (BL2P) :</strong> Le brûlage accorde des jetons de gouvernance (BL2P) non transférables tant qu'ils ne sont pas matures.</li>
+            <li><strong>Maturité :</strong> Les BL2P gagnés en puissance de vote avec le temps (contrôle l'inactivité).</li>
+        </ul>
+        <p><strong>Pool de Récompense :</strong> 1 Milliard de BL2P sont distribués proportionnellement à tous les brûleurs, une fois l'objectif atteint.</p>
+
+        <h2>7. Staking & Rendement</h2>
+        <p>Le staking permet aux utilisateurs de bloquer leurs TAAMS pour générer des rendements, tout en gardant un contrôle sur le protocole.</p>
+
+        <h3>7.1 Règles du Staking</h3>
+        <ul>
+            <li><strong>Minimum :</strong> Il faut staker au minimum <strong>1000 TAAMS</strong>.</li>
+            <li><strong>Durée de verrouillage :</strong> Flexible (retrait possible à tout moment, mais les intérêts sont calculés par blocs/périodes).</li>
+            <li><strong>Taux de Rendement (APY) :</strong> 5% par défaut (Modifiable par DAO).</li>
+            <li><strong>Calcul :</strong> Rendement = (Montant Staké x Taux x Temps).</li>
+        </ul>
+
+        <h3>7.2 Le "Boost" BL2P</h3>
+        <p>C'est une innovation unique. Un utilisateur peut sacrifier ses BL2P (droit de vote) pour augmenter son rendement de staking.</p>
+        <ul>
+            <li><strong>Mécanisme :</strong> Brûler des BL2P sur un stake actif.</li>
+            <li><strong>Limite :</strong> Le boost ne peut pas dépasser 10% du montant staké.</li>
+            <li><strong>Arbitrage :</strong> L'utilisateur doit choisir entre <strong>Gouvernance (Pouvoir de Vote)</strong> ou <strong>Finance (Plus de Rendement)</strong>.</li>
+        </ul>
+
+        <h2>8. Gouvernance (DAO)</h2>
+        <p>Une fois l'Ignition terminée, le contrat devient propriété de la communauté.</p>
+
+        <h3>8.1 Système de Vote à 2 Étapes (Commit/Reveal)</h3>
+        <p>Pour éviter que les gros détenteurs ne puissent pas influencer le vote par leur simple présence, TAAMS utilise le système <strong>Commit/Reveal</strong>.</p>
+        <ol>
+            <li><strong>Commit :</strong> L'utilisateur envoie un hash secret de son choix (Pour/Contre). Personne ne sait ce qu'il a voté.</li>
+            <li><strong>Reveal :</strong> À la fin du vote, l'utilisateur révèle son choix et son secret. Le contrat vérifie que cela correspond au hash envoyé au début.</li>
+        </ol>
+
+        <h3>8.2 Propositions</h3>
+        <p>Les gouvernés peuvent proposer des changements via différents types de propositions :</p>
+        <ul>
+            <li><strong>Burn Amount :</strong> Modifier le montant cible de burn.</li>
+            <li><strong>Reward Rate :</strong> Changer l'APY du staking.</li>
+            <li><strong>Emergency Pause :</strong> Arrêter le protocole en cas d'urgence.</li>
+            <li><strong>Unlock Reserve :</strong> Débloquer la trésorerie.</li>
+            <li><strong>Advertisement :</strong> Poster des annonces officielles sur la chaîne.</li>
+            <li><strong>Quorum & Threshold :</strong> Changer les règles de vote.</li>
+        </ul>
+
+        <h3>8.3 Délégation</h3>
+        <p>Si un utilisateur ne souhaite pas voter, il peut déléguer ses BL2P à un tiers expert. La délégation est révocable à tout moment.</p>
+
+        <h2>9. Distribution & Tokenomics</h2>
+        <p>L'offre totale de <strong>10 Milliards de TAAMS</strong> est répartie comme suit :</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th>Allocation</th>
+                    <th>Montant</th>
+                    <th>Conditions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Locked Reserve</strong></td>
+                    <td>70%</td>
+                    <td>7,000,000,000</td>
+                    <td>Débloquée progressivement par la DAO.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ignition Airdrop</strong></td>
+                    <td>5%</td>
+                    <td>500,000,000</td>
+                    <td>Distribuée aux 1000 fondateurs.</td>
+                </tr>
+                <tr>
+                    <td><strong>Deployer / Recipient</strong></td>
+                    <td>20%</td>
+                    <td>2,000,000,000</td>
+                    <td>Initial liquidity & Développement.</td>
+                </tr>
+                <tr>
+                    <td><strong>Burn Pool (Target)</strong></td>
+                    <td>10%</td>
+                    <td>1,000,000,000</td>
+                    <td>Brûlé par les utilisateurs pour mint du BL2P.</td>
+                </tr>
+                <tr>
+                    <td><strong>Staking Rewards</strong></td>
+                    <td>Illimité</td>
+                    <td>Variable</td>
+                    <td>Mintés dynamiquement sur le rendement.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Note Importante :</strong> Le contrat ne possède pas de "Minting Authority" infinie. L'inflation ne se produit que via le Staking, qui est contrôlé par la communauté.</p>
+
+        <h2>10. Roadmap</h2>
+
+        <h3>Phase 1 : La Création (Q1 2025)</h3>
+        <ul>
+            <li>Déploiement sur Polygon Mainnet.</li>
+            <li>Lancement de la DApp Web3.</li>
+            <li>Phase d'inscription aux 1000 fondateurs.</li>
+        </ul>
+
+        <h3>Phase 2 : L'Ignition (Q2 2025)</h3>
+        <ul>
+            <li>Distribution des 500M TAAMS d'Airdrop.</li>
+            <li>Transfert de la gouvernance à la DAO.</li>
+            <li>Activation du mécanisme de Burn.</li>
+        </ul>
+
+        <h3>Phase 3 : La DAO Vivante (Q3 2025)</h3>
+        <ul>
+            <li>Premières propositions de gouvernance.</li>
+            <li>Lancement du staking décentralisé.</li>
+            <li>Lancement du système de "Publicité" sur la blockchain.</li>
+        </ul>
+
+        <h3>Phase 4 : L'Expansion (2026+)</h3>
+        <ul>
+            <li>Intégration de nouveaux contrats (Bridges vers autres chaînes).</li>
+            <li>Partenariats avec des projets DeFi.</li>
+            <li>Autonomie totale via la gouvernance BL2P.</li>
+        </ul>
+
+        <h2>11. Avertissements & Disclaimer</h2>
+        <p>Ce Whitepaper est fourni à titre informatif uniquement. Il ne constitue pas un conseil en investissement.</p>
+        <ul>
+            <li><strong>Sécurité :</strong> Ne partagez jamais votre clé privée. La DApp interagit uniquement avec MetaMask.</li>
+            <li><strong>Testnet vs Mainnet :</strong> Assurez-vous toujours d'être sur le bon réseau (Polygon Mainnet vs Mumbai Testnet) avant d'effectuer des transactions réelles.</li>
+            <li><strong>Perte de fonds :</strong> Les transactions sur la blockchain sont irréversibles. Testez toujours avec de petits montants sur le Testnet avant d'utiliser des fonds réels.</li>
+        </ul>
+
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 50px 0;">
+
+        <div class="header-info" style="margin-top: 50px;">
+            <strong>Construit avec autonomie par la communauté TAAMS.</strong><br>
+            <em>Version : 1.0 • Réseau : Polygon Mainnet (137)</em>
+        </div>
+
+    </div>
+
+</body>
+</html>
