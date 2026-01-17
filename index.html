@@ -19,9 +19,9 @@
             --bg-color: #030303;
             --panel-bg: rgba(10, 10, 10, 0.85);
             --border: rgba(255, 255, 255, 0.08);
-            --accent: #00ff88;
+            --accent: #00ff88; 
             --accent-glow: rgba(0, 255, 136, 0.15);
-            --secondary: #ff00ff; /* Magenta pour Secondaire */
+            --secondary: #ff00ff;
             --text-main: #ffffff;
             --text-dim: #666666;
             --font-head: 'Syncopate', sans-serif;
@@ -56,7 +56,7 @@
 
         /* --- Sidebar --- */
         aside {
-            width: 320px; border-right: 1px solid var(--border);
+            width: 300px; border-right:1px solid var(--border);
             padding: 2rem; display: flex; flex-direction: column;
             z-index: 10; background: var(--bg-color);
         }
@@ -77,20 +77,6 @@
         }
         nav button:hover { color: #fff; padding-left: 1rem; }
         nav button.active { color: var(--accent); border-left: 2px solid var(--accent); background: linear-gradient(90deg, rgba(0,255,136,0.05), transparent); }
-        
-        .nav-section-title {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            margin: 1.5rem 0 1.5rem 0 0.5rem 1.5rem 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        nav button.active {
-            color: var(--accent); border-left: 2px solid var(--accent);
-            background: linear-gradient(90deg, rgba(0,255,136,0.05), transparent);
-            background-position: 5px center; /* Petit indicateur vertical visuel */
-        }
 
         /* --- Main Content --- */
         main {
@@ -162,44 +148,36 @@
         .vote-step::before { content:''; position: absolute; left: -9px; top: 0; width: 15px; height: 15px; background: var(--bg-color); border: 2px solid var(--text-dim); border-radius: 50%; }
         .vote-step.active::before { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 10px var(--accent); }
         .step-title { font-weight: bold; color: var(--accent); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.5rem; display: block; }
-        .vote-data-display { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 2px; margin-top: 1rem; display: none; }
-        .vote-bar-container { display: flex; gap: 1rem; margin-top: 0.5rem; height: 8px; border-radius: 2px; background: #111; overflow: hidden; }
-        .vote-bar { height: 100%; background: #222; border-radius: 2px; width: 0%; transition: width 0.3s ease; }
-        
-        /* --- Publicité (Advertisement) --- */
+
+        /* --- Ads Styles --- */
         .news-list { display: flex; flex-direction: column; gap: 1.5rem; }
         .news-item {
             background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 1rem; border-left: 4px solid var(--accent);
+            display: flex; justify-content: space-between; align-items: center;
         }
         .news-date { font-size: 0.8rem; color: var(--accent); margin-bottom: 0.5rem; }
         .news-msg { font-family: var(--font-head); font-size: 1.1rem; color: #fff; }
-        .news-desc { color: #ccc; font-size: 0.9rem; line-height: 1.5rem; }
 
-        /* --- Whitepaper --- */
+        /* --- Whitepaper Styles --- */
         #whitepaper-content { display: none; /* Hidden by default */
         
-        /* Font styling for whitepaper */
         .wp-container {
             max-width: 800px;
             margin: 0 auto;
-            background: #0808080; /* Dark Grey Paper effect */
+            background: #0808080; 
             padding: 40px;
             border: 1px solid #333;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
         .wp-title { font-family: var(--font-head); font-size: 2rem; color: #fff; margin-bottom: 2rem; }
-        
         .wp-section { margin-bottom: 2rem; }
         
-        .wp-h2 { color: var(--accent); border-bottom: 1px solid #333; padding-bottom: 1rem; font-size: 1.5rem; text-transform: uppercase;
-        font-family: var(--font-head);
-        }
+        .wp-h2 { color: var(--accent); border-bottom: 1px solid #333; padding-bottom: 1rem; font-size: 1.5rem; text-transform: uppercase; font-family: var(--font-head); }
 
         .wp-p { margin-bottom: 1rem; text-align: justify; line-height: 1.6rem; color: #ccc; }
         .wp-strong { color: var(--accent); }
-        .wp-err { color: var(--secondary); } /* Magenta for errors */
-
+        .wp-err { color: var(--secondary); }
         .wp-code {
             background: #000; border: 1px solid #444;
             padding: 1rem;
@@ -210,73 +188,29 @@
             margin-bottom: 2rem;
             border-radius: 4px;
         }
-
         .wp-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
         .wp-table th, .wp-table td {
             border: 1px solid #444; padding: 10px; text-align: left;
         }
-        .wp-table th {
-            background: #111; color: #fff; font-weight: bold;
-        }
-        .wp-table tr:nth-child(even) { background: #0a0a0a; }
-
-        /* --- Palette Table Styling (Wallet & Palette) --- */
-        .color-box {
-            width: 20px; 
-            height: 20px; 
-            display: inline-block; 
-            vertical-align: middle; 
-            border: 1px solid #ccc; 
-            margin-right: 10px;
-        }
-        
-        .palette-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 11pt;
-        }
-
-        .palette-table th, .palette-table td {
-            border: 1px solid #cccccc;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .palette-table th {
-            background-color: #f2f2f2;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-weight: bold;
-        }
-
-        .palette-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+        .wp-table th { background-color: #111; color: #fff; font-weight: bold; }
+        .wp-table tr:nth-child(even) { background-color: #0a0a0a0; }
 
         .security-box {
-            border-left: 4px solid var(--accent, #00ff88);
+            border-left: 4px solid var(--accent); 
             background: rgba(0,255,136,0.05);
             padding: 20px;
             margin: 20px 0;
         }
-        
         .security-box p { margin-bottom: 15px; }
 
-        /* Utility */
+        /* --- Utility --- */
         .text-dim { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; display: block; line-height: 1.5rem; }
         .highlight { color: var(--accent); }
         .full-width { width: 100%; }
-
         .no-print { display: none; }
         
         /* Footer */
         .protocol-footer { margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: #444; font-size: 0.8rem; }
-        .protocol-footer a { color: var(--accent); text-decoration: none; }
-        .protocol-footer a:hover { text-decoration: underline; }
-        
-        /* Footer Specific for Whitepaper */
-        .wp-footer { border-top: 1px solid #333; margin-top: 4rem; padding: 2rem; text-align: center; color: #666; font-size: 0.8rem; }
-        .wp-footer strong { color: #fff; }
     </style>
 </head>
 <body>
@@ -289,19 +223,17 @@
     <aside>
         <div class="brand">TAAMS <span>PROTOCOL</span></div>
         
-        <div class="nav">
+        <nav>
             <div class="nav-section-title">Actions</div>
             <button class="active" onclick="switchTab('dashboard')">Vitality & Ignition</button>
             <button onclick="switchTab('wallet')">Wallet</button>
             <button onclick="switchTab('burn')">Burn & BL2P</button>
             <button onclick="switchTab('staking')">Staking</button>
             <button onclick="switchTab('governance')">DAO & Governance</button>
-            
-            <div class="nav-section-title">Information</div>
+            <button onclick="switchTab('ads')">Publicité (Ads)</button>
             <button onclick="switchTab('wallet-palette')">Wallet & Palette</button>
-            <button onclick="switchTab('publicite')">Publicité (Ads)</button>
             <button onclick="switchTab('whitepaper')">Livre Blanc (PDF)</button>
-        </div>
+        </nav>
 
         <div style="margin-top: auto;">
             <!-- Network Status Indicator -->
@@ -317,9 +249,10 @@
     <!-- Main Content -->
     <main>
 
-        <!-- DASHBOARD -->
+        <!-- DASHBOARD / VITALITY -->
         <section id="dashboard" class="section active">
             
+            <!-- The Heart of Protocol -->
             <div class="vitality-container">
                 <div class="vitality-title">PROTOCOL VITALITY</div>
                 <p class="text-dim">The system depends entirely on community participation.</p>
@@ -437,7 +370,6 @@
                         <div class="stat-label">Minimum Required</div>
                     </div>
                 </div>
-            </div>
 
             <div class="card">
                 <div class="card-header">My Stake</div>
@@ -552,275 +484,609 @@
             </div>
         </section>
 
-        <!-- PUBLICITE (Advertisement) -->
-        <section id="publicite" class="section">
+        <!-- PUBLICITE (ADVERTISEMENT) -->
+        <section id="ads" class="section">
             <h2 style="font-family:var(--font-head); margin-bottom:2rem;">Publicité (Ads)</h2>
             
-            <div class="news-list">
+            <div class="news-list" id="news-list">
+                <!-- Les publicités s'afficheront ici dynamiquement -->
                 <div class="news-item">
                     <div class="news-date">DATE: <span id="news-date-1">...</span></div>
                     <div class="news-msg">Message chargement...</div>
                 </div>
-                <div class="news-item">
-                    <div class="news-date">DATE: <span id="news-date-2">...</span></div>
-                    <div class="news-msg">Message chargement...</div>
-                </div>
-                <!-- Plus d'articles ici générés dynamiquement -->
                 <div id="more-news" style="text-align: center; margin-top: 2rem;">
-                    <button class="btn secondary" onclick="loadMoreNews()">CHARGER LA LISTE</button>
-                </div>
-            </section>
-
-        <!-- WHITEPAPER (LIVRE BLANC) -->
-        <section id="whitepaper" class="section">
-            <div id="whitepaper-content">
-                <div class="wp-container">
-                    
-                    <div class="wp-title">TAAMS PROTOCOL - LIVRE BLANC</div>
-                    <div style="text-align: right; font-size: 0.9rem; color: var(--text-dim);">V1.0</div>
-                    
-                    <h2 id="wp-abs">Abstract</h2>
-                        <div class="wp-p">TAAMS est un protocole financier autonome et déflationnaire déployé sur le réseau <strong>Polygon</strong>. Contrairement aux protocoles traditionnels, TAAMS ne dépend pas d'une autorité centrale pour sa gouvernance ou son évolution. Le système vit exclusivement grâce à la participation active de sa communauté ("Vitalité du Protocole"). Grâce à un mécanisme de "Burn-to-Governance", la réduction de l'offre (déflation) génère du pouvoir de vote (BL2P).</div>
-                    
-                    <h2 id="wp-intro">Introduction</h2>
-                        <div class="wp-p">Le Problème</div>
-                        <p class="wp-p">La DeFi actuelle souffre de deux maux majeurs :</p>
-                        <ul class="wp-list">
-                            <li class="wp-strong">Centralisation du Pouvoir :</strong> Les gros détenteurs de jetons (Whales) dictent souvent la direction des protocoles.</li>
-                            <li class="wp-strong">Inflation et Sédimentation :</strong> L'expansion continue de l'offre dilue la valeur des utilisateurs passifs.</li>
-                        </ul>
-                        
-                        <div class="wp-p">La Solution TAAMS</div>
-                        <p class="wp-p">TAAMS introduit le concept de <strong>"Vitalité"</strong>. Le système ne s'active pleinement que si une masse critique d'utilisateurs (Les Fondateurs) s'engage.</p>
-                    </div>
-
-                    <h2 id="wp-tech">Architecture Technique</h2>
-                        <div class="wp-p">Infrastructure</div>
-                        <ul>
-                            <li class="wp-list"><strong>Blockchain :</strong> Polygon (Layer 2) pour des frais de gaz négligeables et une haute vitesse.</li>
-                            <li class="wp-list"><strong>Contrat Principal :</strong> TAAMS (ERC-20, Gouvernance, Staking, Airdrop).</li>
-                            <li class="wp-list"><strong>Standard :</strong> Solidity ^0.8.20 (OpenZeppelin).</li>
-                        </ul>
-                        
-                        <div class="wp-p">Sécurité</div>
-                        <p class="wp-p">Le contrat intègre plusieurs garde-fous de sécurité industriels :</p>
-                        <ul>
-                            <li class="wp-list"><strong>ReentrancyGuard :</strong> Empêche les attaques de réentrance.</li>
-                            <li class="wp-list"><strong>Ownable & Pausable :</strong> Mécanismes d'arrêt d'urgence.</li>
-                            <li class="wp-list"><strong>Système de Vote (Commit/Reveal) :</strong> Empêche la corruption des votes.</li>
-                            <li class="wp-list"><strong>Inactivity Burn :</strong> Les droits de vote inutilisés sont détruits.</li>
-                        </ul>
-                    </div>
-
-                    <h2 id="wp-token">Le Token TAAMS</h2>
-                        <div class="wp-p">TAAMS est le jeton natif de l'écosystème.</div>
-                        <div class="wp-section">
-                            <h3 style="color:var(--accent);">Spécifications :</h3>
-                            <ul>
-                                <li class="wp-list"><strong>Nom :</strong> TAAMS</li>
-                                <li class="wp-list"><strong>Symbole :</strong> TAAMS</li>
-                                <li class="wp-list"><strong>Décimales :</strong> 18</li>
-                                <li class="wp-list"><strong>Offre Totale :</strong> 10,000,000,000 TAAMS (10 Milliards)</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3 style="color:var(--text-dim);">Rôles :</h3>
-                            <ul>
-                                <li><strong>Moyen d'échange :</strong> Sur les DEX (Unicwap, QuickSwap).</li>
-                                <li><strong>Carburant pour le Protocole :</strong> Utilisé pour le Staking et le Burn.</li>
-                                <li><strong>Réserve de Valeur :</strong> Unité de compte pour les récompenses.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h2 id="wp-ignition">La Phase d'Ignition (Airdrop)</h2>
-                        <div class="wp-p">Avant que la gouvernance ne soit transférée à la communauté, le protocole doit prouver sa vitalité.</div>
-                        <div class="wp-section">
-                            <h3 style="color:var(--text-dim);">Le Concept des Fondateurs</h3>
-                            <p class="wp-p">L'inscription est ouverte aux 1000 premiers participants (Founders). Ce groupe d'initiés est crucial car ils sont les premiers à bénéficier de la redistribution massique de l'offre (le Burn).</p>
-                        </div>
-                        <div class="wp-section">
-                            <h3 style="color:var(--text-dim);">L'Allumage (Trigger)</h3>
-                            <p class="wp-p">Une fois que 1000 utilisateurs se sont inscrits et que l'offre en circulation atteint le seuil d'activation (1 Milliard de TAAMS), l'<strong>Ignition Airdrop</strong> est déclenché automatiquement.</p>
-                            <ul>
-                                <li><strong>Pool Airdrop :</strong> 500,000,000 TAAMS (5% de l'offre totale).</li>
-                                <li><strong>Distribution :</strong> Rang 1-100 : 150% de la part de base.</li>
-                                <li><strong>Rang 101-200 : 125% de la part de base.</li>
-                                <li><strong>Rang 201-1000 : 100% de la part de base.</li>
-                            </ul>
-                        </div>
-                        <p class="wp-p">Une fois l'Ignition terminée, la propriété du contrat est transférée à la DAO, rendant le système <strong>100% Autonome</strong>.</p>
-                    </div>
-
-                    <h2 id="wp-burn">Mécanisme de Burn & BL2P</h2>
-                        <div class="wp-p">C'est le cœur économique du protocole. C'est ici que l'utilisateur transforme sa richesse (TAAMS) en pouvoir (BL2P).</div>
-                        <div class="wp-section">
-                            <h3>Le BL2P (Gouvernance Power)</h3>
-                            <p class="wp-p">Le <strong>BL2P</strong> est un jeton de gouvernance interne (non-ERC20 transférable) avec des propriétés uniques :</p>
-                            <ul>
-                                <li><strong>Non Transférable :</strong> Vous ne pouvez pas vendre vos BL2P. Vous devez les gagner en participant (Burn).</li>
-                                <li><strong>Maturité :</strong> Les BL2P gagnent en pouvoir de vote avec le temps (contrôle l'inactivité).</li>
-                                <li><strong>Décroissance Inactivité :</strong> Si vous ne votez pas, vos BL2P sont brûlés progressivement.</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Le Cycle de Burn</h3>
-                            <p class="p">Le protocole vise à brûler <strong>1 Milliard de TAAMS</strong> au total.</p>
-                            <ul>
-                                <li><strong>Mécanisme :</strong> L'utilisateur envoie des TAAMS au contrat pour destruction.</li>
-                                <li><strong>Récompense (BL2P) :</strong> Le brûlage accorde des jetons de gouvernance (BL2P).</li>
-                                <li><strong>Pool de Récompense :</strong> 1 Milliard de BL2P sont distribués proportionnellement à tous les brûleurs, une fois l'objectif atteint.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h2 id="wp-stake">Staking & Rendement</h2>
-                        <div class="wp-p">Le staking permet aux utilisateurs de bloquer leurs TAAMS pour générer des rendements.</p>
-                        <div class="wp-section">
-                            <h3>Règles du Staking</h3>
-                            <ul>
-                                <li><strong>Minimum :</strong> Il faut staker au minimum <strong>1,000 TAAMS</strong>.</li>
-                                <li><strong>Durée de verrouillage :</strong> Flexible (retrait possible à tout moment, mais les intérêts sont calculés par blocs/périodes).</li>
-                                <li><strong>Taux de Rendement (APY) :</strong> 5% par défaut (Modifiable par DAO).</li>
-                                <li><strong>Calcul :</strong> Rendement = (Montant Staké * Taux x Temps).</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Le "Boost" BL2P</h3>
-                            <p class="p">Une innovation unique. Un utilisateur peut sacrifier son pouvoir de vote (BL2P) pour augmenter ses gains de staking.</p>
-                            <ul>
-                                <li><strong>Mécanisme :</strong> Brûler des BL2P sur un stake actif.</li>
-                                <li><strong>Limite :</strong> Le boost ne peut pas dépasser 10% du montant staké.</li>
-                                <li><strong>Arbitrage :</strong> L'utilisateur doit choisir entre <strong>Gouvernance (Pouvoir de Vote)</strong> ou <strong>Finance (Plus de Rendement)</strong>.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h2 id="wp-gov">Gouvernance (DAO)</h2>
-                        <p>Une fois l'Ignition terminée, le contrat devient propriété de la communauté.</p>
-                        <div class="wp-section">
-                            <h3>Système de Vote à 2 Étapes (Commit/Reveal)</h3>
-                            <p>Pour éviter que les gros détenteurs ne puissent pas influencer le vote par leur simple présence, TAAMS utilise le système <strong>Commit / Reveal</strong>.</p>
-                            <ol>
-                                <li><strong>Commit :</strong> L'utilisateur envoie un hash secret de son choix (Pour/Contre). Personne ne sait ce qu'il a voté.</li>
-                                <li><strong>Reveal :</strong> À la fin de la période de vote, l'utilisateur révèle son choix et son secret. Le contrat vérifie que cela correspond au hash initial.</li>
-                            </ol>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Propositions</h3>
-                            <p>Les gouvernés peuvent proposer des changements via différents types de propositions :</p>
-                            <ul>
-                                <li><strong>Burn Amount :</strong> Modifier le montant cible de burn.</li>
-                                <li><strong>Reward Rate :</strong> Changer l'APY du staking.</li>
-                                <li><strong>Unlock Reserve :</strong> Débloquer la trésorerie.</li>
-                                <strong>Advertisement :</strong> Poster des annonces officielles sur la chaîne.</li>
-                                <li><strong>Quorum & Threshold :</strong> Changer les règles de vote.</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Délégation</h3>
-                            <p>Si un utilisateur ne souhaite pas voter, il peut déléguer ses BL2P à un tiers expert. La délégation est révocable à tout moment.</p>
-                        </div>
-                    </div>
-
-                    <h2 id="wp-tok">Distribution & Tokenomics</h2>
-                        <p>L'offre totale de <strong>10 Milliards de TAAMS</strong> est répartie comme suit :</p>
-                        <div class="wp-table-wrapper">
-                            <table class="wp-table">
-                                <thead>
-                                    <tr>
-                                        <th>Catégorie</th>
-                                        <th>Allocation</th>
-                                        <th>Montant</th>
-                                        <th>Conditions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Locked Reserve</strong></td>
-                                        <td>70%</td>
-                                        <td>7,000,000,000</td>
-                                        <td>Débloquée progressivement par la DAO.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Ignition Airdrop</strong></td>
-                                        <td>5%</td>
-                                        <td>500,000,000</td>
-                                        <td>Distribué aux 1000 fondateurs.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Deployer / Recipient</strong></td>
-                                        <td>20%</td>
-                                        <td>2,000,000,000</td>
-                                        <td>Initial liquidity & Développement.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Burn Pool (Target)</strong></td>
-                                        <td>10%</td>
-                                        <td>1,000,000,000</td>
-                                        <td>Brûlé par les utilisateurs pour mint du BL2P.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Staking Rewards</strong></td>
-                                        <td>Illimité</td>
-                                        <td>Variable</td>
-                                        <td>Mintés dynamiquement sur le rendement.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p><strong>Note Importante :</strong> Le contrat ne possède pas de "Minting Authority" infinie. L'inflation ne se produit que via le Staking, qui est contrôlé par la communauté.</p>
-                    </div>
-
-                    <h2 id="wp-roadmap">Roadmap</h2>
-                        <div class="wp-section">
-                            <h3>Phase 1 : La Création (Q1 2025)</h3>
-                            <ul>
-                                <li>Déploiement sur Polygon Mainnet.</li>
-                                <li>Lancement de la DApp Web3.</li>
-                                <li>Phase d'inscription aux 1000 fondateurs.</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Phase 2 : L'Ignition (Q2 2025)</h3>
-                            <ul>
-                                <li>Distribution des 500M TAAMS d'Airdrop.</li>
-                                <li>Transfert de la gouvernance à la DAO.</li>
-                                <li>Activation du mécanisme de Burn.</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Phase 3 : La DAO Vivante (Q3 2025)</h3>
-                            <ul>
-                                <li>Premières propositions de gouvernance.</li>
-                                <li>Lancement du staking décentralisé.</li>
-                                <li>Lancement du système de "Publicité" sur la blockchain.</li>
-                            </ul>
-                        </div>
-                        <div class="wp-section">
-                            <h3>Phase 4 : L'Expansion (2026+)</h3>
-                            <ul>
-                                <li>Intégration de nouveaux contrats.</li>
-                                <li>Partenariats.</li>
-                                <li>Autonomie totale via la gouvernance BL2P.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 50px 0;">
-
-                    <div class="wp-footer">
-                        <strong>Construit avec autonomie par la communauté TAAMS.</strong>
-                        <br>
-                        <em>Version : 1.0 • Réseau : Polygon Mainnet (137)</em>
-                    </div>
-                </div>
-
-                <div id="wp-nav" style="text-align: center; margin-top: 3rem;">
-                    <button class="btn secondary" onclick="switchTab('dashboard')">Retour Dashboard</button>
+                    <button class="btn secondary" onclick="loadAds()">CHARGER LA LISTE</button>
                 </div>
             </div>
         </section>
+
+        <!-- WALLET & PALETTE -->
+        <section id="wallet-palette" class="section">
+            
+            <h2 style="font-family:var(--font-head); margin-bottom:2rem;">12. Connexion Portefeuille & Sécurité</h2>
+    
+            <p>L'application TAAMS est construite pour fonctionner nativement dans le navigateur (Vanilla JS) en utilisant l'objet injecté `window.ethereum`. Elle ne dépend d'aucun SDK tiers pour la connexion.</p>
+
+            <h3>12.1. Portefeuilles Supportés</h3>
+            <ul>
+                <li><strong>MetaMask :</strong> Le portefeuille recommandé. Compatible avec Polygon et avec toutes les interactions Web3 requises.</li>
+                <li><strong>WalletConnect :</strong> Supporte les portefeuilles mobiles et matériels (Ledger, Trezor) via QR Code.</li>
+                <li><strong>Trust Wallet :</strong> Alternative populaire à MetaMask.</li>
+            </ul>
+
+            <h3>12.2. Sécuirité de la Connexion</h3>
+            <div class="security-box">
+                <p><strong>Authentification :</strong> La DApp ne demande jamais l'envoi de votre phrase secrète (Seed Phrase). Elle ne demande que la signature de transactions via MetaMask.</p>
+                <p><strong>Détection de Réseau :</strong> Le protocole vérifie automatiquement si le portefeuille est sur Polygon (Chain ID 137). Si l'utilisateur est sur une autre chaîne (Ethereum, BSC), la DApp affiche une alerte et propose de basculer automatiquement.</p>
+                <p><strong>Session Persistante :</strong> Une fois connecté, l'adresse du portefeuille est sauvegardée dans le `localStorage` du navigateur. Cela permet à l'utilisateur de rafraîchir la page sans avoir à se reconnecter à chaque fois.</p>
+                <p><strong>Avertissement de Phishing :</strong> Vérifiez toujours que l'URL est <code>taams-protocol.eth.link</code> (ou votre domaine officiel) avant de connecter votre portefeuille. Ne partagez jamais votre clé privée.</p>
+            </div>
+
+            <hr style="margin: 40px 0;">
+
+            <h2>13. Design System & Palette</h2>
+            
+            <p>Le système visuel de TAAMS est basé sur le thème "Dark Neon High Contrast". Cette esthétique vise à garantir une lisibilité maximale des données financières tout en créant une ambiance "cyberpunk" premium.</p>
+
+            <h3>13.1. Principes de Design</h3>
+            <ul>
+                <li><strong>Contraste Maximal :</strong> Le fond est un noir profond (<code>#030303</code>) pour éviter la fatigue oculaire, avec un texte blanc pur (<code>#FFFFFF</code>) pour les données critiques.</li>
+                <li><strong>Hiérarchie Visuelle :</strong> Utilisation de deux familles de polices. <code>Syncopate</code> pour les titres (aspect technologique) et <code>Space Grotesk</code> pour le corps de texte (lisibilité technique).</li>
+                <li><strong>Transparence (Glassmorphism) :</strong> Les cartes d'interface utilisent des arrière-plans semi-transparents avec flou (<code>backdrop-filter: blur</code>) pour donner de la profondeur sans obscurcir le contenu.</li>
+            </ul>
+
+            <h3>13.2. Palette de Couleurs (CSS Variables)</h3>
+            <p>Voici les codes Hexadécimaux officiels utilisés dans le fichier `index.html` de la DApp. Utilisez ces codes pour créer vos graphiques ou votre identité visuelle.</p>
+
+            <table class="palette-table">
+                <thead>
+                    <tr>
+                        <th>Nom Variable</th>
+                        <th>Code Hex</th>
+                        <th>CSS RGB</th>
+                        <th>Usage & Sémantique</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>--bg-color</code></td>
+                        <td><span class="color-box" style="background-color: #030303;"></span> #030303</td>
+                        <td>rgb(3, 3, 3)</td>
+                        <td><strong>Fond Principal</strong>. Noir profond pour le confort visuel et le contraste.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10,10,10,0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255, 255, 255, 0.08)</td>
+                        <td>rgb(255, 255, 255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255, 255, 255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10,10,10,0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255, 255, 255, 0.08)</td>
+                        <td>rgb(255, 255, 255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255, 255, 255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255, 255, 255, 0.08)</td>
+                        <td>rgb(255, 255, 255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255, 255, 255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255, 0.08)</td>
+                        <td>rgb(255, 255, 255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255, 255, 255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <tr>
+                        <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisé pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td>rgb(0, 255, 136, 15%)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorées sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85)</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255,0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-dim</code></td>
+                        <td><span class="color-box" style="background-color: #666666;"></span> #666666</td>
+                        <td>rgb(102, 102, 102)</td>
+                        <td><strong>Texte Secondaire</strong>. Pour les descriptions, les labels et les textes explicatifs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent-glow</code></td>
+                        <td><span class="color-box" style="background-color: rgba(0,255,136,0.15);"></span> rgba(0, 255, 136, 0.15)</td>
+                        <td><strong>Lumière (Glow)</strong>. Ombres colorés sur les boutons et éléments actifs pour donner un effet néon.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accent</code></td>
+                        <td><span class="color-box" style="background-color: #00ff88;"></span> #00ff88</td>
+                        <td>rgb(0, 255, 136)</td>
+                        <td><strong>Couleur Principale (Brand)</strong>. "Neon Green". Utilisée pour les boutons, les soldes positifs et l'indicateur de succès. Représente la croissance (Growth).</td>
+                    </tr>
+                    <td><code>--secondary</code></td>
+                        <td><span class="color-box" style="background-color: #ff00ff;"></span> #ff00ff</td>
+                        <td>rgb(255, 0, 255)</td>
+                        <td><strong>Couleur Secondaire</strong>. "Magenta". Utilisée pour les notifications d'erreur, le délai de vote (Against) ou les boutons secondaires.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--panel-bg</code></td>
+                        <td><span class="color-box" style="background-color: rgba(10, 10, 10, 0.85);"></span> rgba(10, 10, 10, 0.85);</td>
+                        <td>rgb(10, 10, 10, 85%)</td>
+                        <td><strong>Fond de Carte</strong>. Noir semi-transparent pour l'effet "Glassmorphism". Crée une séparation subtile entre les blocs.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border</code></td>
+                        <td><span class="color-box" style="background-color: rgba(255,255,255,0.08);"></span> rgba(255,255,255, 0.08)</td>
+                        <td>rgb(255,255,255, 8%)</td>
+                        <td><strong>Bordures</strong>. Blanc très fade. Utilisé pour séparer les sections sans créer une interface rigide.</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-main</code></td>
+                        <td><span class="color-box" style="background-color: #ffffff;"></span> #ffffff</td>
+                        <td>rgb(255,255,255)</td>
+                        <td><strong>Texte Principale</strong>. Utilisé pour les titres et les montants.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="protocol-footer">
             TAAMS PROTOCOL // AUTONOMOUS SYSTEM // COMMUNITY DRIVEN
@@ -830,14 +1096,71 @@
 
     <script>
         // ==========================================
-        // CONFIGURATION (MODIFIEZ L'ADRESSE DU CONTRAT ICI
+        // CONFIGURATION (A MODIFIER ICI)
         // ==========================================
         
-        // IMPORTANT: ADRESSE DU CONTRAT DEPLOYÉ
+        // IMPORTANT: ADRESSE DU CONTRAT
         const CONTRACT_ADDRESS = "0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef"; 
 
-        // ABI COMPLET AVEC TOUTES LES NOUVELLES FONCTIONS
-        const CONTRACT_ABI = [{"inputs":[{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ActivationThresholdNotMet","type":"error"},{"inputs":[],"name":"AirdropAlreadyTriggered","type":"error"},{"inputs":[],"name":"AlreadyClaimed","type":"error"},{"inputs":[],"name":"AlreadyRegistered","type":"error"},{"inputs":[],"name":"AlreadyVoted","type":"error"},{"inputs":[],"name":"AmountZero","type":"error"},{"inputs":[],"name":"BL2PNotExpired","type":"error"},{"inputs":[],"name":"BL2PNotMatured","type":"error"},{"inputs":[],"name":"BelowMinimumStake","type":"error"},{"inputs":[],"name":"BurnCycleEnded","type":"error"},{"inputs":[],"name":"BurnPhaseNotActive","type":"error"},{"inputs":[],"name":"ContractPaused","type":"error"},{"inputs":[],"name":"DelegationActive","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"allowance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientBalance","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC20InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC20InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC20InvalidSender","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"}],"name":"ERC20InvalidSpender","type":"error"},{"inputs":[],"name":"ExceedsBL2PBoostLimit","type":"error"},{"inputs":[],"name":"ExceedsBurnTarget","type":"error"},{"inputs":[],"name":"ExceedsDelegateLimit","type":"error"},{"inputs":[],"name":"GovernanceNotSet","type":"error"},{"inputs":[],"name":"InsufficientBalance","type":"error"},{"inputs":[],"name":"InsufficientContractBalance","type":"error"},{"inputs":[],"name":"InsufficientReserve","type":"error"},{"inputs":[],"name":"InvalidAddress","type":"error"},{"inputs":[],"name":"InvalidBL2PLifespan","type":"error"},{"inputs":[],"name":"InvalidBurnAmount","type":"error"},{"inputs":[],"name":"InvalidClaimConditions","type":"error"},{"inputs":[],"name":"InvalidCommit","type":"error"},{"inputs":[],"name":"InvalidDelegate","type":"error"},{"inputs":[],"name":"InvalidDelegatedPercent","type":"error"},{"inputs":[],"name":"InvalidInactivityBurnRate","type":"error"},{"inputs":[],"name":"InvalidMaturationPeriod","type":"error"},{"inputs":[],"name":"InvalidProposalPayload","type":"error"},{"inputs":[],"name":"InvalidRecipient","type":"error"},{"inputs":[],"name":"InvalidRewardRate","type":"error"},{"inputs":[],"name":"InvalidTransferConditions","type":"error"},{"inputs":[],"name":"MaxParticipantsReached","type":"error"},{"inputs":[],"name":"NoActiveStake","type":"error"},{"inputs":[],"name":"NoClaimableAmount","type":"error"},{"inputs":[],"name":"NoContractCallers","type":"error"},{"inputs":[],"name":"NoDelegation","type":"error"},{"inputs":[],"name":"NoParticipants","type":"error"},{"inputs":[],"name":"NoReward","type":"error"},{"inputs":[],"name":"NoValidBL2P","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotContract","type":"error"},{"inputs":[],"name":"NotWhitelisted","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[],"name":"ProposalCooldownActive","type":"error"},{"inputs":[],"name":"ProposalDoesNotExist","type":"error"},{"inputs":[],"name":"ProposalExecuted","type":"error"},{"inputs":[],"name":"QuorumNotMet","type":"error"},{"inputs":[],"name":"QuorumOutOfBounds","type":"error"},{"inputs":[],"name":"ReentrancyGuardReentrantCall","type":"error"},{"inputs":[],"name":"RegistrationClosed","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"inputs":[],"name":"StakeAlreadyActive","type":"error"},{"inputs":[],"name":"TooManyUsers","type":"error"},{"inputs":[],"name":"UnlockPeriodNotElapsed","type":"error"},{"inputs":[],"name":"VoteThresholdNotMet","type":"error"},{"inputs":[],"name":"VoteThresholdOutOfBounds","type":"error"},{"inputs":[],"name":"VotingPeriodInactive","type":"error"},{"inputs":[],"name":"VotingPeriodNotEnded","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"adId","type":"uint256"},{"indexed":false,"internalType":"string","name":"message","type":"string"}],"name":"AdvertisementPosted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"BL2PBonusBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"matured","type":"bool"}],"name":"BL2PMaturityUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BL2PRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"BL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"BL2PStaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"BL2PTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"uint256[]","name":"rewards","type":"uint256[]"}],"name":"BatchBL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BurnPhaseActivated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"}],"name":"DelegationRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newContract","type":"address"}],"name":"GovernanceContractUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"IgnitionAirdropClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalParticipants","type":"uint256"}],"name":"IgnitionAirdropTriggered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"participantNumber","type":"uint256"}],"name":"IgnitionParticipantRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bool","name":"isOpen","type":"bool"}],"name":"IgnitionRegistrationStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"InactiveBL2PBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"}],"name":"LockedReserveUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"},{"indexed":false,"internalType":"address","name":"newAddress","type":"address"}],"name":"ParameterUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"string","name":"reason","type":"string"}],"name":"ProposalFailed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"description","type":"string"},{"indexed":false,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"ProposalSubmitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"}],"name":"ProposalWasExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newQuorum","type":"uint256"}],"name":"QuorumUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"remainingBalance","type":"uint256"}],"name":"ReserveUnlocked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"StakingRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBurned","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"TokensBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"VoteCommitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"},{"indexed":true,"internalType":"address","name":"delegate","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VoteDelegated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bool","name":"support","type":"bool"},{"indexed":false,"internalType":"uint256","name":"weight","type":"uint256"}],"name":"VoteRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"VoteThresholdUpdated","type":"event"},{"inputs":[],"name":"ACTIVATION_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ANNUAL_BURN_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BURN_TARGET","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"IGNITION_AIRDROP_POOL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCKED_RESERVE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_SUPPLY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PROPOSAL_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"QUORUM","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STAKING_REWARD_RATE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VOTE_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"activeDelegations","outputs":[{"internalType":"address","name":"source","type":"address"},{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"bl2pAmount","type":"uint256"},{"internalType":"uint256","name":"delegationBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"advertisementCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"advertisements","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"postedBlock","type":"uint256"},{"internalType":"string","name":"message","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"batchClaimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pLifespanBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pMeta","outputs":[{"internalType":"uint256","name":"birthAndExpiry","type":"uint256"},{"internalType":"bool","name":"matured","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pRevealed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"burnContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"burnDeadlineTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"burnInactiveBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"burnPhaseActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkActivation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"commitVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currentBurnCycle","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"cycleBurnedTotal","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"delegateVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"delegatedBL2PReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"earlyAdopterCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"emergencyPaused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"executeProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getBL2PLifetime","outputs":[{"internalType":"uint256","name":"birthBlock","type":"uint256"},{"internalType":"uint256","name":"expiryBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionInfo","outputs":[{"internalType":"bool","name":"triggered","type":"bool"},{"internalType":"bool","name":"regOpen","type":"bool"},{"internalType":"uint256","name":"participants","type":"uint256"},{"internalType":"uint256","name":"maxParticipants","type":"uint256"},{"internalType":"bool","name":"userRegistered","type":"bool"},{"internalType":"uint256","name":"userAmount","type":"uint256"},{"internalType":"bool","name":"userClaimed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionParticipants","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLastProposer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemainingBurnable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingValidBL2P","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopDelegates","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionAirdropTriggered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"ignitionParticipants","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionRegistrationOpen","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionWhitelist","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"inactivityBurnRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastAdvertisementTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastBurnCycleStartTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastProposalTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUnlockTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastVoteTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockedReserveBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maturationPeriodBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxDelegatedBL2PPercent","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"participateInBurn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"proposalCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"proposals","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"endBlock","type":"uint256"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"uint256","name":"forVotes","type":"uint256"},{"internalType":"uint256","name":"againstVotes","type":"uint256"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"string","name":"description","type":"string"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referrals","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registerForIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bool","name":"support","type":"bool"},{"internalType":"bytes32","name":"secret","type":"bytes32"}],"name":"revealVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"revokeDelegation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newContract","type":"address"}],"name":"setGovernanceContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"isOpen","type":"bool"}],"name":"setIgnitionRegistrationStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"bl2pBoost","type":"uint256"},{"internalType":"bool","name":"active","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"desc","type":"string"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"submitProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"topDelegates","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBurned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"totalContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"triggerIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"trustedRecipient","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"updateBL2PMaturity","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"useBL2PForStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"verifyBL2PIntegrity","outputs":[{"internalType":"bool","name":"isValid","type":"bool"},{"internalType":"uint256","name":"totalBL2P","type":"uint256"}],"stateMutability":"view","type":"function"}];
+        // CONFIGURATION RÉSEAU POLYGON
+        const POLYGON_CHAIN_ID = 137;
+        const POLYGON_HEX_ID = "0x89";
+        const POLYGON_RPC_URL = "https://polygon-rpc.com/";
+        const POLYGON_BLOCK_EXPLORER = "https://polygonscan.com";
+
+        const CONTRACT_ABI = [
+            "function allowance(address owner, address spender) view returns (uint256)",
+            "function approve(address spender, uint256 value) returns (bool)",
+            "function transfer(address to, uint256 value) returns (bool)",
+            "function transferFrom(address sender, address recipient, uint256 value) returns (bool)",
+            "function postAdvertisement(string memory desc) external onlyGovernanceOrOwner",
+            "function burnInactiveBL2P(address user) external nonReentrant whenNotPaused onlyGovernanceOrUser(user) { burnInactiveBL2P(user); },",
+            "function burnPhaseActive() view returns (bool)",
+            "function bl2pRevealed() view returns (bool)",
+            "function claimBL2PReward() external nonReentrant whenNotPaused { _claimBL2PReward(msg.sender); }",
+            "function getRemainingBurnable() external view returns (uint256)",
+            "function participateInBurn(uint256 amount) public nonReentrant whenNotPaused onlyEOA",
+            "function stake(uint256 amount) external nonReentrant whenNotPaused onlyEOA",
+            "function useBL2PForStaking(uint256 bl2pAmount) external nonReentrant whenNotPaused",
+            "function unstake() external nonReentrant whenNotPaused onlyEOA",
+            "function _claimBL2PReward(address user) internal { _claimBL2PReward(user); }",
+            "function batchClaimBL2PReward(address[] memory users) external nonReentrant whenNotPaused { batchClaimBL2PReward(users); }",
+            "function submitProposal(string memory desc, uint256 newValue, address newAddress, uint8 proposalType) external whenNotPaused { submitProposal(desc, newValue, newAddress, proposalType); }",
+            "function commitVote(uint256 id, bytes32 commitHash) external whenNotPaused { commitVote(id, commitHash); }",
+            "function revealVote(uint256 id, bool support, bytes32 secret) external whenNotPaused { revealVote(id, support, secret); }",
+            "function executeProposal(uint256 id) external nonReentrant whenNotPaused { executeProposal(id); }",
+            "function delegateVote(address delegate, uint256 amount) external nonReentrant whenNotPaused { delegateVote(delegate, amount); }",
+            "function revokeDelegation() external nonReentrant whenNotPaused { revokeDelegation(); }",
+            "function setGovernanceContract(address newContract) external onlyGovernanceOrOwner { setGovernanceContract(newContract); }",
+            "function setIgnitionRegistrationStatus(bool isOpen) external onlyGovernanceOrOwner { setIgnitionRegistrationStatus(isOpen); }",
+            "function triggerIgnitionAirdrop() external onlyGovernanceOrOwner { triggerIgnitionAirdrop(); }",
+            "function registerForIgnitionAirdrop() external nonReentrant whenNotPaused onlyEOA { registerForIgnitionAirdrop(); }",
+            "function claimIgnitionAirdrop() external nonReentrant whenNotPaused { claimIgnitionAirdrop(); }",
+            "function postAdvertisement(string memory desc) external onlyGovernanceOrOwner { postAdvertisement(desc); }",
+            "function updateBL2PMaturity(address user) public { updateBL2PMaturity(msg.sender); }",
+            "function transferBL2P(address to, uint256 amount) external nonReentrant whenNotPaused { transferBL2P(to, amount); }",
+            "function useBL2PForStaking(uint256 bl2pAmount) external nonReentrant whenNotPaused { useBL2PForStaking(ethers.parseEther(bl2pAmount)); }",
+            function _burnInactiveBL2P(address user) external nonReentrant onlyGovernanceOrUser(user) { burnInactiveBL2P(user); },",
+            "function getRemainingBurnable() external view returns (uint256) { return getRemainingBurnable(); }",
+            "function getRemainingValidBL2P(address user) external view returns (uint256) { return getRemainingValidBL2P(user); }",
+            "function getBL2PLifetime(address user) external view returns (uint256 birthBlock, uint256 expiryBlock) { return getBL2PLifetime(user); }",
+            "function getTopDelegates() external view returns (address[] memory) { return getTopDelegates(); }",
+            "function getIgnitionInfo() external view returns (bool triggered, bool regOpen, uint256 participants, uint256 maxParticipants, bool userRegistered, uint256 userAmount, bool userClaimed);",
+            "function getIgnitionParticipants() external view returns (address[] memory) { return getIgnitionParticipants(); }",
+            "function lastAdvertisementTimestamp() external view returns (uint256);",
+            "function advertisementCount() external view returns (uint256) { return advertisementCount(); }",
+            "function totalSupply() external view returns (uint256);",
+            "function decimals() external view returns (uint8);",
+            "function balanceOf(address) view returns (uint256);",
+            "function stakes(address) view returns (uint256 amount, uint256 startBlock, uint256 bl2pBoost, bool active); ",
+            "function proposalCount() view returns (uint256); ",
+            "function proposals(uint256 id) view returns (uint256 id, uint256 startBlock, uint256 endBlock, uint256 newValue, uint256 forVotes, uint256 againstVotes, address proposer, address newAddress, string description, ProposalType proposalType, bool executed); ",
+            "function proposalCount() view returns (uint256); ",
+            "function activeDelegations(address) view returns (address source, address delegate, uint256 bl2pAmount, uint256 delegationBlock); ); ",
+            "function delegatedBL2PReceived(address) view returns (uint256); ",
+            "function bl2pClaimed(address) view returns (uint256); ",
+            "function bl2pMeta(address) view returns (uint256 birthAndExpiry, bool matured); "
+        ];
 
         let provider, signer, userAddress, contract;
         let isConnected = false;
@@ -850,9 +1173,6 @@
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-            
-            // Scroll to top automatically on tab switch
-            document.querySelector('main').scrollTop = 0;
         }
 
         function showToast(msg, type='info') {
@@ -867,22 +1187,17 @@
 
         function setInputMax(id) {
             const el = document.getElementById(id);
-            if(id === 'burn-amount' || id === 'stake-amount') {
-                const elBal = document.getElementById('dash-balance').getAttribute('data-raw');
-                el.value = parseFloat(ethers.formatEther(elBal)).toFixed(2);
-            } else {
-                const bal = document.getElementById('dash-balance').getAttribute('data-raw');
-                el.value = parseFloat(ethers.formatEther(bal)).toFixed(2);
-            }
+            const bal = document.getElementById('dash-balance').getAttribute('data-raw');
+            el.value = parseFloat(ethers.formatEther(bal)).toFixed(2);
         }
 
-        // Custom Cursor
+        // Cursor
         document.addEventListener('mousemove', e => {
             const c = document.getElementById('cursor');
             c.style.left = e.clientX + 'px';
             c.style.top = e.clientY + 'px';
         });
-        document.querySelectorAll('button, input, .tab-trigger').forEach(el => {
+        document.querySelectorAll('button, input').forEach(el => {
             el.addEventListener('mouseenter', () => document.getElementById('cursor').classList.add('hovered'));
             el.addEventListener('mouseleave', () => document.getElementById('cursor').classList.remove('hovered'));
         });
@@ -890,18 +1205,15 @@
         // ==========================================
         // NETWORK HANDLING (AUTO & POLYGON)
         // ==========================================
-        const POLYGON_CHAIN_ID = 137;
-        const POLYGON_HEX_ID = "0x89";
-        const POLYGON_RPC_URL = "https://polygon-rpc.com/";
-        const POLYGON_BLOCK_EXPLORER = "https://polygonscan.com";
-
         async function checkNetwork() {
             if (!window.ethereum) return;
             try {
                 const network = await provider.getNetwork();
-                const chainId = Number(network.chainId);
                 const networkDiv = document.getElementById('network-display');
                 
+                // Ethers v6 retourne un BigInt pour chainId
+                const chainId = Number(network.chainId);
+
                 if (chainId !== POLYGON_CHAIN_ID) {
                     networkDiv.innerHTML = `
                         <span class="network-badge network-wrong" onclick="switchToPolygon()">
@@ -914,10 +1226,12 @@
                         <span class="network-badge network-polygon">
                             ✓ Polygon Mainnet
                         </span>`;
+                    showToast("Connecté à Polygon");
                     return true;
                 }
             } catch (e) {
                 console.error("Erreur checkNetwork", e);
+                console.error(e.reason);
                 return false;
             }
         }
@@ -932,7 +1246,7 @@
                     params: [{ chainId: POLYGON_HEX_ID }],
                 });
             } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask.
+                // This error code indicates that chain has not been added to MetaMask.
                 if (switchError.code === 4902) {
                     showToast("Ajout de Polygon à Metamask...", "info");
                     try {
@@ -947,7 +1261,7 @@
                                     blockExplorerUrls: [POLYGON_BLOCK_EXPLORER]
                                 },
                             ],
-                        });
+                        ]);
                     } catch (addError) {
                         showToast("Erreur ajout réseau: " + addError.message, "error");
                     }
@@ -962,17 +1276,18 @@
         // ==========================================
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', () => {
-                location.reload();
+                location.reload(); 
             });
             window.ethereum.on('chainChanged', () => {
-                location.reload();
-                checkNetwork();
+                location.reload(); // Reload pour vérifier le bon réseau
             });
         }
 
+        // Auto-Connect au chargement de la page
         window.addEventListener('load', async () => {
             const savedAddress = localStorage.getItem('taams_user_address');
             if (savedAddress && window.ethereum) {
+                console.log("Tentative de reconnexion automatique...");
                 try {
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                     if (accounts.length > 0) {
@@ -995,7 +1310,7 @@
                 signer = await provider.getSigner();
                 userAddress = await signer.getAddress();
                 
-                // Sauvegarde la connexion
+                // Sauvegarder la connexion
                 localStorage.setItem('taams_user_address', userAddress);
                 
                 contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
@@ -1005,22 +1320,25 @@
                 document.getElementById('connect-btn').style.display = 'none';
                 showToast("Connected to Autonomous Protocol");
                 
+                // Vérifier le réseau immédiatement après connexion
                 const isCorrectNetwork = await checkNetwork();
                 if (!isCorrectNetwork) return; 
 
                 // Auto-refresh loop
-                refreshData();
                 setInterval(refreshData, 5000);
+                refreshData();
             } catch (err) { console.error(err); showToast("Connection Failed", "error"); }
         }
 
         // ==========================================
-        // LOGIC REFRESH (DATA FETCH)
+        // LOGIC REFRESH (DATA FETCHING)
         // ==========================================
         async function refreshData() {
             if (!contract) return;
+            
             try {
-                // --- Vitality & Ignition ---
+                // 1. Network Status
+                const networkDiv = document.getElementById('network-display');
                 const ignInfo = await contract.getIgnitionInfo();
                 const currentCount = Number(ignInfo.participants);
                 const maxCount = 1000;
@@ -1048,57 +1366,75 @@
                     }
                 }
 
-                // --- Dashboard Stats ---
+                // 2. Dashboard Stats
                 const bal = await contract.balanceOf(userAddress);
                 const bl2p = await contract.getRemainingValidBL2P(userAddress);
                 const burned = await contract.totalBurned();
-                const totalStaked = await contract.totalStaked();
                 
                 document.getElementById('dash-balance').innerText = parseFloat(ethers.formatEther(bal)).toFixed(2);
                 document.getElementById('dash-balance').setAttribute('data-raw', bal);
                 document.getElementById('dash-bl2p').innerText = parseFloat(ethers.formatEther(bl2p)).toFixed(2);
-                document.getElementById('dash-burned').innerText = parseFloat(htmlDisplayEthers(burned)).toLocaleString(); // Added helper for formatting large numbers
-
-                document.getElementById('dash-staked').innerText = parseFloat(htmlDisplayEthers(totalStaked)).toLocaleString();
+                document.getElementById('dash-burned').innerText = parseFloat(ethers.formatEther(burned)).toLocaleString();
 
                 document.getElementById('status-burn').innerText = await contract.burnPhaseActive() ? "ACTIF" : "INACTIF";
                 document.getElementById('status-ignition').innerText = ignInfo.triggered ? "OUI" : "NON";
-                
-                // --- Burn Info ---
-                const rem = await contract.getRemainingBurnable();
-                document.getElementById('burn-remaining').innerText = htmlDisplayEthers(rem);
 
-                // --- Staking (Correction Tableau) ---
+                // 3. Burn Info
+                const rem = await contract.getRemainingBurnable();
+                document.getElementById('burn-remaining').innerText = ethers.formatEther(rem);
+
+                // 4. Staking
+                // Correction: Ajout du total staké global (pour s'afficher dans le dashboard)
+                const totalStaked = await contract.totalStaked();
+                document.getElementById('dash-staked-display').innerText = parseFloat(ethers.formatEther(totalStaked)).toLocaleString();
+                document.getElementById('total-staked-protocol').innerText = parseFloat(ethers.formatEther(totalStaked)).toLocaleString();
+
+                // 5. Stake Utilisateur
                 const stake = await contract.stakes(userAddress);
-                if (stake.active) {
+                // Ethers.js renvoie le struct comme un tableau [amount, startBlock, bl2pBoost, active]
+                const isActive = stake[3]; // Index 3 = active
+                
+                if (isActive) {
                     document.getElementById('user-stake-details').style.display = 'block';
-                    document.getElementById('user-stake-amount').innerText = htmlDisplayEthers(stake.amount);
-                    document.getElementById('user-stake-boost').innerText = htmlDisplayEthers(stake.bl2pBoost);
-                    document.getElementById('user-stake-date').innerText = new Date(Number(stake.startBlock) * 1000).toLocaleDateString();
+                    document.getElementById('no-stake-msg').style.display = 'none';
+                    
+                    document.getElementById('my-stake-amount').innerText = ethers.formatEther(stake[0]); 
+                    document.getElementById('my-stake-boost').innerText = ethers.formatEther(stake[2]); 
+                    document.getElementById('my-stake-date').innerText = new Date(Number(stake[1]) * 1000).toLocaleDateString();
                 } else {
                     document.getElementById('user-stake-details').style.display = 'none';
-                    document.getElementById('no-stake-msg').style.display = 'block';
+                    document.getElementById('no-stake-msg').style.display = 'block'; // Affiche le message par défaut
+                }
+
+                // 6. Gouvernance
+                const totalVotes = (p?.forVotes || 0n) + (p?.againstVotes || 0n);
+                if (p) {
+                    document.getElementById('p-desc').innerText = p.description;
+                    document.getElementById('p-type').innerText = ["Burn", "Reward", "Pause", "Unlock", "News", "Maturity", "Quorum", "Threshold"][p.proposalType];
+                    document.getElementById('p-for').innerText = ethers.formatEther(p.forVotes);
+                    document.getElementById('p-against').innerText = ethers.formatEther(p.againstVotes);
                 }
 
             } catch (e) {
-                console.error("Erreur Refresh Data:", e);
-                const errorMsg = e.reason || e.message || JSON.stringify(e);
-                if(errorMsg && errorMsg !== "") {
-                    console.warn("Erreur:", errorMsg);
-                }
+                console.error("Erreur Refresh:", e);
+                // On n'affiche pas d'erreur dans l'interface pour ne pas embrouer le design.
+                // Si vous ne voyez rien s'afficher, appuyez sur le bouton F12 et vérifiez la console (F12).
+                console.warn("Erreur cachée (Pas affichage à l'écran, vérifiez la console (F12)");
             }
         }
 
-        // --- HELPER FUNCTIONS (CORRIGÉES) ---
+        // --- HELPER FUNCTIONS (INTERACTIONS) ---
+        
+        // WALLET
         async function handleApprove() {
             const amt = document.getElementById('approve-amount').value;
-            if(!amt) return showToast("Montant requis", "error");
+            if(!amt) return;
             try {
                 const tx = await contract.approve(CONTRACT_ADDRESS, ethers.parseEther(amt));
                 showToast("Envoi d'approbation...");
                 await tx.wait();
-                showToast("Approuvé !");
-            } catch(e) { showToast(e.reason, "error"); }
+                showToast("Approved!");
+            } catch(e) { showToast(e.reason || e.message || "Erreur Approbation", "error"); }
         }
 
         async function handleTransfer() {
@@ -1107,22 +1443,22 @@
             if(!to || !amt) return showToast("Veuillez remplir tous les champs", "error");
             try {
                 const tx = await contract.transfer(to, ethers.parseEther(amt));
-                showToast("Transferring...");
+                showToast("Transfert...");
                 await tx.wait();
-                showToast("Transfert réussi !");
+                showToast("Transfert Effectué");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message || "Erreur Transfert", "error"); }
         }
 
-        // --- IGNITION ---
+        // IGNITION
         async function handleRegisterAirdrop() {
             try {
                 const tx = await contract.registerForIgnitionAirdrop();
-                showToast("Inscription...");
+                showToast("Inscription en cours...");
                 await tx.wait();
-                showToast("Inscription Réussie !");
+                showToast("Inscription Réussie!");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || "Erreur Inscription", "error"); }
         }
 
         async function handleClaimAirdrop() {
@@ -1130,22 +1466,22 @@
                 const tx = await contract.claimIgnitionAirdrop();
                 showToast("Réclamation en cours...");
                 await tx.wait();
-                showToast("Réclamation réussie !");
+                showToast("Réclamation Réussie!");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || "Réclamation", "error"); }
         }
 
-        // --- BURN ---
+        // BURN
         async function handleBurn() {
             const amt = document.getElementById('burn-amount').value;
-            if(!amt) return;
+            if(!amt) return showToast("Montant requis", "error");
             try {
                 const tx = await contract.participateInBurn(ethers.parseEther(amt));
-                showToast("En cours de Burn...");
+                showToast("Burn en cours...");
                 await tx.wait();
-                showToast("Burn Complete");
+                showToast("Brûlure Terminée");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message || "Burn Failed", "error"); }
+            } catch(e) { showToast(e.reason || "Échec si le Burn est activé", "error"); }
         }
 
         async function handleClaimBL2P() {
@@ -1153,42 +1489,22 @@
                 const tx = await contract.claimBL2PReward();
                 showToast("Réclamation en cours...");
                 await tx.wait();
-                showToast("BL2P Reçu !");
+                showToast("BL2P Réclamé !");
                 refreshData();
-            } catch(e) { showToast(e.reason || e.message, "error"); }
+            } catch(e) { showToast(e.reason || "Echec si le Burn est terminé", "error"); }
         }
 
-        // --- STAKING ---
+        // STAKING
         async function handleStake() {
             const amt = document.getElementById('stake-amount').value;
-            if(!amt) return;
+            if(!amt) return showToast("Montant requis", "error");
             try {
-                const amount = ethers.parseEther(amt);
-                // Vérification simple du minimum (1e3 * 1e18)
-                const MIN_STAKE = ethers.parseEther("1000");
-                if(amount < MIN_STAKE) return showToast("Minimum 1000 TAAMS required", "error");
-                
-                const tx = await contract.stake(amount);
-                showToast("Staking...");
+                const tx = await contract.stake(ethers.parseEther(amt));
+                showToast("Stakage...");
                 await tx.wait();
                 showToast("Staké avec succès !");
                 refreshData();
-            } catch(e) {
-                let reason = e.reason || e.message || "Erreur inconnue";
-                
-                if (reason.includes("BelowMinimumStake")) {
-                    reason = "Il faut minimum 1000 TAAMS !";
-                } else if (reason.includes("ERC20InsufficientAllowance")) {
-                    reason = "Approuvez le contrat pour Staking (Approve)";
-                } else if (reason.includes("StakeAlreadyActive")) {
-                    reason = "Déjà en stake";
-                } else if (reason.includes("execution reverted")) {
-                    reason = "Échec contrat.";
-                }
-
-                showToast(reason, "error");
-                document.getElementById('btn-stake-action').innerText = "2. STAKE";
-            }
+            } catch(e) { showToast(e.reason || "Echec le minimum de staking", "error"); }
         }
 
         async function handleBoost() {
@@ -1200,10 +1516,7 @@
                 await tx.wait();
                 showToast("Boosté !");
                 refreshData();
-            } catch(e) {
-                console.error(e);
-                showToast(e.reason, "error");
-            }
+            } catch(e) { showToast(e.reason || "Erreur de Boost", "error"); }
         }
 
         async function handleUnstake() {
@@ -1211,62 +1524,53 @@
                 const tx = await contract.unstake();
                 showToast("Unstaking...");
                 await tx.wait();
-                showToast("Unstaké !");
+                showToast("Unstaké");
                 refreshData();
-            } catch(e) {
-                showToast(e.reason || "Error", "error");
-            }
+            } catch(e) { showToast(e.reason || "Erreur Unstaking", "error"); }
         }
 
-        // --- GOVERNANCE ---
-        
+        // GOVERNANCE
         async function handleSubmitProposal() {
             const type = document.getElementById('proposal-type').value;
             const desc = document.getElementById('proposal-desc').value;
             const val = document.getElementById('proposal-value').value;
             const addr = document.getElementById('proposal-address').value;
             
-            // Validation des champs selon le type
-            if (['2','3','4'].includes(type) && !desc) return showError("Description requisee pour ce type de proposition", "error");
-            if (type != '4' && !addr) return showError("L'adresse du destinataire est requise pour ce type", "error");
-            if (type != '2' && !val) return showError("La valeur est requise pour ce type de proposition", "error");
+            if(!desc && (type=='2' && !addr)) return showError("La description est requise", "error");
+            // Note: "BurnAmount" et "RewardRate" nécessitent une valeur > 0. "Advertisement" nécessite une description. "UnlockReserve" nécessite une adresse.
 
             try {
                 const tx = await contract.submitProposal(desc, val ? ethers.parseEther(val) : 0, addr, type);
                 showToast("Envoi de la proposition...");
                 await tx.wait();
                 showToast("Proposition Soumise !");
-                refreshData();
-            } catch(e) {
-                showError(e.reason || "Proposition Failed");
-            }
+            } catch(e) { showError("Erreur Soumission"); }
+
         }
 
         async function loadProposal() {
             const id = document.getElementById('vote-proposal-id').value;
-            if(!id) return showError("ID de proposition requis", "error");
+            if(!id) return showError("ID requis");
             try {
                 const p = await contract.proposals(id);
-                if(p.id == 0n) return showError("Proposition non trouvée", "error");
+                if(p.id == 0n) return showError("Proposition non trouvée");
                 
                 document.getElementById('proposal-data').style.display = 'block';
                 document.getElementById('p-desc').innerText = p.description;
-                
-                document.getElementById('p-type').innerText = ["Burn", "Reward", "Pause", "Unlock", "News", "Maturity", "Quorum", "Threshold"][p.proposalType];
-                document.getElementById('p-for').innerText = htmlDisplayEthers(p.forVotes);
-                document.getElementById('p-against').innerText = htmlDisplayEthers(p.againstVotes);
-            } catch(e) {
-                showError("Erreur chargement proposition", "error");
-            }
+                document.getElementById('p-type').innerText = ["Burn", "Reward", "Pause", "Unlock", "News", "Maturity", "Quorum", "Threshold", "Threshold", "Ads", "Pool", "Lifespan", "Rate", "%Delegé", "Quorum", "Threshold", "%Delegé"];}[p.proposalType];
+                document.getElementById('p-for').innerText = ethers.formatEther(p.forVotes);
+                document.getElementById('p-against').innerText = ethers.formatEther(p.againstVotes);
+            } catch(e) { showError("Erreur Chargement proposition", "error"); }
         }
 
-        function processCommitVote(support) {
+        async function processCommitVote(support) {
             const id = document.getElementById('vote-proposal-id').value;
             const secret = document.getElementById('commit-secret').value;
-            if(!id || !secret) return showError("ID ou Secret requis", "error");
+            if(!id || !secret) return showError("ID ou Secret requis");
             
             const secretBytes = ethers.toUtf8Bytes(secret);
             const hash = ethers.solidityPackedKeccak256(["bool", "bytes", "address"], [support, secretBytes, userAddress]);
+            
             contract.commitVote(id, hash).then(tx => { showToast("Commit..."); return tx.wait(); })
             .then(() => { showToast("Committed !"); })
             .catch(e => showToast(e.reason, "error"));
@@ -1275,36 +1579,109 @@
         function processRevealVote(support) {
             const id = document.getElementById('vote-proposal-id').value;
             const secret = document.getElementById('reveal-secret').value;
-            if(!id || !secret) return showError("ID ou Secret manquant", "error");
+            if(!id || !secret) return alertError("ID ou Secret manquant");
             
             const secretBytes = ethers.toUtf8Bytes(secret);
             contract.revealVote(id, support, secretBytes).then(tx => { showToast("Reveal..."); return tx.wait(); })
-            .then(() => { showToast("Révélé !"); loadProposal(); })
-            .catch(e => { showError("Révéale échouée", "error"); }
+            .then(() => { showToast("Révélé !"); loadProposal(); }) // Refresh vote counts
+            .catch(e) { showToast("Révéale échouée : " + (e.reason || "Erreur Inconnue"), "error"); }
         }
 
         function handleDelegate() {
             const to = document.getElementById('delegate-to').value;
             const amt = document.getElementById('delegate-amount').value;
-            if(!to || !amt) return showError("Remplissez tous les champs", "error");
-            
-            contract.delegateVote(to, ethers.parseEther(amt)).then(tx => { showToast("Délégation en cours..."); return tx.wait(); })
-            .then(() => showToast("Délégué !"); })
-            .catch(e => showError("Erreur Délégation", "error"));
+            if(!to || !amt) return showError("Remplissez les champs");
+            try {
+                const tx = await contract.delegateVote(to, ethers.parseEther(amt));
+                showToast("Délégation en cours...");
+                await tx.wait();
+                showToast("Délégué !");
+                refreshData();
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
         function handleRevokeDelegate() {
-            contract.revokeDelegation().then(tx => { showToast("Révocation..."); return tx.wait(); })
-            .then(() => { showToast("Révoqué !"); })
-            .catch(e => showError("Révocation échouée", "error"));
+            try {
+                const tx = contract.revokeDelegation();
+                showToast("Révocation...");
+                await tx.wait();
+                showToast("Révoqué !");
+                refreshData();
+            } catch(e) { showToast(e.reason, "error"); }
         }
 
-        // --- DAPP VISUALS ---
+        // --- ADS (NOUVELLEAUJOUR -->
+        async function loadAds() {
+            const btn = document.getElementById('more-news');
+            btn.innerText = "CHARGER LA LISTE...";
+            try {
+                if(!contract) return;
+                
+                const count = await contract.advertisementCount(); // Appel de la fonction `postAdvertisementCount` ajoutée dans l'ABI
+                const limit = 10; // Afficher les 10 plus récents à la fois
+                const newCount = Number(count);
+                
+                const list = document.getElementById('news-list');
+                
+                // Nettoyer toute la liste
+                for (let i = newCount; i > 0; i--) {
+                    const p = await contract.advertisements(i); // Appel de la fonction `advertisements(id)` ajoutée dans l'ABI
+                    
+                    if (p.id == 0n) continue; // Arrête si ID est zéro
+                    
+                    const item = document.createElement('div');
+                    item.className = "news-item";
+                    
+                    // Calcul du temps en date lisible
+                    const time = Number(p.postedBlock);
+                    const date = new Date(time * 1000).toLocaleDateString(); // Conversion du timestamp en date lisible
+                    
+                    item.innerHTML = `
+                        <div class="news-date">${date}</div>
+                        <div class="news-msg">${p.message}</div>
+                    `;
+                    
+                    // Ajouter au début de la liste pour avoir les plus récents en haut
+                    list.prepend(item);
+                }
+                
+                if (newCount > newCount) {
+                    btn.innerText = "DONE";
+                } else if (newCount == newCount) {
+                    btn.innerText = "Plus";
+                }
+
+            } catch(e) {
+                console.error("Erreur chargement Ads:", e);
+                showToast("Erreur lors du chargement des pubs", "error");
+                btn.innerText = "Error";
+            }
+        }
+
+        // --- HELPER FONCTIONS ---
+        function switchTab(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Scroll to top automatically on tab switch
+            document.querySelector('main').scrollTop = 0;
+        }
+
+        // --- UTILS ---
+        function alertError(msg) {
+            console.error(msg);
+            showToast(msg, "error");
+            alert("ERREURUR: " + msg);
+        }
+
+        // --- THREE.JS BACKGROUND ---
         function initThreeJS() {
             const container = document.getElementById('canvas-container');
             const scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x030303, 0.0015);
-            
+
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 10; camera.position.y = 3; camera.rotation.x = -0.3;
 
@@ -1326,8 +1703,7 @@
                         e += sin(p.x * 0.5 + u_time * 0.3) * 0.5;
                         p.z += e; vElev = e;
                         gl_Position = projectionMatrix * viewMatrix * p;
-                        gl_Position.z += e;
-                        gl_Position.z -= e;
+                        gl_Position.z += e; }
                     }
                 `,
                 fragmentShader: `
@@ -1335,17 +1711,13 @@
                     varying float vElev;
                     void main() {
                         float alpha = (vElev + 1.0) * 0.15;
-                        gl_FragColor = vec4(u_color, alpha);
                         gl_FragColor.a *= (vElev + 1.0); // Boost visibility near top
-                        gl_FragColor.a -= (vElev + 0.5); // Fade out towards bottom
-                        gl_FragColor.a = clamp((vElev + 1.0), 0, 1.0); // Clamp alpha
-                        gl_FragColor.a = mix(u_color, (vElev + 1.0), vElev + 0.5); // Ensure visibility
+                        gl_FragColor.a -= (vElev + 1.0); // Fade out towards bottom
+                        gl_FragColor.a = mix(u_color, (vElev + 1.0), vElev + 1.0), vElev + 0.5); // Ensure visibility
                         
-                        gl_Position = projectionMatrix * gl_Position;
                         gl_Position.z += e;
                         gl_Position.y += e;
                         gl_Position.y -= e;
-                        gl_Position.y += e; // Move camera down slightly if needed
                     }
                 `
             });
@@ -1356,7 +1728,6 @@
             const animate = () => {
                 requestAnimationFrame(animate);
                 material.uniforms.u_time.value += 0.005;
-                material.uniforms.u_color.value.y += 0.001; // Slow color shift over time
                 renderer.render(scene, camera);
             };
             animate();
@@ -1367,25 +1738,12 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
         }
-
-        // Helper pour les nombres "BigNumber" (pour éviter le "Scientific Notation" ex: 10^18)
-        function htmlDisplayEthers(bigInt) {
-            if (bigInt == 0) return "0";
-            
-            // Conversion BigUint256 vers String pour nombres > 10000
-            const div = 10000; // Nombre arbitrairement grand pour arrondir les sommes
-            return bigInt.div(bigInt).toFixed(2); // Affiche 2 décimales
-        }
-
-        // Helper pour afficher les erreurs dans l'interface
-        function showError(msg) {
-            alert(msg);
-            console.error(msg);
-            showToast(msg, "error");
-        }
-
-        // --- THREE.JS BACKGROUND ---
         initThreeJS();
+
+        // Load Ads on load
+        document.addEventListener('loadAds', () => {
+            // On lance le chargement des pubs
+        });
 
     </script>
 </body>
