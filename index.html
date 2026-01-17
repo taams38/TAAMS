@@ -21,7 +21,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: var(--bg-dark); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* --- Components --- */
         header {
             padding: 1rem 2rem; border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
@@ -41,10 +40,8 @@
         .btn-danger { border-color: var(--danger); color: var(--danger); }
         .btn-danger:hover { background: var(--danger); color: #fff; }
 
-        /* --- Layout --- */
         main { display: grid; grid-template-columns: 240px 1fr; gap: 1rem; padding: 1rem; max-width: 1600px; margin: 0 auto; width: 100%; flex: 1; }
         
-        /* Navigation */
         nav { display: flex; flex-direction: column; gap: 0.5rem; }
         .nav-item {
             padding: 0.8rem; cursor: pointer; border-radius: 6px; color: var(--text-muted); transition: 0.2s; font-size: 0.9rem;
@@ -53,7 +50,6 @@
         .nav-item:hover { background: #111; color: var(--text); }
         .nav-item.active { background: #111; border-color: var(--border); color: var(--primary); font-weight: bold; }
 
-        /* Sections */
         .section { display: none; animation: fadeIn 0.3s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -65,7 +61,6 @@
         h2, h3 { margin-bottom: 1rem; color: var(--text); }
         h3 { font-size: 1rem; color: var(--text-muted); text-transform: uppercase; margin-top: 1rem; }
 
-        /* Inputs */
         .input-group { margin-bottom: 1rem; }
         label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem; }
         input, select, textarea {
@@ -74,22 +69,18 @@
         }
         input:focus { outline: none; border-color: var(--primary); }
 
-        /* Grid Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
         .stat-box { background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 6px; border-left: 3px solid var(--primary); }
         .stat-value { font-size: 1.2rem; font-weight: bold; margin-top: 0.5rem; }
 
-        /* Governance Tabs */
         .tabs { display: flex; gap: 1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
         .tab { padding: 0.5rem 1rem; cursor: pointer; color: var(--text-muted); }
         .tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Admin Badge */
         .admin-badge { display: none; background: var(--secondary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; margin-left: 10px; }
 
-        /* Toast */
         #toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 200; }
         .toast { background: var(--bg-panel); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 4px; min-width: 250px; animation: slideIn 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
@@ -98,7 +89,26 @@
             background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary); color: var(--primary);
             padding: 0.5rem; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 1rem;
         }
-        
+
+        .referral-entry {
+            display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid var(--border); align-items: center;
+        }
+        .referral-gain { color: var(--primary); font-weight: bold; }
+
+        /* User Participation Styles */
+        .activity-list {
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .activity-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.8rem; background: rgba(255,255,255,0.02); border-left: 2px solid var(--text-muted);
+            border-radius: 4px; font-size: 0.9rem;
+        }
+        .activity-item.burn { border-color: var(--danger); }
+        .activity-item.stake { border-color: var(--primary); }
+        .activity-meta { font-size: 0.75rem; color: var(--text-muted); text-align: right; }
+        .activity-amount { font-weight: bold; }
+
         @media (max-width: 768px) {
             main { grid-template-columns: 1fr; }
             nav { flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
@@ -123,6 +133,7 @@
         <div class="nav-item" onclick="showSection('governance', this)">Gouvernance</div>
         <div class="nav-item" onclick="showSection('delegation', this)">Délégation</div>
         <div class="nav-item" onclick="showSection('ads', this)">Annonces</div>
+        <div class="nav-item" onclick="showSection('referral', this)">Parrainage</div>
     </nav>
 
     <!-- DASHBOARD -->
@@ -156,7 +167,35 @@
             </div>
         </div>
 
-        <!-- Admin Controls (Hidden by default) -->
+        <!-- NEW: User Participation Card -->
+        <div class="card">
+            <h3>Ma Participation (Staking & Burn)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                
+                <!-- Current Stake Info -->
+                <div style="background: rgba(0, 255, 136, 0.05); padding: 1rem; border-radius: 6px; border: 1px solid var(--primary);">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Staking Actif</h4>
+                    <div>Montant : <strong id="part-stake-amount">0</strong> TAAMS</div>
+                    <div>Date début : <strong id="part-stake-start">-</strong></div>
+                    <div style="font-size: 0.8rem; margin-top: 5px;">Boost BL2P : <span id="part-stake-boost">0</span></div>
+                </div>
+
+                <!-- Burn Summary -->
+                <div style="background: rgba(255, 68, 68, 0.05); padding: 1rem; border-radius: 6px; border: 1px solid var(--danger);">
+                    <h4 style="color: var(--danger); margin-bottom: 0.5rem;">Burn Total (Tout Temps)</h4>
+                    <div>Vous avez brûlé un total de :</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--danger);" id="part-burn-total">0 TAAMS</div>
+                </div>
+            </div>
+
+            <!-- Activity History List -->
+            <h4 style="color: var(--text-muted); margin-bottom: 0.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">Dernières Activités (Historique)</h4>
+            <div id="user-activity-list" class="activity-list">
+                <div style="text-align: center; color: var(--text-muted); padding: 1rem;">Chargement des activités...</div>
+            </div>
+        </div>
+
+        <!-- Admin Controls -->
         <div id="admin-panel" class="card" style="border-color: var(--secondary); display: none;">
             <h3 style="color: var(--secondary);">Panneau Administrateur (Propriétaire)</h3>
             <div class="input-group">
@@ -225,7 +264,6 @@
     <section id="staking" class="section">
         <h2>Staking & BL2P</h2>
         
-        <!-- Staking Standard -->
         <div class="card">
             <h3>Staking Standard</h3>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -249,7 +287,6 @@
             </div>
         </div>
 
-        <!-- Boost BL2P -->
         <div class="card" style="border-color: var(--secondary);">
             <h3 style="color: var(--secondary);">Booster le Staking avec BL2P</h3>
             <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-muted);">
@@ -262,7 +299,6 @@
             <button class="btn btn-secondary" onclick="boostStake()">Appliquer Boost</button>
         </div>
 
-        <!-- Gestion BL2P -->
         <div class="card">
             <h3>Gestion des BL2P</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -295,14 +331,11 @@
             <div class="tab" onclick="switchGovTab('list')">Liste</div>
         </div>
 
-        <!-- VOTE TAB (Commit-Reveal) -->
         <div id="tab-vote" class="tab-content active">
             <div class="card">
                 <h3>Processus de Vote Sécurisé</h3>
-                
                 <div style="background: rgba(255,255,255,0.05); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;">
-                    <strong>Étape 1: Commit (Engagement)</strong><br>
-                    Cryptez votre choix. Il sera caché jusqu'à la fin de la période de vote.
+                    <strong>Étape 1: Commit (Engagement)</strong>
                 </div>
                 <div class="input-group">
                     <label>ID Proposition</label>
@@ -316,7 +349,7 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Secret Phrase (Mot de passe pour révéler plus tard)</label>
+                    <label>Secret Phrase</label>
                     <input type="text" id="vote-secret" placeholder="Ex: monsupermotdepasse">
                 </div>
                 <button class="btn" onclick="commitVote()">1. Committer le Vote</button>
@@ -324,14 +357,12 @@
 
             <div class="card">
                 <div style="background: rgba(255,255,255,0.05); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;">
-                    <strong>Étape 2: Reveal (Révélation)</strong><br>
-                    Une fois le vote terminé, révélez votre vote avec le même secret pour qu'il soit comptabilisé.
+                    <strong>Étape 2: Reveal (Révélation)</strong>
                 </div>
                 <button class="btn btn-secondary" onclick="revealVote()">2. Révéler le Vote</button>
             </div>
         </div>
 
-        <!-- PROPOSE TAB -->
         <div id="tab-propose" class="tab-content">
             <div class="card">
                 <div class="input-group">
@@ -357,7 +388,6 @@
             </div>
         </div>
 
-        <!-- LIST TAB -->
         <div id="tab-list" class="tab-content">
             <div class="card">
                 <h3>Dernières Propositions</h3>
@@ -382,38 +412,55 @@
             <button class="btn" onclick="delegateVote()">Déléguer</button>
             <button class="btn btn-danger" onclick="revokeDelegation()">Annuler Délégation</button>
         </div>
-
         <div class="card">
             <h3>Top Délégués</h3>
             <div id="top-delegates-list">-</div>
         </div>
     </section>
 
-    <!-- ADS (MIS A JOUR AVEC PAIEMENT) -->
+    <!-- ADS -->
     <section id="ads" class="section">
         <h2>Annonces Publiques</h2>
-        
-        <!-- Formulaire de Paiement pour Annonce -->
         <div class="card" style="border-color: var(--accent);">
             <h3 style="color: var(--accent);">Poster une Annonce (Pubs)</h3>
             <p style="margin-bottom: 10px; font-size: 0.9rem;">
-                Pour diffuser une annonce sur la blockchain, vous devez payer directement le protocole.
+                Coût pour diffuser une annonce : 12,000 TAAMS.
             </p>
-            
-            <div class="ad-cost">
-                Coût : 12,000 TAAMS
-            </div>
-
+            <div class="ad-cost">Coût : 12,000 TAAMS</div>
             <div class="input-group">
-                <label>Message de l'annonce</label>
-                <textarea id="ad-message" rows="3" placeholder="Écrivez votre message publicitaire ici..."></textarea>
+                <label>Message</label>
+                <textarea id="ad-message" rows="3" placeholder="Votre message..."></textarea>
             </div>
-
-            <button class="btn" onclick="postAdWithPayment()">Payer 12k TAAMS & Poster</button>
+            <button class="btn" onclick="postAdWithPayment()">Payer & Poster</button>
         </div>
-
-        <!-- Liste des Annonces -->
         <div id="ads-list" class="card"></div>
+    </section>
+
+    <!-- REFERRAL -->
+    <section id="referral" class="section">
+        <h2>Parrainage</h2>
+        <div class="card" style="border-color: var(--primary);">
+            <h3 style="color: var(--primary);">Vos Gains de Parrainage</h3>
+            <p style="margin-bottom: 1rem; color: var(--text-muted);">
+                Vous gagnez 5% des rewards BL2P de vos filleuls lorsqu'ils réclament leurs gains.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Gagné (TAAMS)</div>
+                    <div class="stat-value" id="referral-total" style="color: var(--primary);">0 TAAMS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Nombre de Paiements</div>
+                    <div class="stat-value" id="referral-count">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Historique des Paiements Reçus</h3>
+            <div id="referral-history">
+                <p style="text-align: center; color: var(--text-muted);">Chargement de l'historique...</p>
+            </div>
+        </div>
     </section>
 
 </main>
@@ -422,17 +469,16 @@
 
 <script>
     // --- CONFIGURATION ---
-    // METTEZ ICI L'ADRESSE DE VOTRE CONTRAT
     const CONTRACT_ADDRESS = "0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef"; 
 
-    // --- ABI (Fonctions essentielles) ---
+    // --- ABI ---
     const ABI = [{"inputs":[{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ActivationThresholdNotMet","type":"error"},{"inputs":[],"name":"AirdropAlreadyTriggered","type":"error"},{"inputs":[],"name":"AlreadyClaimed","type":"error"},{"inputs":[],"name":"AlreadyRegistered","type":"error"},{"inputs":[],"name":"AlreadyVoted","type":"error"},{"inputs":[],"name":"AmountZero","type":"error"},{"inputs":[],"name":"BL2PNotExpired","type":"error"},{"inputs":[],"name":"BL2PNotMatured","type":"error"},{"inputs":[],"name":"BelowMinimumStake","type":"error"},{"inputs":[],"name":"BurnCycleEnded","type":"error"},{"inputs":[],"name":"BurnPhaseNotActive","type":"error"},{"inputs":[],"name":"ContractPaused","type":"error"},{"inputs":[],"name":"DelegationActive","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"allowance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientBalance","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC20InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC20InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC20InvalidSender","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"}],"name":"ERC20InvalidSpender","type":"error"},{"inputs":[],"name":"ExceedsBL2PBoostLimit","type":"error"},{"inputs":[],"name":"ExceedsBurnTarget","type":"error"},{"inputs":[],"name":"ExceedsDelegateLimit","type":"error"},{"inputs":[],"name":"GovernanceNotSet","type":"error"},{"inputs":[],"name":"InsufficientBalance","type":"error"},{"inputs":[],"name":"InsufficientContractBalance","type":"error"},{"inputs":[],"name":"InsufficientReserve","type":"error"},{"inputs":[],"name":"InvalidAddress","type":"error"},{"inputs":[],"name":"InvalidBL2PLifespan","type":"error"},{"inputs":[],"name":"InvalidBurnAmount","type":"error"},{"inputs":[],"name":"InvalidClaimConditions","type":"error"},{"inputs":[],"name":"InvalidCommit","type":"error"},{"inputs":[],"name":"InvalidDelegate","type":"error"},{"inputs":[],"name":"InvalidDelegatedPercent","type":"error"},{"inputs":[],"name":"InvalidInactivityBurnRate","type":"error"},{"inputs":[],"name":"InvalidMaturationPeriod","type":"error"},{"inputs":[],"name":"InvalidProposalPayload","type":"error"},{"inputs":[],"name":"InvalidRecipient","type":"error"},{"inputs":[],"name":"InvalidRewardRate","type":"error"},{"inputs":[],"name":"InvalidTransferConditions","type":"error"},{"inputs":[],"name":"MaxParticipantsReached","type":"error"},{"inputs":[],"name":"NoActiveStake","type":"error"},{"inputs":[],"name":"NoClaimableAmount","type":"error"},{"inputs":[],"name":"NoContractCallers","type":"error"},{"inputs":[],"name":"NoDelegation","type":"error"},{"inputs":[],"name":"NoParticipants","type":"error"},{"inputs":[],"name":"NoReward","type":"error"},{"inputs":[],"name":"NoValidBL2P","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotContract","type":"error"},{"inputs":[],"name":"NotWhitelisted","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[],"name":"ProposalCooldownActive","type":"error"},{"inputs":[],"name":"ProposalDoesNotExist","type":"error"},{"inputs":[],"name":"ProposalExecuted","type":"error"},{"inputs":[],"name":"QuorumNotMet","type":"error"},{"inputs":[],"name":"QuorumOutOfBounds","type":"error"},{"inputs":[],"name":"ReentrancyGuardReentrantCall","type":"error"},{"inputs":[],"name":"RegistrationClosed","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"inputs":[],"name":"StakeAlreadyActive","type":"error"},{"inputs":[],"name":"TooManyUsers","type":"error"},{"inputs":[],"name":"UnlockPeriodNotElapsed","type":"error"},{"inputs":[],"name":"VoteThresholdNotMet","type":"error"},{"inputs":[],"name":"VoteThresholdOutOfBounds","type":"error"},{"inputs":[],"name":"VotingPeriodInactive","type":"error"},{"inputs":[],"name":"VotingPeriodNotEnded","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"adId","type":"uint256"},{"indexed":false,"internalType":"string","name":"message","type":"string"}],"name":"AdvertisementPosted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"BL2PBonusBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"matured","type":"bool"}],"name":"BL2PMaturityUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BL2PRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"BL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"BL2PStaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"BL2PTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"uint256[]","name":"rewards","type":"uint256[]"}],"name":"BatchBL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BurnPhaseActivated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"}],"name":"DelegationRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newContract","type":"address"}],"name":"GovernanceContractUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"IgnitionAirdropClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalParticipants","type":"uint256"}],"name":"IgnitionAirdropTriggered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"participantNumber","type":"uint256"}],"name":"IgnitionParticipantRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bool","name":"isOpen","type":"bool"}],"name":"IgnitionRegistrationStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"InactiveBL2PBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"}],"name":"LockedReserveUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"},{"indexed":false,"internalType":"address","name":"newAddress","type":"address"}],"name":"ParameterUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"string","name":"reason","type":"string"}],"name":"ProposalFailed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"description","type":"string"},{"indexed":false,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"ProposalSubmitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"}],"name":"ProposalWasExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newQuorum","type":"uint256"}],"name":"QuorumUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"remainingBalance","type":"uint256"}],"name":"ReserveUnlocked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"StakingRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBurned","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"TokensBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"VoteCommitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"},{"indexed":true,"internalType":"address","name":"delegate","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VoteDelegated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bool","name":"support","type":"bool"},{"indexed":false,"internalType":"uint256","name":"weight","type":"uint256"}],"name":"VoteRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"VoteThresholdUpdated","type":"event"},{"inputs":[],"name":"ACTIVATION_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ANNUAL_BURN_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BURN_TARGET","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"IGNITION_AIRDROP_POOL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCKED_RESERVE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_SUPPLY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PROPOSAL_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"QUORUM","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STAKING_REWARD_RATE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VOTE_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"activeDelegations","outputs":[{"internalType":"address","name":"source","type":"address"},{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"bl2pAmount","type":"uint256"},{"internalType":"uint256","name":"delegationBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"advertisementCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"advertisements","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"postedBlock","type":"uint256"},{"internalType":"string","name":"message","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"batchClaimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pLifespanBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pMeta","outputs":[{"internalType":"uint256","name":"birthAndExpiry","type":"uint256"},{"internalType":"bool","name":"matured","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pRevealed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"burnContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"burnDeadlineTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"burnInactiveBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"burnPhaseActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkActivation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"commitVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currentBurnCycle","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"cycleBurnedTotal","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"delegateVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"delegatedBL2PReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"earlyAdopterCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"emergencyPaused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"executeProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getBL2PLifetime","outputs":[{"internalType":"uint256","name":"birthBlock","type":"uint256"},{"internalType":"uint256","name":"expiryBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionInfo","outputs":[{"internalType":"bool","name":"triggered","type":"bool"},{"internalType":"bool","name":"regOpen","type":"bool"},{"internalType":"uint256","name":"participants","type":"uint256"},{"internalType":"uint256","name":"maxParticipants","type":"uint256"},{"internalType":"bool","name":"userRegistered","type":"bool"},{"internalType":"uint256","name":"userAmount","type":"uint256"},{"internalType":"bool","name":"userClaimed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionParticipants","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLastProposer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemainingBurnable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingValidBL2P","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopDelegates","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionAirdropTriggered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"ignitionParticipants","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionRegistrationOpen","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionWhitelist","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"inactivityBurnRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastAdvertisementTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastBurnCycleStartTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastProposalTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUnlockTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastVoteTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockedReserveBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maturationPeriodBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxDelegatedBL2PPercent","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"participateInBurn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"proposalCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"proposals","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"endBlock","type":"uint256"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"uint256","name":"forVotes","type":"uint256"},{"internalType":"uint256","name":"againstVotes","type":"uint256"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"string","name":"description","type":"string"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referrals","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registerForIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bool","name":"support","type":"bool"},{"internalType":"bytes32","name":"secret","type":"bytes32"}],"name":"revealVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"revokeDelegation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newContract","type":"address"}],"name":"setGovernanceContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"isOpen","type":"bool"}],"name":"setIgnitionRegistrationStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"bl2pBoost","type":"uint256"},{"internalType":"bool","name":"active","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"desc","type":"string"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"submitProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"topDelegates","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBurned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"totalContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"triggerIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"trustedRecipient","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"updateBL2PMaturity","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"useBL2PForStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"verifyBL2PIntegrity","outputs":[{"internalType":"bool","name":"isValid","type":"bool"},{"internalType":"uint256","name":"totalBL2P","type":"uint256"}],"stateMutability":"view","type":"function"}];
 
     // --- GLOBALS ---
     let provider, signer, contract;
     let userAddress = null;
     let isAdmin = false;
-    const AD_COST = ethers.parseUnits("12000", 18); // 12,000 TAAMS
+    const AD_COST = ethers.parseUnits("12000", 18);
 
     // --- INIT ---
     window.addEventListener('load', async () => {
@@ -454,7 +500,6 @@
             document.getElementById('connect-wallet-btn').textContent = `${userAddress.substring(0,6)}...${userAddress.substring(38)}`;
             document.getElementById('connect-wallet-btn').classList.add('btn-secondary');
 
-            // Check Admin
             const owner = await contract.owner();
             if (owner.toLowerCase() === userAddress.toLowerCase()) {
                 isAdmin = true;
@@ -473,6 +518,7 @@
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
         if(id === 'ads') loadAds();
+        if(id === 'referral') loadReferralHistory();
     }
     function switchGovTab(id) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -487,7 +533,6 @@
         if (!contract) return;
 
         try {
-            // Dashboard Stats
             const supply = await contract.totalSupply();
             const burned = await contract.totalBurned();
             const staked = await contract.totalStaked();
@@ -506,15 +551,31 @@
             updateText('total-staked', formatEther(staked) + " TAAMS");
             updateText('remaining-burnable', formatEther(remBurn) + " TAAMS");
 
-            // Staking Info
             const sData = await contract.stakes(userAddress);
             updateText('stake-amount-val', formatEther(sData.amount));
             updateText('stake-active', sData.active ? "OUI" : "NON");
 
-            // BL2P Lifetime
             const life = await contract.getBL2PLifetime(userAddress);
             updateText('bl2p-birth', new Date(life.birth * 1000).toLocaleDateString());
             updateText('bl2p-expiry', new Date(life.expiry * 1000).toLocaleDateString());
+
+            // --- NEW: User Participation Data ---
+            // 1. Stake Details
+            updateText('part-stake-amount', formatEther(sData.amount));
+            updateText('part-stake-boost', formatEther(sData.bl2pBoost));
+            if(sData.active) {
+                // Approx time: Block * 2s roughly, or we just show Block Number
+                updateText('part-stake-start', `Bloc #${sData.startBlock}`); 
+            } else {
+                updateText('part-stake-start', "Aucun");
+            }
+
+            // 2. Total Burn
+            const userTotalBurn = await contract.totalContributions(userAddress);
+            updateText('part-burn-total', formatEther(userTotalBurn) + " TAAMS");
+
+            // 3. Load Activity History
+            loadUserActivityHistory();
 
             // Airdrop Info
             const aInfo = await contract.getIgnitionInfo();
@@ -546,18 +607,79 @@
                 if(!aInfo.regOpen) regBtn.innerText = "Inscriptions fermées";
             }
 
-            // Delegates
             const delegates = await contract.getTopDelegates();
             const delList = delegates.length > 0 ? delegates.map(d => `<div style="padding:5px; border-bottom:1px solid #333">${d}</div>`).join('') : "Aucun délégué";
             document.getElementById('top-delegates-list').innerHTML = delList;
 
             loadAds();
+            loadReferralHistory();
 
         } catch (e) { console.error(e); if(CONTRACT_ADDRESS.includes("VOTRE")) showToast("Configurez l'adresse du contrat !", "error"); }
     }
 
-    // --- ACTIONS ---
+    // --- NEW: Activity History Logic ---
+    async function loadUserActivityHistory() {
+        const container = document.getElementById('user-activity-list');
+        if(!userAddress) return;
 
+        try {
+            // 1. Query Burn Events for this user
+            const burnFilter = contract.filters.TokensBurned(userAddress);
+            const burnEvents = await contract.queryFilter(burnFilter, -10000); // Last 10k blocks
+
+            // 2. Query Stake Events for this user
+            const stakeFilter = contract.filters.Staked(userAddress);
+            const stakeEvents = await contract.queryFilter(stakeFilter, -10000);
+
+            // Combine and sort by Block Number (Latest first)
+            const allEvents = [
+                ...burnEvents.map(e => ({ type: 'burn', block: e.blockNumber, val: e.args.amount, data: e })),
+                ...stakeEvents.map(e => ({ type: 'stake', block: e.blockNumber, val: e.args.amount, data: e }))
+            ];
+
+            // Sort descending by block
+            allEvents.sort((a, b) => b.block - a.block);
+
+            if(allEvents.length === 0) {
+                container.innerHTML = "<div style='text-align:center; color:var(--text-muted);'>Aucune activité récente.</div>";
+                return;
+            }
+
+            let html = "";
+            allEvents.slice(0, 10).forEach(e => { // Show last 10
+                if(e.type === 'burn') {
+                    html += `
+                        <div class="activity-item burn">
+                            <div>
+                                <span class="activity-amount" style="color: var(--danger)">Burn -${formatEther(e.val)} TAAMS</span>
+                            </div>
+                            <div class="activity-meta">
+                                Bloc #${e.block}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="activity-item stake">
+                            <div>
+                                <span class="activity-amount" style="color: var(--primary)">Stake +${formatEther(e.val)} TAAMS</span>
+                            </div>
+                            <div class="activity-meta">
+                                Bloc #${e.block}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            container.innerHTML = html;
+
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = "Erreur chargement historique";
+        }
+    }
+
+    // --- ACTIONS ---
     async function registerAirdrop() { txWrap(contract.registerForIgnitionAirdrop(), "Inscription réussie"); }
     async function claimAirdrop() { txWrap(contract.claimIgnitionAirdrop(), "Airdrop réclamé !"); }
     async function burnTokens() { 
@@ -580,8 +702,6 @@
         txWrap(contract.transferBL2P(to, ethers.parseUnits(amt, 18)), "BL2P transférés");
     }
     
-    // --- GOVERNANCE ---
-
     async function submitProposal() {
         const desc = document.getElementById('prop-desc').value;
         const type = parseInt(document.getElementById('prop-type').value);
@@ -610,39 +730,33 @@
         const support = document.getElementById('vote-choice').value === 'true';
         const secret = document.getElementById('vote-secret').value;
         
-        const secretBytes = ethers.id(secret); // keccak256 of the string to get bytes32
+        const secretBytes = ethers.id(secret); 
 
         txWrap(contract.revealVote(id, support, secretBytes), "Vote révélé !");
     }
-
-    // --- ADVERTISEMENT WITH PAYMENT (NOUVEAU) ---
 
     async function postAdWithPayment() {
         const message = document.getElementById('ad-message').value;
         if (!message) return showToast("Veuillez écrire un message", "error");
 
         try {
-            // 1. Vérifier le solde
             const balance = await contract.balanceOf(userAddress);
             if (balance < AD_COST) return showToast(`Solde insuffisant. Il vous faut 12,000 TAAMS.`, "error");
 
-            // 2. Effectuer le paiement (Transfert vers le contrat)
             showToast(`Envoi de 12,000 TAAMS au contrat...`, "info");
             const txPay = await contract.transfer(CONTRACT_ADDRESS, AD_COST);
             await txPay.wait();
             showToast(`Paiement reçu ! Soumission de l'annonce...`, "success");
 
-            // 3. Soumettre la proposition de type Advertisement
-            // Type Advertisement = 5 (selon l'enum du contrat)
             const proposalType = 5; 
             const zeroAddr = "0x0000000000000000000000000000000000000000";
             
             const txProp = await contract.submitProposal(message, 0, zeroAddr, proposalType);
             await txProp.wait();
 
-            showToast("Annonce postée avec succès pour 1 semaine !", "success");
-            document.getElementById('ad-message').value = ""; // Reset form
-            loadAds(); // Refresh list
+            showToast("Annonce postée avec succès !", "success");
+            document.getElementById('ad-message').value = ""; 
+            loadAds(); 
 
         } catch (error) {
             console.error(error);
@@ -666,13 +780,58 @@
         txWrap(contract.setGovernanceContract(addr), "Contrat Gouvernance mis à jour");
     }
 
+    // --- REFERRAL LOGIC ---
+    async function loadReferralHistory() {
+        const container = document.getElementById('referral-history');
+        const totalEl = document.getElementById('referral-total');
+        const countEl = document.getElementById('referral-count');
+        
+        if(!userAddress) {
+            container.innerHTML = "Connectez votre wallet.";
+            return;
+        }
+
+        try {
+            const filter = contract.filters.ReferralBonusPaid(userAddress);
+            const events = await contract.queryFilter(filter, -10000); 
+            
+            let html = "";
+            let totalBonus = 0n;
+            
+            if (events.length === 0) {
+                html = "<p style='text-align:center; color:var(--text-muted)'>Aucun gain de parrainage pour le moment.</p>";
+            } else {
+                events.reverse().slice(0, 10).forEach(e => {
+                    const bonus = e.args.bonus;
+                    totalBonus += bonus;
+                    html += `
+                        <div class="referral-entry">
+                            <div>
+                                <small>Paiement reçu</small><br>
+                                <small style="color:var(--text-muted)">Tx: ${e.transactionHash.substring(0,8)}...</small>
+                            </div>
+                            <div class="referral-gain">+${formatEther(bonus)} TAAMS</div>
+                        </div>
+                    `;
+                });
+            }
+
+            container.innerHTML = html;
+            totalEl.innerText = formatEther(totalBonus) + " TAAMS";
+            countEl.innerText = events.length;
+
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = "Erreur chargement historique";
+        }
+    }
+
     // --- HELPERS ---
     async function loadProposals() {
         const list = document.getElementById('proposals-list');
         list.innerHTML = "Chargement...";
         const count = await contract.proposalCount();
         let html = "";
-        // Show last 5
         for(let i = Math.max(1, count - 4); i <= count; i++) {
             try {
                 const p = await contract.proposals(i);
