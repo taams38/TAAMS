@@ -56,7 +56,7 @@
 
         /* --- Sidebar --- */
         aside {
-            width: 300px; border-right: 1px solid var(--border);
+            width: 300px; border-right:1px solid var(--border);
             padding: 2rem; display: flex; flex-direction: column;
             z-index: 10; background: var(--bg-color);
         }
@@ -99,7 +99,7 @@
         
         .card-header { font-family: var(--font-head); font-size: 1.2rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; display: flex; justify-content: space-between;}
 
-        /* --- Vitality Meter (The "Life" of the Protocol) --- */
+        /* --- Vitality Meter (The "Life" of Protocol) --- */
         .vitality-container {
             text-align: center; padding: 3rem 1rem;
             background: linear-gradient(180deg, rgba(0,255,136,0.05) 0%, transparent 100%);
@@ -121,7 +121,7 @@
         input, select, textarea {
             width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--border);
             color: #fff; padding: 1rem; font-family: var(--font-body);
-            margin-bottom: 1rem; border-radius: 2px; font-size: 1rem;
+            margin-bottom:1rem; border-radius: 2px; font-size: 1rem;
         }
         input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
@@ -132,7 +132,7 @@
             font-size: 0.9rem; display: inline-block; margin-right: 0.5rem;
             position: relative; overflow: hidden;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--accent-glow); letter-spacing: 1px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--accent-glow); letter-spacing:1px; }
         .btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; background: #333; color: #888; }
         .btn.secondary { background: transparent; border: 1px solid #fff; color: #fff; }
         .btn.secondary:hover { background: #fff; color: #000; }
@@ -187,7 +187,7 @@
         <!-- DASHBOARD / VITALITY -->
         <section id="dashboard" class="section active">
             
-            <!-- The Heart of the Protocol -->
+            <!-- The Heart of Protocol -->
             <div class="card vitality-container">
                 <div class="vitality-title">PROTOCOL VITALITY</div>
                 <p class="text-dim">The system depends entirely on community participation.</p>
@@ -219,6 +219,11 @@
                     <div class="stat-val" id="dash-burned">0</div>
                     <div class="stat-label">Total Burned</div>
                 </div>
+                <!-- AJOUTÉ: Total Staké Global -->
+                <div class="stat-item">
+                    <div class="stat-val" id="total-staked-protocol">0</div>
+                    <div class="stat-label">Total Staked (Global)</div>
+                </div>
             </div>
 
             <div class="card">
@@ -242,7 +247,7 @@
             
             <div class="card">
                 <div class="card-header">Permissions (Approvals)</div>
-                <span class="text-dim">Authorize the protocol to manage your assets for Staking or Operations.</span>
+                <span class="text-dim">Authorize protocol to manage your assets for Staking or Operations.</span>
                 <div style="display:flex; gap:1rem;">
                     <input type="number" id="approve-amount" placeholder="TAAMS Amount">
                     <button class="btn" onclick="handleApprove()">APPROVE</button>
@@ -285,34 +290,57 @@
             </div>
         </section>
 
-        <!-- STAKING -->
+        <!-- STAKING (CORRIGÉ) -->
         <section id="staking" class="section">
-            <h2 style="font-family:var(--font-head); margin-bottom:2rem;">Yield Generation</h2>
+            <h2 style="font-family:var(--font-head); margin-bottom:2rem;">Yield & Staking</h2>
 
             <div class="card">
-                <div class="card-header">Stake TAAMS</div>
-                <span class="text-dim">Lock your tokens to generate yield. The protocol rewards patience.</span>
-                
-                <div style="margin-bottom:1rem;">
-                    <input type="number" id="stake-amount" placeholder="Amount to Stake">
-                    <button class="btn" onclick="handleStake()">STAKE</button>
-                    <button class="btn secondary" onclick="setInputMax('stake-amount')">MAX</button>
-                </div>
-
-                <div id="user-stake-info" class="text-dim">You are not currently staking.</div>
-                
-                <div style="margin-top:2rem; border-top:1px solid var(--border); padding-top:1rem;">
-                    <span class="text-dim">BOOST YIELD WITH BL2P</span>
-                    <p style="font-size:0.8rem; color:#666; margin-bottom:1rem;">Sacrifice some voting power to increase your TAAMS yield.</p>
-                    <input type="number" id="boost-amount" placeholder="BL2P to Burn for Boost">
-                    <button class="btn secondary" onclick="handleBoost()">BOOST STAKE</button>
+                <div class="card-header">Protocol Staking Stats</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-val" id="total-staked-display">0</div>
+                        <div class="stat-label">Total Staked (Global)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-val" style="font-size:1.2rem; color:var(--accent);">1,000 TAAMS</div>
+                        <div class="stat-label">Minimum Required</div>
+                    </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">Unstake</div>
-                <span class="text-dim">Unlock your assets and claim rewards.</span>
-                <button class="btn danger" onclick="handleUnstake()">UNSTAKE ALL</button>
+                <div class="card-header">My Stake</div>
+                
+                <div id="user-stake-details" style="margin-bottom: 2rem; display:none; border: 1px solid var(--border); padding:1rem; border-radius:4px;">
+                    <p style="color:#fff;"><strong>Amount:</strong> <span id="my-stake-amount" class="highlight">0</span> TAAMS</p>
+                    <p style="color:#fff;"><strong>Boost (BL2P):</strong> <span id="my-stake-boost">0</span></p>
+                    <p style="color:#fff;"><strong>Locked Since:</strong> <span id="my-stake-date">-</span></p>
+                    <button class="btn danger" onclick="handleUnstake()">UNSTAKE ALL</button>
+                </div>
+
+                <div id="no-stake-msg" class="text-dim">You are not staking yet.</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Actions</div>
+                <span class="text-dim">First Approve, then Stake. Minimum is 1000 TAAMS.</span>
+
+                <div style="margin-bottom: 1rem;">
+                    <input type="number" id="stake-amount" placeholder="Min: 1000 TAAMS">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <button class="btn secondary" onclick="setInputMax('stake-amount')">SET MAX</button>
+                    <button class="btn" id="btn-approve-stake" onclick="handleApproveStake()">1. APPROVE STAKING</button>
+                    <button class="btn" id="btn-stake-action" onclick="handleStake()">2. STAKE</button>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
+                    <span class="text-dim" style="color:var(--accent)">BOOST YIELD (Optional)</span>
+                    <p style="font-size:0.8rem; color:#888; margin-bottom:0.5rem;">Use your BL2P (Governance Power) to increase your TAAMS yield.</p>
+                    <input type="number" id="boost-amount" placeholder="BL2P Amount">
+                    <button class="btn secondary" onclick="handleBoost()">BOOST</button>
+                </div>
             </div>
         </section>
 
@@ -322,7 +350,7 @@
 
             <div class="card">
                 <div class="card-header">Create Proposal</div>
-                <span class="text-dim">Shape the future of the protocol. Requires Voting Power.</span>
+                <span class="text-dim">Shape the future of protocol. Requires Voting Power.</span>
                 
                 <select id="proposal-type">
                     <option value="0">Change Annual Burn Amount</option>
@@ -373,7 +401,7 @@
                 <!-- Step 3 -->
                 <div class="vote-step">
                     <span class="step-title">Step 3: Reveal Vote</span>
-                    <input type="password" id="reveal-secret" placeholder="Enter the SAME Secret Password">
+                    <input type="password" id="reveal-secret" placeholder="Enter SAME Secret Password">
                     <div style="display:flex; gap:1rem;">
                         <button class="btn secondary" onclick="processRevealVote(true)">REVEAL FOR</button>
                         <button class="btn danger secondary" onclick="processRevealVote(false)">REVEAL AGAINST</button>
@@ -476,8 +504,7 @@
                 // --- Vitality & Ignition ---
                 const ignInfo = await contract.getIgnitionInfo();
                 const currentCount = Number(ignInfo.participants);
-                const maxCount = 1000;
-                const percent = Math.min((currentCount / maxCount) * 100, 100);
+                const percent = Math.min((currentCount / 1000) * 100, 100);
                 
                 document.getElementById('ign-count').innerText = currentCount;
                 document.getElementById('vitality-bar').style.width = `${percent}%`;
@@ -518,17 +545,35 @@
                 const rem = await contract.getRemainingBurnable();
                 document.getElementById('burn-remaining').innerText = ethers.formatEther(rem);
 
-                // --- Staking Info ---
+                // --- STAKING (CORRIGÉ) ---
+                // 1. Total Staké Global
+                const totalStaked = await contract.totalStaked();
+                document.getElementById('total-staked-protocol').innerText = parseFloat(ethers.formatEther(totalStaked)).toLocaleString();
+                document.getElementById('total-staked-display').innerText = parseFloat(ethers.formatEther(totalStaked)).toLocaleString();
+
+                // 2. Stake Utilisateur
                 const stake = await contract.stakes(userAddress);
-                if(stake.active) {
-                    document.getElementById('user-stake-info').innerHTML = `
-                        Active Stake: <span class="highlight">${ethers.formatEther(stake.amount)} TAAMS</span><br>
-                        Boost: ${ethers.formatEther(stake.bl2pBoost)} BL2P<br>
-                        Locked Since: ${new Date(Number(stake.startBlock) * 1000).toLocaleDateString()}
-                    `;
+                // Ethers.js renvoie le struct comme un tableau: [amount, startBlock, bl2pBoost, active]
+                if (stake[3]) { // Index 3 = active
+                    document.getElementById('user-stake-details').style.display = 'block';
+                    document.getElementById('no-stake-msg').style.display = 'none';
+                    
+                    document.getElementById('my-stake-amount').innerText = ethers.formatEther(stake[0]); 
+                    document.getElementById('my-stake-boost').innerText = ethers.formatEther(stake[2]); // bl2pBoost est l'index 2
+                    document.getElementById('my-stake-date').innerText = new Date(Number(stake[1]) * 1000).toLocaleDateString();
+                } else {
+                    document.getElementById('user-stake-details').style.display = 'none';
+                    document.getElementById('no-stake-msg').style.display = 'block';
                 }
 
-            } catch(e) { /* Ignore refresh errors if contract not ready */ }
+            } catch (e) {
+                console.error("Erreur Refresh:", e);
+                // On affiche l'erreur complète si le message est vide
+                const errorMsg = e.reason || e.message || JSON.stringify(e);
+                if(errorMsg && errorMsg !== "") {
+                    console.warn("Erreur:", errorMsg); 
+                }
+            }
         }
 
         // --- WALLET ---
@@ -540,7 +585,7 @@
                 showToast("Processing Approval...");
                 await tx.wait();
                 showToast("Approved!");
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         async function handleTransfer() {
@@ -553,7 +598,7 @@
                 await tx.wait();
                 showToast("Transfer Complete");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         // --- IGNITION ---
@@ -564,7 +609,7 @@
                 await tx.wait();
                 showToast("Registered Successfully!");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         async function handleClaimAirdrop() {
@@ -574,7 +619,7 @@
                 await tx.wait();
                 showToast("Claimed!");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         // --- BURN ---
@@ -587,7 +632,7 @@
                 await tx.wait();
                 showToast("Burn Complete");
                 refreshData();
-            } catch(e) { showToast(e.reason || "Burn Failed", "error"); }
+            } catch(e) { showToast(e.reason || e.message || "Burn Failed", "error"); }
         }
 
         async function handleClaimBL2P() {
@@ -597,20 +642,77 @@
                 await tx.wait();
                 showToast("BL2P Claimed!");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
-        // --- STAKING ---
-        async function handleStake() {
+        // --- STAKING (AMÉLIORÉ) ---
+        // Fonction d'approbation spécifique au staking
+        async function handleApproveStake() {
             const amt = document.getElementById('stake-amount').value;
-            if(!amt) return;
+            if(!amt || parseFloat(amt) <= 0) return showToast("Entrez un montant valide", "error");
+            
             try {
-                const tx = await contract.stake(ethers.parseEther(amt));
-                showToast("Staking...");
+                const btn = document.getElementById('btn-approve-stake');
+                btn.innerText = "APPROVING...";
+                
+                const tx = await contract.approve(CONTRACT_ADDRESS, ethers.parseEther(amt));
+                showToast("Envoi de l'approbation...");
                 await tx.wait();
-                showToast("Staked Successfully");
-                refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+                
+                showToast("Approuvé ! Vous pouvez maintenant staker.", "success");
+                btn.innerText = "APPROVED ✓";
+                btn.disabled = true;
+                btn.style.background = "var(--secondary)";
+            } catch(e) {
+                console.error(e);
+                const reason = e.reason || e.message || "Erreur inconnue";
+                showToast("Erreur Approbation: " + reason, "error");
+                document.getElementById('btn-approve-stake').innerText = "1. APPROVE STAKING";
+            }
+        }
+
+        // Fonction de Staking
+        async function handleStake() {
+            const amtInput = document.getElementById('stake-amount').value;
+            if(!amtInput) return showToast("Montant requis", "error");
+            
+            const amount = ethers.parseEther(amtInput);
+
+            try {
+                // Vérification minimum (1e3 * 1e18)
+                const MIN_STAKE = ethers.parseEther("1000");
+                if(amount < MIN_STAKE) {
+                    return showToast("Erreur: Le montant minimum est de 1000 TAAMS", "error");
+                }
+
+                const btn = document.getElementById('btn-stake-action');
+                btn.innerText = "STAKING...";
+                
+                const tx = await contract.stake(amount);
+                showToast("Transaction en cours...");
+                await tx.wait();
+                
+                showToast("Staking Réussi !", "success");
+                btn.innerText = "2. STAKE";
+                refreshData(); // Met à jour l'affichage
+            } catch(e) {
+                console.error(e);
+                let reason = e.reason || e.message;
+                
+                // Détection d'erreurs spécifiques pour aider l'utilisateur
+                if (reason.includes("BelowMinimumStake")) {
+                    reason = "Il faut minimum 1000 TAAMS !";
+                } else if (reason.includes("ERC20InsufficientAllowance")) {
+                    reason = "Vous devez d'abord cliquer sur 'APPROVE STAKING' !";
+                } else if (reason.includes("StakeAlreadyActive")) {
+                    reason = "Vous staker déjà une quantité. Faites Unstake d'abord pour changer.";
+                } else if (reason.includes("execution reverted")) {
+                    reason = "Transaction rejetée par le contrat."; 
+                }
+
+                showToast("Erreur Staking: " + reason, "error");
+                document.getElementById('btn-stake-action').innerText = "2. STAKE";
+            }
         }
 
         async function handleBoost() {
@@ -622,7 +724,7 @@
                 await tx.wait();
                 showToast("Boosted!");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         async function handleUnstake() {
@@ -632,7 +734,7 @@
                 await tx.wait();
                 showToast("Unstaked");
                 refreshData();
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         // --- GOVERNANCE ---
@@ -641,13 +743,12 @@
             const desc = document.getElementById('proposal-desc').value;
             const val = document.getElementById('proposal-value').value;
             const addr = document.getElementById('proposal-address').value;
-            
             try {
                 const tx = await contract.submitProposal(desc, val ? ethers.parseEther(val) : 0, addr, type);
                 showToast("Submitting Proposal...");
                 await tx.wait();
                 showToast("Proposal Submitted!");
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
         async function loadProposal() {
@@ -656,66 +757,52 @@
             try {
                 const p = await contract.proposals(id);
                 if(p.id == 0n) return showToast("Proposal not found", "error");
-                
                 document.getElementById('proposal-data').style.display = 'block';
                 document.getElementById('p-desc').innerText = p.description;
                 document.getElementById('p-type').innerText = ["Burn", "Reward", "Pause", "Unlock", "News", "Maturity", "Quorum"][p.proposalType];
                 document.getElementById('p-for').innerText = ethers.formatEther(p.forVotes);
                 document.getElementById('p-against').innerText = ethers.formatEther(p.againstVotes);
-            } catch(e) { showToast(e.reason, "error"); }
+            } catch(e) { showToast(e.reason || e.message, "error"); }
         }
 
-        async function processCommitVote(support) {
+        function processCommitVote(support) {
             const id = document.getElementById('vote-proposal-id').value;
             const secret = document.getElementById('commit-secret').value;
-            if(!id || !secret) return;
-
+            if(!id || !secret) return alertError("ID ou Secret manquant");
             const secretBytes = ethers.toUtf8Bytes(secret);
             const hash = ethers.solidityPackedKeccak256(["bool", "bytes", "address"], [support, secretBytes, userAddress]);
-            
-            try {
-                const tx = await contract.commitVote(id, hash);
-                showToast("Committing Vote...");
-                await tx.wait();
-                showToast("Vote Committed (Hidden)");
-            } catch(e) { showToast(e.reason, "error"); }
+            contract.commitVote(id, hash).then(tx => { showToast("Commit..."); return tx.wait(); })
+            .then(() => { showToast("Committed !"); }).catch(e => showToast(e.reason || e.message, "error"));
         }
 
-        async function processRevealVote(support) {
+        function processRevealVote(support) {
             const id = document.getElementById('vote-proposal-id').value;
             const secret = document.getElementById('reveal-secret').value;
-            if(!id || !secret) return;
-
+            if(!id || !secret) return alertError("ID ou Secret manquant");
             const secretBytes = ethers.toUtf8Bytes(secret);
-            try {
-                const tx = await contract.revealVote(id, support, secretBytes);
-                showToast("Revealing...");
-                await tx.wait();
-                showToast("Vote Revealed!");
-                loadProposal();
-            } catch(e) { showToast(e.reason, "error"); }
+            contract.revealVote(id, support, secretBytes).then(tx => { showToast("Reveal..."); return tx.wait(); })
+            .then(() => { showToast("Révélé !"); loadProposal(); }).catch(e => showToast(e.reason || e.message, "error"));
         }
 
-        async function handleDelegate() {
+        function handleDelegate() {
             const to = document.getElementById('delegate-to').value;
             const amt = document.getElementById('delegate-amount').value;
             if(!to || !amt) return;
-            try {
-                const tx = await contract.delegateVote(to, ethers.parseEther(amt));
-                showToast("Delegating...");
-                await tx.wait();
-                showToast("Delegation Active");
-            } catch(e) { showToast(e.reason, "error"); }
+            contract.delegateVote(to, ethers.parseEther(amt)).then(tx => { showToast("Délégation..."); return tx.wait(); })
+            .then(() => { showToast("Délégué !"); }).catch(e => showToast(e.reason || e.message, "error"));
         }
 
-        async function handleRevokeDelegate() {
-            try {
-                const tx = await contract.revokeDelegation();
-                showToast("Revoking...");
-                await tx.wait();
-                showToast("Revoked");
-            } catch(e) { showToast(e.reason, "error"); }
+        function handleRevokeDelegate() {
+            contract.revokeDelegation().then(tx => { showToast("Révocation..."); return tx.wait(); })
+            .then(() => { showToast("Révoqué !"); }).catch(e => showToast(e.reason || e.message, "error"));
         }
+
+        function alertError(msg) {
+            console.error(msg);
+            showToast(msg, "error");
+            alert("ERREUR: " + msg);
+        }
+
 
         // --- THREE.JS BACKGROUND ---
         function initThreeJS() {
