@@ -3,462 +3,745 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAAMS - Plateforme de Gouvernance</title>
-    <!-- Chargement de Ethers.js v5 -->
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
-    <!-- Icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>TAAMS Protocol | DApp Interface</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Ethers.js (Web3 Library) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <!-- Three.js (Visuals) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --accent: #00b894;
-            --danger: #d63031;
-            --dark: #2d3436;
-            --light: #dfe6e9;
-            --bg: #f5f6fa;
-            --card-bg: #ffffff;
+            --bg-color: #050505;
+            --card-bg: rgba(20, 20, 20, 0.6);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --accent-color: #00ff88; /* TAAMS Green */
+            --accent-glow: rgba(0, 255, 136, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --font-display: 'Syncopate', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+            --easing: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--dark);
-            margin: 0;
-            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- Custom Cursor --- */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        
+        body:hover .cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 255, 136, 0.1);
+            border-color: transparent;
+        }
+
+        /* --- WebGL Background --- */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* --- UI Layout --- */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 4rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        h1 { margin: 0; font-size: 1.5rem; }
-        
+        .brand {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: -1px;
+        }
+
         .wallet-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 0.8rem 1.5rem;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s var(--easing);
+            position: relative;
+            overflow: hidden;
         }
-        .wallet-btn:hover { background: white; color: var(--primary); }
 
-        /* Layout */
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+        .wallet-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .wallet-btn.connected {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
         }
 
         /* Cards */
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-        
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--light); padding-bottom: 10px;}
-
-        /* Stats Grid inside cards */
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .stat-value { font-weight: bold; }
-        .text-green { color: var(--accent); }
-        .text-red { color: var(--danger); }
-
-        /* Inputs & Buttons */
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.9em; color: #636e72; }
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #b2bec3;
-            border-radius: 6px;
-            box-sizing: border-box;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2rem;
+            transition: transform 0.3s var(--easing), border-color 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn {
-            width: 100%;
-            padding: 12px;
+        .card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        /* Specific Card Placements */
+        .stats-card { grid-column: span 4; display: flex; flex-direction: column; justify-content: center; }
+        .action-card { grid-column: span 8; }
+        .stake-card { grid-column: span 6; }
+        .airdrop-card { grid-column: span 6; }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+        }
+
+        .big-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Forms & Inputs */
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        input[type="number"] {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 1rem;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            flex-grow: 1;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--accent-color);
+        }
+
+        .action-btn {
+            background: var(--accent-color);
+            color: #000;
             border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-bottom: 10px;
+            padding: 0 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            border-radius: 2px;
+            transition: all 0.3s;
         }
-        .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: #5849be; }
-        .btn-success { background-color: var(--accent); color: white; }
-        .btn-success:hover { background-color: #00a383; }
-        .btn-danger { background-color: var(--danger); color: white; }
-        
-        .status-msg { 
-            font-size: 0.85em; 
-            margin-top: 5px; 
-            min-height: 20px; 
-            word-break: break-all;
+
+        .action-btn:hover {
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: scale(1.02);
+        }
+
+        .action-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .secondary-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Status Indicators */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid;
+            margin-bottom: 1rem;
+        }
+
+        .status-active { color: var(--accent-color); border-color: var(--accent-color); }
+        .status-inactive { color: #ff4444; border-color: #ff4444; }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toast {
+            background: #111;
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem 1.5rem;
+            color: #fff;
+            min-width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s var(--easing);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         /* Loader */
-        .loader { display: none; text-align: center; margin: 10px 0; color: var(--primary); }
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dashboard-grid { display: flex; flex-direction: column; }
+            header { flex-direction: column; gap: 1rem; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div>
-        <h1><i class="fas fa-cube"></i> TAAMS DApp</h1>
-        <small style="opacity: 0.8;">Polygon Network</small>
-    </div>
-    <button id="connectBtn" class="wallet-btn">Connecter Wallet</button>
-</header>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
 
-<div class="container">
+    <!-- WebGL Background -->
+    <div id="canvas-container"></div>
 
-    <!-- 1. TABLEAU DE BORD GLOBAL -->
-    <div class="card" style="grid-column: 1 / -1;">
-        <h3><i class="fas fa-chart-pie"></i> Statistiques Globales</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-            <div class="stat-item">
-                <div class="stat-row">Total Supply:</div>
-                <div class="stat-value" id="totalSupply">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-row">Total Brûlé:</div>
-                <div class="stat-value text-red" id="totalBurned">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-row">Total Staké:</div>
-                <div class="stat-value text-green" id="totalStaked">...</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-row">Adresse Contrat:</div>
-                <div class="stat-value" style="font-size: 0.8em;">0xbAC8...1Ef</div>
-            </div>
-        </div>
-    </div>
+    <!-- Notifications -->
+    <div id="toast-container"></div>
 
-    <!-- 2. SECTION AIRDROP -->
-    <div class="card">
-        <h3><i class="fas fa-gift"></i> Ignition Airdrop</h3>
-        <div class="stat-row"><span>Statut:</span> <span id="airdropStatus" class="stat-value">...</span></div>
-        <div class="stat-row"><span>Participants:</span> <span id="airdropParticipants" class="stat-value">...</span></div>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-        
-        <div id="userAirdropStatus">
-            <p>Votre statut: <span id="userRegistered" class="stat-value">...</span></p>
-        </div>
+    <div class="app-container">
+        <header>
+            <div class="brand">TAAMS <span style="color:#fff; font-size: 0.5em; vertical-align: middle; opacity: 0.5;">PROTOCOL</span></div>
+            <button class="wallet-btn" id="connect-btn" onmouseenter="hoverEffect(true)" onmouseleave="hoverEffect(false)">Connect Wallet</button>
+        </header>
 
-        <button id="btnRegisterAirdrop" class="btn btn-success">S'inscrire à l'Airdrop</button>
-        <button id="btnClaimAirdrop" class="btn btn-primary">Réclamer l'Airdrop</button>
-        <div id="airdropMsg" class="status-msg"></div>
-    </div>
-
-    <!-- 3. SECTION STAKING -->
-    <div class="card">
-        <h3><i class="fas fa-layer-group"></i> Staking & Récompenses</h3>
-        <div class="stat-row"><span>Vos Tokens Stakés:</span> <span id="userStaked" class="stat-value">0</span></div>
-        <div class="stat-row"><span>Votre Solde Wallet:</span> <span id="userBalance" class="stat-value">0</span></div>
-        
-        <div class="input-group">
-            <label>Montant à staker:</label>
-            <input type="number" id="stakeAmount" placeholder="Ex: 100">
-        </div>
-
-        <button id="btnStake" class="btn btn-primary">Staker</button>
-        <button id="btnUnstake" class="btn btn-danger">Unstake</button>
-        <button id="btnClaimReward" class="btn btn-success">Réclamer Récompenses</button>
-        <div id="stakingMsg" class="status-msg"></div>
-    </div>
-
-    <!-- 4. SECTION BURN -->
-    <div class="card">
-        <h3><i class="fas fa-fire"></i> Brûler des Tokens</h3>
-        <p style="font-size: 0.9em; color: #666;">Participez à la réduction de l'offre.</p>
-        
-        <div class="input-group">
-            <label>Montant à brûler:</label>
-            <input type="number" id="burnAmount" placeholder="Ex: 50">
-        </div>
-
-        <button id="btnBurn" class="btn btn-danger">Envoyer au feu</button>
-        <div id="burnMsg" class="status-msg"></div>
-    </div>
-
-    <!-- 5. SECTION GOVERNANCE / VOTE -->
-    <div class="card">
-        <h3><i class="fas fa-vote-yea"></i> Gouvernance</h3>
-        <div class="stat-row"><span>Propositions actives:</span> <span id="proposalCount" class="stat-value">...</span></div>
-        
-        <div class="input-group">
-            <label>ID de la proposition:</label>
-            <input type="number" id="voteId" placeholder="ID">
-        </div>
-        <div class="input-group">
-            <label>Support (True/False):</label>
-            <select id="voteSupport" style="width:100%; padding:10px;">
-                <option value="true">Pour (True)</option>
-                <option value="false">Contre (False)</option>
-            </select>
-        </div>
-
-        <button id="btnVote" class="btn btn-primary">Voter (Reveal)</button>
-        <div id="voteMsg" class="status-msg"></div>
-    </div>
-
-</div>
-
-<script>
-    // --- CONFIGURATION ---
-    const CONTRACT_ADDRESS = "0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef";
-    const CONTRACT_ABI = [ {"inputs":[{"internalType":"address","name":"initialOwner","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ActivationThresholdNotMet","type":"error"},{"inputs":[],"name":"AirdropAlreadyTriggered","type":"error"},{"inputs":[],"name":"AlreadyClaimed","type":"error"},{"inputs":[],"name":"AlreadyRegistered","type":"error"},{"inputs":[],"name":"AlreadyVoted","type":"error"},{"inputs":[],"name":"AmountZero","type":"error"},{"inputs":[],"name":"BL2PNotExpired","type":"error"},{"inputs":[],"name":"BL2PNotMatured","type":"error"},{"inputs":[],"name":"BelowMinimumStake","type":"error"},{"inputs":[],"name":"BurnCycleEnded","type":"error"},{"inputs":[],"name":"BurnPhaseNotActive","type":"error"},{"inputs":[],"name":"ContractPaused","type":"error"},{"inputs":[],"name":"DelegationActive","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"allowance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientAllowance","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"uint256","name":"balance","type":"uint256"},{"internalType":"uint256","name":"needed","type":"uint256"}],"name":"ERC20InsufficientBalance","type":"error"},{"inputs":[{"internalType":"address","name":"approver","type":"address"}],"name":"ERC20InvalidApprover","type":"error"},{"inputs":[{"internalType":"address","name":"receiver","type":"address"}],"name":"ERC20InvalidReceiver","type":"error"},{"inputs":[{"internalType":"address","name":"sender","type":"address"}],"name":"ERC20InvalidSender","type":"error"},{"inputs":[{"internalType":"address","name":"spender","type":"address"}],"name":"ERC20InvalidSpender","type":"error"},{"inputs":[],"name":"ExceedsBL2PBoostLimit","type":"error"},{"inputs":[],"name":"ExceedsBurnTarget","type":"error"},{"inputs":[],"name":"ExceedsDelegateLimit","type":"error"},{"inputs":[],"name":"GovernanceNotSet","type":"error"},{"inputs":[],"name":"InsufficientBalance","type":"error"},{"inputs":[],"name":"InsufficientContractBalance","type":"error"},{"inputs":[],"name":"InsufficientReserve","type":"error"},{"inputs":[],"name":"InvalidAddress","type":"error"},{"inputs":[],"name":"InvalidBL2PLifespan","type":"error"},{"inputs":[],"name":"InvalidBurnAmount","type":"error"},{"inputs":[],"name":"InvalidClaimConditions","type":"error"},{"inputs":[],"name":"InvalidCommit","type":"error"},{"inputs":[],"name":"InvalidDelegate","type":"error"},{"inputs":[],"name":"InvalidDelegatedPercent","type":"error"},{"inputs":[],"name":"InvalidInactivityBurnRate","type":"error"},{"inputs":[],"name":"InvalidMaturationPeriod","type":"error"},{"inputs":[],"name":"InvalidProposalPayload","type":"error"},{"inputs":[],"name":"InvalidRecipient","type":"error"},{"inputs":[],"name":"InvalidRewardRate","type":"error"},{"inputs":[],"name":"InvalidTransferConditions","type":"error"},{"inputs":[],"name":"MaxParticipantsReached","type":"error"},{"inputs":[],"name":"NoActiveStake","type":"error"},{"inputs":[],"name":"NoClaimableAmount","type":"error"},{"inputs":[],"name":"NoContractCallers","type":"error"},{"inputs":[],"name":"NoDelegation","type":"error"},{"inputs":[],"name":"NoParticipants","type":"error"},{"inputs":[],"name":"NoReward","type":"error"},{"inputs":[],"name":"NoValidBL2P","type":"error"},{"inputs":[],"name":"NotAuthorized","type":"error"},{"inputs":[],"name":"NotContract","type":"error"},{"inputs":[],"name":"NotWhitelisted","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"inputs":[],"name":"ProposalCooldownActive","type":"error"},{"inputs":[],"name":"ProposalDoesNotExist","type":"error"},{"inputs":[],"name":"ProposalExecuted","type":"error"},{"inputs":[],"name":"QuorumNotMet","type":"error"},{"inputs":[],"name":"QuorumOutOfBounds","type":"error"},{"inputs":[],"name":"ReentrancyGuardReentrantCall","type":"error"},{"inputs":[],"name":"RegistrationClosed","type":"error"},{"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"SafeERC20FailedOperation","type":"error"},{"inputs":[],"name":"StakeAlreadyActive","type":"error"},{"inputs":[],"name":"TooManyUsers","type":"error"},{"inputs":[],"name":"UnlockPeriodNotElapsed","type":"error"},{"inputs":[],"name":"VoteThresholdNotMet","type":"error"},{"inputs":[],"name":"VoteThresholdOutOfBounds","type":"error"},{"inputs":[],"name":"VotingPeriodInactive","type":"error"},{"inputs":[],"name":"VotingPeriodNotEnded","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"adId","type":"uint256"},{"indexed":false,"internalType":"string","name":"message","type":"string"}],"name":"AdvertisementPosted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonusAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"BL2PBonusBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"bool","name":"matured","type":"bool"}],"name":"BL2PMaturityUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BL2PRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"BL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"BL2PStaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"BL2PTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address[]","name":"users","type":"address[]"},{"indexed":false,"internalType":"uint256[]","name":"rewards","type":"uint256[]"}],"name":"BatchBL2PRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"BurnPhaseActivated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"}],"name":"DelegationRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"newContract","type":"address"}],"name":"GovernanceContractUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"IgnitionAirdropClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalParticipants","type":"uint256"}],"name":"IgnitionAirdropTriggered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"participant","type":"address"},{"indexed":false,"internalType":"uint256","name":"participantNumber","type":"uint256"}],"name":"IgnitionParticipantRegistered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bool","name":"isOpen","type":"bool"}],"name":"IgnitionRegistrationStatusChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"InactiveBL2PBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"}],"name":"LockedReserveUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"newValue","type":"uint256"},{"indexed":false,"internalType":"address","name":"newAddress","type":"address"}],"name":"ParameterUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"string","name":"reason","type":"string"}],"name":"ProposalFailed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"description","type":"string"},{"indexed":false,"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"ProposalSubmitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"}],"name":"ProposalWasExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newQuorum","type":"uint256"}],"name":"QuorumUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"referrer","type":"address"},{"indexed":false,"internalType":"uint256","name":"bonus","type":"uint256"}],"name":"ReferralBonusPaid","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"remainingBalance","type":"uint256"}],"name":"ReserveUnlocked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Staked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"reward","type":"uint256"}],"name":"StakingRewardClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"burner","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"totalBurned","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"cycle","type":"uint256"}],"name":"TokensBurned","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"}],"name":"Unstaked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"VoteCommitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"delegator","type":"address"},{"indexed":true,"internalType":"address","name":"delegate","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"VoteDelegated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":true,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"bool","name":"support","type":"bool"},{"indexed":false,"internalType":"uint256","name":"weight","type":"uint256"}],"name":"VoteRevealed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"newThreshold","type":"uint256"}],"name":"VoteThresholdUpdated","type":"event"},{"inputs":[],"name":"ACTIVATION_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ANNUAL_BURN_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"BURN_TARGET","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"IGNITION_AIRDROP_POOL","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"LOCKED_RESERVE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_SUPPLY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PROPOSAL_COOLDOWN","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"QUORUM","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"STAKING_REWARD_RATE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VOTE_THRESHOLD","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"activeDelegations","outputs":[{"internalType":"address","name":"source","type":"address"},{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"bl2pAmount","type":"uint256"},{"internalType":"uint256","name":"delegationBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"advertisementCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"advertisements","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"postedBlock","type":"uint256"},{"internalType":"string","name":"message","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"batchClaimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pClaimed","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pLifespanBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bl2pMeta","outputs":[{"internalType":"uint256","name":"birthAndExpiry","type":"uint256"},{"internalType":"bool","name":"matured","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"bl2pRevealed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"burnContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"burnDeadlineTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"burnInactiveBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"burnPhaseActive","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"checkActivation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimBL2PReward","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"claimIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bytes32","name":"commitHash","type":"bytes32"}],"name":"commitVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"currentBurnCycle","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"cycleBurnedTotal","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"delegate","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"delegateVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"delegatedBL2PReceived","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"earlyAdopterCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"emergencyPaused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"}],"name":"executeProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getBL2PLifetime","outputs":[{"internalType":"uint256","name":"birthBlock","type":"uint256"},{"internalType":"uint256","name":"expiryBlock","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionInfo","outputs":[{"internalType":"bool","name":"triggered","type":"bool"},{"internalType":"bool","name":"regOpen","type":"bool"},{"internalType":"uint256","name":"participants","type":"uint256"},{"internalType":"uint256","name":"maxParticipants","type":"uint256"},{"internalType":"bool","name":"userRegistered","type":"bool"},{"internalType":"uint256","name":"userAmount","type":"uint256"},{"internalType":"bool","name":"userClaimed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getIgnitionParticipants","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLastProposer","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemainingBurnable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getRemainingValidBL2P","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getTopDelegates","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceContract","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionAirdropTriggered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimableAmount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionClaimed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"ignitionParticipants","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ignitionRegistrationOpen","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"ignitionWhitelist","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"inactivityBurnRate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastAdvertisementTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastBurnCycleStartTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastProposalTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lastUnlockTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastVoteTimestamp","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lockedReserveBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maturationPeriodBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxDelegatedBL2PPercent","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"participateInBurn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"proposalCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"proposals","outputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"endBlock","type":"uint256"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"uint256","name":"forVotes","type":"uint256"},{"internalType":"uint256","name":"againstVotes","type":"uint256"},{"internalType":"address","name":"proposer","type":"address"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"string","name":"description","type":"string"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"},{"internalType":"bool","name":"executed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"referrals","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"registerForIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"bool","name":"support","type":"bool"},{"internalType":"bytes32","name":"secret","type":"bytes32"}],"name":"revealVote","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"revokeDelegation","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newContract","type":"address"}],"name":"setGovernanceContract","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"isOpen","type":"bool"}],"name":"setIgnitionRegistrationStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"stake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"stakes","outputs":[{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"startBlock","type":"uint256"},{"internalType":"uint256","name":"bl2pBoost","type":"uint256"},{"internalType":"bool","name":"active","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"desc","type":"string"},{"internalType":"uint256","name":"newValue","type":"uint256"},{"internalType":"address","name":"newAddress","type":"address"},{"internalType":"enum TAAMS.ProposalType","name":"proposalType","type":"uint8"}],"name":"submitProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"topDelegates","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalBurned","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"totalContributions","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalStaked","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferBL2P","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"triggerIgnitionAirdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"trustedRecipient","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"unstake","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"updateBL2PMaturity","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"bl2pAmount","type":"uint256"}],"name":"useBL2PForStaking","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"users","type":"address[]"}],"name":"verifyBL2PIntegrity","outputs":[{"internalType":"bool","name":"isValid","type":"bool"},{"internalType":"uint256","name":"totalBL2P","type":"uint256"}],"stateMutability":"view","type":"function"}];
-
-    let provider;
-    let signer;
-    let contract;
-    let userAddress;
-
-    // --- INITIALISATION ---
-    window.addEventListener('load', async () => {
-        if (window.ethereum) {
-            provider = new ethers.providers.Web3Provider(window.ethereum);
-            // Essayer de se reconnecter si déjà connecté
-            const accounts = await provider.listAccounts();
-            if (accounts.length > 0) {
-                connectWallet();
-            }
-        }
-    });
-
-    // --- CONNEXION WALLET ---
-    async function connectWallet() {
-        if (!window.ethereum) return alert("Veuillez installer MetaMask.");
-
-        try {
-            await provider.send("eth_requestAccounts", []);
-            signer = provider.getSigner();
-            userAddress = await signer.getAddress();
-            contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-            document.getElementById("connectBtn").innerText = userAddress.substring(0, 6) + "..." + userAddress.substring(38);
-            document.getElementById("connectBtn").style.background = "var(--accent)";
-            document.getElementById("connectBtn").style.borderColor = "white";
-
-            updateDashboard();
-        } catch (err) {
-            console.error(err);
-            alert("Erreur de connexion wallet");
-        }
-    }
-
-    document.getElementById("connectBtn").onclick = connectWallet;
-
-    // --- MISE À JOUR DU TABLEAU DE BORD ---
-    async function updateDashboard() {
-        if (!contract) return;
-
-        try {
-            // 1. Stats Globales
-            const tSupply = await contract.totalSupply();
-            const tBurned = await contract.totalBurned();
-            const tStaked = await contract.totalStaked();
-            const propCount = await contract.proposalCount();
-
-            document.getElementById("totalSupply").innerText = parseFloat(ethers.utils.formatEther(tSupply)).toLocaleString();
-            document.getElementById("totalBurned").innerText = parseFloat(ethers.utils.formatEther(tBurned)).toLocaleString();
-            document.getElementById("totalStaked").innerText = parseFloat(ethers.utils.formatEther(tStaked)).toLocaleString();
-            document.getElementById("proposalCount").innerText = propCount.toString();
-
-            // 2. Infos Airdrop (Globales)
-            const ignitionInfo = await contract.getIgnitionInfo();
-            const statusEl = document.getElementById("airdropStatus");
-            if (ignitionInfo.triggered) {
-                statusEl.innerText = "Lancé ✅";
-                statusEl.className = "stat-value text-green";
-            } else if (ignitionInfo.regOpen) {
-                statusEl.innerText = "Inscriptions Ouvertes 🔓";
-                statusEl.className = "stat-value";
-            } else {
-                statusEl.innerText = "Fermé 🔒";
-                statusEl.className = "stat-value text-red";
-            }
-            document.getElementById("airdropParticipants").innerText = ignitionInfo.participants.toString();
-
-            // 3. Infos Airdrop (Utilisateur)
-            const userRegEl = document.getElementById("userRegistered");
-            const btnClaim = document.getElementById("btnClaimAirdrop");
-            if (ignitionInfo.userRegistered) {
-                userRegEl.innerText = "Inscrit ✅";
-                userRegEl.className = "stat-value text-green";
-                if (ignitionInfo.userClaimed) {
-                    btnClaim.style.display = "none"; // Déjà réclamé
-                    userRegEl.innerText = "Réclamé 💰";
-                } else {
-                    btnClaim.style.display = "block";
-                    userRegEl.innerText = "En attente de tirage ⏳";
-                }
-            } else {
-                userRegEl.innerText = "Non inscrit ❌";
-                userRegEl.className = "stat-value text-red";
-                btnClaim.style.display = "none";
-            }
-
-            // 4. Solde Utilisateur
-            const balance = await contract.balanceOf(userAddress);
-            document.getElementById("userBalance").innerText = parseFloat(ethers.utils.formatEther(balance)).toFixed(2);
-
-            const stakeInfo = await contract.stakes(userAddress);
-            if (stakeInfo.active) {
-                document.getElementById("userStaked").innerText = parseFloat(ethers.utils.formatEther(stakeInfo.amount)).toFixed(2) + " TAAMS";
-            } else {
-                document.getElementById("userStaked").innerText = "0";
-            }
-
-        } catch (error) {
-            console.error("Erreur Dashboard:", error);
-        }
-    }
-
-    // --- ACTIONS (TRANSACTIONS) ---
-
-    // Helper pour afficher les messages
-    function setStatus(elementId, message, isError = false) {
-        const el = document.getElementById(elementId);
-        el.innerText = message;
-        el.style.color = isError ? 'var(--danger)' : 'var(--accent)';
-    }
-
-    // 1. Airdrop
-    document.getElementById("btnRegisterAirdrop").onclick = async () => {
-        if(!contract) return;
-        setStatus("airdropMsg", "Transaction en cours...");
-        try {
-            const tx = await contract.registerForIgnitionAirdrop();
-            await tx.wait();
-            setStatus("airdropMsg", "Inscription réussie ! ✅");
-            updateDashboard();
-        } catch (e) {
-            setStatus("airdropMsg", "Erreur: " + (e.reason || e.message), true);
-        }
-    };
-
-    document.getElementById("btnClaimAirdrop").onclick = async () => {
-        if(!contract) return;
-        setStatus("airdropMsg", "Transaction en cours...");
-        try {
-            const tx = await contract.claimIgnitionAirdrop();
-            await tx.wait();
-            setStatus("airdropMsg", "Airdrop réclamé ! 🎉");
-            updateDashboard();
-        } catch (e) {
-            setStatus("airdropMsg", "Erreur: " + (e.reason || e.message), true);
-        }
-    };
-
-    // 2. Staking
-    document.getElementById("btnStake").onclick = async () => {
-        if(!contract) return;
-        const amount = document.getElementById("stakeAmount").value;
-        if(!amount) return setStatus("stakingMsg", "Entrez un montant", true);
-
-        setStatus("stakingMsg", "Transaction en cours...");
-        try {
-            const tx = await contract.stake(ethers.utils.parseUnits(amount, 18));
-            await tx.wait();
-            setStatus("stakingMsg", "Staking effectué ! ✅");
-            updateDashboard();
-        } catch (e) {
-            setStatus("stakingMsg", "Erreur: " + (e.reason || e.message), true);
-        }
-    };
-
-    document.getElementById("btnUnstake").onclick = async () => {
-        if(!contract) return;
-        setStatus("stakingMsg", "Transaction en cours...");
-        try {
-            const tx = await contract.unstake();
-            await tx.wait();
-            setStatus("stakingMsg", "Retrait effectué ! ✅");
-            updateDashboard();
-        } catch (e) {
-            setStatus("stakingMsg", "Erreur: " + (e.reason || e.message), true);
-        }
-    };
-
-    document.getElementById("btnClaimReward").onclick = async () => {
-        if(!contract) return;
-        setStatus("stakingMsg", "Transaction en cours...");
-        try {
-            const tx = await contract.claimBL2PReward();
-            await tx.wait();
-            setStatus("stakingMsg", "Récompenses réclamées ! 💰");
-            updateDashboard();
-        } catch (e) {
-            setStatus("stakingMsg", "Erreur: " + (e.reason || e.message), true);
-        }
-    };
-
-    // 3. Burn
-    document.getElementById("btnBurn").onclick = async () => {
-        if(!contract) return;
-        const amount = document.getElementById("burnAmount").value;
-        if(!amount) return setStatus("burnMsg", "Entrez un montant", true);
-
-        setStatus("burnMsg", "Brûlage en cours...");
-        try {
-            const tx = await contract.participateInBurn(ethers.utils.parseUnits(amount, 18));
-            await tx.wait();
-            setStatus("burnMsg", "Tokens brûlés ! 🔥");
-            updateDashboard();
-        } catch (e) {
-            setStatus("burnMsg", "Erreur: " + (e.reason || e.message), true);
-        }
-    };
-
-    // 4. Vote (Simplifié: RevealVote direct)
-    document.getElementById("btnVote").onclick = async () => {
-        if(!contract) return;
-        const id = document.getElementById("voteId").value;
-        const support = document.getElementById("voteSupport").value === "true";
-        
-        if(!id) return setStatus("voteMsg", "Entrez un ID de proposition", true);
-
-        setStatus("voteMsg", "Vote en cours...");
-        try {
-            // Pour cet exemple, on utilise un "secret" vide ou générique. 
-            // Dans un vrai cas de vote commit/reveal, il faudrait 2 étapes.
-            // Ici on suppose le reveal direct pour simplifier l'interface si le contrat le permet, 
-            // sinon cette fonction échouera selon la logique du contrat (qui demande commitVote d'abord).
-            // Note: Le contrat TAAMS a "commitVote" et "revealVote". 
-            // Pour simplifier ici, on va tenter le revealVote avec un secret bidon (0x0).
-            // L'utilisateur final verra l'erreur s'il n'a pas committé avant.
+        <main id="main-interface" style="display: none; opacity: 0; transition: opacity 0.5s;">
             
-            const tx = await contract.revealVote(id, support, ethers.utils.formatBytes32String("secret"));
-            await tx.wait();
-            setStatus("voteMsg", "Vote révélé ! 🗳️");
-        } catch (e) {
-            setStatus("voteMsg", "Erreur (Peut-être avez-vous oublié de Commit ?): " + (e.reason || e.message), true);
+            <!-- Top Stats Row -->
+            <div class="dashboard-grid" style="margin-bottom: 2rem;">
+                <div class="card stats-card">
+                    <div class="label">My TAAMS Balance</div>
+                    <div class="big-number" id="user-balance">0.00</div>
+                    <div style="color: var(--accent-color); font-size: 0.9rem;">Available to Burn</div>
+                </div>
+                <div class="card stats-card">
+                    <div class="label">BL2P Rewards</div>
+                    <div class="big-number" id="bl2p-balance">0.00</div>
+                    <div style="color: var(--accent-color); font-size: 0.9rem;">Governance Power</div>
+                </div>
+                <div class="card stats-card">
+                    <div class="label">Protocol Status</div>
+                    <div style="margin-top: 1rem;">
+                        <span id="burn-phase-status" class="status-badge status-inactive">Burn Phase Inactive</span>
+                        <div style="font-size: 0.8rem; margin-top: 0.5rem; color: #666;" id="total-burned">Total Burned: 0 TAAMS</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Row -->
+            <div class="dashboard-grid">
+                
+                <!-- Burn Section -->
+                <div class="card action-card">
+                    <h2>Participate in Burn</h2>
+                    <p style="color: #888; margin-bottom: 1.5rem; max-width: 600px;">
+                        Burn your TAAMS tokens to contribute to the deflationary mechanism and earn BL2P rewards.
+                    </p>
+                    <div class="input-group">
+                        <input type="number" id="burn-amount" placeholder="Amount to Burn">
+                        <button class="action-btn" onclick="handleBurn()">Burn Tokens</button>
+                    </div>
+                    <button class="secondary-btn" onclick="setMax('burn-amount')">MAX</button>
+                </div>
+
+                <!-- Staking Section -->
+                <div class="card stake-card">
+                    <h2>Stake TAAMS</h2>
+                    <p style="color: #888; margin-bottom: 1rem;">Lock tokens to earn yield.</p>
+                    <div class="input-group">
+                        <input type="number" id="stake-amount" placeholder="Amount to Stake">
+                        <button class="action-btn" onclick="handleStake()">Stake</button>
+                    </div>
+                    <button class="secondary-btn" onclick="handleUnstake()">Unstake All</button>
+                </div>
+
+                <!-- Airdrop Section -->
+                <div class="card airdrop-card">
+                    <h2>Ignition Airdrop</h2>
+                    <div id="airdrop-status" style="margin-bottom: 1rem;">
+                        <!-- Dynamic Content -->
+                    </div>
+                    <button id="airdrop-btn" class="action-btn" style="width: 100%;">Action</button>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Initial State / Not Connected -->
+        <div id="landing-state" style="text-align: center; margin-top: 10vh;">
+            <h1 style="font-family: var(--font-display); font-size: 4rem; line-height: 1; margin-bottom: 1rem;">TAAMS<br>ECOSYSTEM</h1>
+            <p style="color: #888; max-width: 500px; margin: 0 auto;">Secure, Deflationary, Governance-driven.</p>
+            <br>
+            <div style="font-size: 3rem; color: #333; font-family: var(--font-display);">READY TO DEPLOY</div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        
+        // IMPORTANT: Remplacez ceci par l'adresse de votre contrat déployé
+        const CONTRACT_ADDRESS = "YOUR_DEPLOYED_CONTRACT_ADDRESS_HERE"; 
+
+        // IMPORTANT: Collez votre ABI complet ici. 
+        // J'ai inclus les fonctions minimales nécessaires pour la démo ci-dessous.
+        const CONTRACT_ABI = [
+            "function name() view returns (string)",
+            "function symbol() view returns (string)",
+            "function totalSupply() view returns (uint256)",
+            "function balanceOf(address) view returns (uint256)",
+            "function participateInBurn(uint256 amount)",
+            "function stake(uint256 amount)",
+            "function unstake()",
+            "function registerForIgnitionAirdrop()",
+            "function claimIgnitionAirdrop()",
+            "function getIgnitionInfo() view returns (bool triggered, bool regOpen, uint256 participants, uint256 maxParticipants, bool userRegistered, uint256 userAmount, bool userClaimed)",
+            "function getRemainingValidBL2P(address) view returns (uint256)",
+            "function burnPhaseActive() view returns (bool)",
+            "function totalBurned() view returns (uint256)"
+        ];
+
+        // Variables Globales
+        let provider, signer, userAddress, contract;
+        let isConnected = false;
+
+        // ==========================================
+        // UI INTERACTIONS (CURSOR, TOASTS)
+        // ==========================================
+        const cursor = document.getElementById('cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        const hoverElements = document.querySelectorAll('button, input, a, .card');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderLeftColor = type === 'error' ? '#ff4444' : '#00ff88';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
         }
-    };
 
-</script>
+        function setMax(inputId) {
+            const input = document.getElementById(inputId);
+            if(inputId === 'burn-amount') input.value = document.getElementById('user-balance').innerText;
+        }
 
+        // ==========================================
+        // WEB3 LOGIC
+        // ==========================================
+
+        const connectBtn = document.getElementById('connect-btn');
+
+        connectBtn.addEventListener('click', async () => {
+            if (!isConnected) {
+                await connectWallet();
+            }
+        });
+
+        async function connectWallet() {
+            if (!window.ethereum) {
+                showToast("Metamask not found!", "error");
+                return;
+            }
+
+            try {
+                provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.send("eth_requestAccounts", []);
+                signer = await provider.getSigner();
+                userAddress = await signer.getAddress();
+                
+                // Init Contract
+                contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+                isConnected = true;
+                updateUIOnConnect();
+                refreshData();
+                
+                showToast("Wallet Connected Successfully");
+            } catch (error) {
+                console.error(error);
+                showToast("Connection Failed", "error");
+            }
+        }
+
+        function updateUIOnConnect() {
+            connectBtn.innerText = `${userAddress.substring(0,6)}...${userAddress.substring(38)}`;
+            connectBtn.classList.add('connected');
+            
+            document.getElementById('landing-state').style.display = 'none';
+            const main = document.getElementById('main-interface');
+            main.style.display = 'block';
+            setTimeout(() => main.style.opacity = '1', 100);
+        }
+
+        async function refreshData() {
+            if (!contract) return;
+
+            try {
+                // Fetch Balances
+                const balRaw = await contract.balanceOf(userAddress);
+                const bl2pRaw = await contract.getRemainingValidBL2P(userAddress);
+                const totalBurnedRaw = await contract.totalBurned();
+                const isBurnActive = await contract.burnPhaseActive();
+
+                // Update DOM (Format from Wei to Ether)
+                document.getElementById('user-balance').innerText = parseFloat(ethers.formatEther(balRaw)).toFixed(2);
+                document.getElementById('bl2p-balance').innerText = parseFloat(ethers.formatEther(bl2pRaw)).toFixed(2);
+                document.getElementById('total-burned').innerText = `Total Burned: ${parseFloat(ethers.formatEther(totalBurnedRaw)).toLocaleString()} TAAMS`;
+
+                const burnBadge = document.getElementById('burn-phase-status');
+                if (isBurnActive) {
+                    burnBadge.innerText = "BURN PHASE ACTIVE";
+                    burnBadge.className = "status-badge status-active";
+                } else {
+                    burnBadge.innerText = "BURN PHASE INACTIVE";
+                    burnBadge.className = "status-badge status-inactive";
+                }
+
+                // Airdrop Info Logic
+                const airdropInfo = await contract.getIgnitionInfo();
+                const adStatusDiv = document.getElementById('airdrop-status');
+                const adBtn = document.getElementById('airdrop-btn');
+
+                if (airdropInfo.triggered) {
+                    if (airdropInfo.userClaimed) {
+                        adStatusDiv.innerHTML = "<span style='color:#888'>Airdrop Already Claimed</span>";
+                        adBtn.disabled = true;
+                        adBtn.innerText = "CLAIMED";
+                    } else if (airdropInfo.userRegistered) {
+                        adStatusDiv.innerHTML = `<span style='color:var(--accent-color)'>Claimable: ${parseFloat(ethers.formatEther(airdropInfo.userAmount)).toFixed(2)} TAAMS</span>`;
+                        adBtn.disabled = false;
+                        adBtn.innerText = "CLAIM AIRDROP";
+                        adBtn.onclick = handleClaimAirdrop;
+                    } else {
+                        adStatusDiv.innerHTML = "<span style='color:#ff4444'>Not Registered</span>";
+                        adBtn.disabled = true;
+                    }
+                } else {
+                    if (airdropInfo.regOpen) {
+                        if (airdropInfo.userRegistered) {
+                            adStatusDiv.innerHTML = `<span style='color:var(--accent-color)'>Registered! (${airdropInfo.participants}/${airdropInfo.maxParticipants})</span>`;
+                            adBtn.disabled = true;
+                            adBtn.innerText = "REGISTERED";
+                        } else {
+                            adStatusDiv.innerHTML = "<span>Registration is Open</span>";
+                            adBtn.disabled = false;
+                            adBtn.innerText = "REGISTER";
+                            adBtn.onclick = handleRegisterAirdrop;
+                        }
+                    } else {
+                        adStatusDiv.innerHTML = "<span>Registration Closed</span>";
+                        adBtn.disabled = true;
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error fetching data", error);
+                // Fallback if contract address isn't real yet
+                if (CONTRACT_ADDRESS.includes("YOUR")) {
+                    showToast("Please set valid Contract Address in code", "error");
+                }
+            }
+        }
+
+        // ==========================================
+        // CONTRACT ACTIONS
+        // ==========================================
+
+        async function handleBurn() {
+            const amountInput = document.getElementById('burn-amount');
+            const amount = amountInput.value;
+            if (!amount || amount <= 0) return showToast("Invalid amount", "error");
+
+            try {
+                const tx = await contract.participateInBurn(ethers.parseEther(amount));
+                showToast("Transaction sent...");
+                await tx.wait();
+                showToast("Burn Successful!", "success");
+                amountInput.value = "";
+                refreshData();
+            } catch (error) {
+                console.error(error);
+                showToast("Burn Failed (check allowance/balance)", "error");
+            }
+        }
+
+        async function handleStake() {
+            const amountInput = document.getElementById('stake-amount');
+            const amount = amountInput.value;
+            if (!amount || amount <= 0) return showToast("Invalid amount", "error");
+
+            try {
+                // Note: You need to Approve the contract to spend your tokens first if not ERC20Approve handled
+                // Assuming standard ERC20 approval flow is needed or allowance is infinite
+                // For this demo, I'll call approve then stake
+                const txApprove = await contract.approve(CONTRACT_ADDRESS, ethers.MaxUint256); // Helper if in ABI, else needs ERC20 ABI
+                // Since ABI is minimal, let's assume user has approval or contract handles transferFrom logic via specific functions.
+                // The contract provided uses transferFrom inside stake, so we must approve.
+                
+                // Quick check if approve is in ABI:
+                if(CONTRACT_ABI.includes("function approve(address,uint256)")) {
+                     // Approve first
+                     await contract.approve(CONTRACT_ADDRESS, ethers.parseEther(amount));
+                }
+
+                const tx = await contract.stake(ethers.parseEther(amount));
+                showToast("Staking...");
+                await tx.wait();
+                showToast("Staking Successful!");
+                refreshData();
+            } catch (error) {
+                console.error(error);
+                showToast("Staking Failed", "error");
+            }
+        }
+
+        async function handleUnstake() {
+            try {
+                const tx = await contract.unstake();
+                showToast("Unstaking...");
+                await tx.wait();
+                showToast("Unstaked Successfully!");
+                refreshData();
+            } catch (error) {
+                showToast("Unstake Failed", "error");
+            }
+        }
+
+        async function handleRegisterAirdrop() {
+            try {
+                const tx = await contract.registerForIgnitionAirdrop();
+                showToast("Registering...");
+                await tx.wait();
+                showToast("Registered for Airdrop!");
+                refreshData();
+            } catch (error) {
+                showToast("Registration Failed", "error");
+            }
+        }
+
+        async function handleClaimAirdrop() {
+            try {
+                const tx = await contract.claimIgnitionAirdrop();
+                showToast("Claiming...");
+                await tx.wait();
+                showToast("Airdrop Claimed!");
+                refreshData();
+            } catch (error) {
+                showToast("Claim Failed", "error");
+            }
+        }
+
+        // ==========================================
+        // THREE.JS BACKGROUND (Grid Terrain)
+        // ==========================================
+        function initThreeJS() {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            // Fog to blend into background
+            scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 10;
+            camera.position.y = 3;
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Grid Geometry
+            const geometry = new THREE.PlaneGeometry(100, 100, 40, 40);
+            
+            // Custom Shader Material for the Grid
+            const material = new THREE.ShaderMaterial({
+                uniforms: {
+                    u_time: { value: 0 },
+                    u_color: { value: new THREE.Color(0x00ff88) }
+                },
+                wireframe: true,
+                vertexShader: `
+                    uniform float u_time;
+                    varying float vElevation;
+                    void main() {
+                        vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+                        float elevation = sin(modelPosition.x * 0.5 + u_time * 0.5) * 0.5;
+                        elevation += sin(modelPosition.y * 0.5 + u_time * 0.3) * 0.5;
+                        
+                        modelPosition.z += elevation;
+                        vElevation = elevation;
+                        
+                        gl_Position = projectionMatrix * viewMatrix * modelPosition;
+                    }
+                `,
+                fragmentShader: `
+                    uniform vec3 u_color;
+                    varying float vElevation;
+                    void main() {
+                        float alpha = (vElevation + 1.0) * 0.3; // Fade based on elevation
+                        gl_FragColor = vec4(u_color, alpha);
+                    }
+                `
+            });
+
+            const plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = -Math.PI / 2;
+            scene.add(plane);
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                material.uniforms.u_time.value += 0.01;
+                
+                // Subtle movement
+                plane.position.z = (Date.now() * 0.0005) % 2; 
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        initThreeJS();
+
+    </script>
 </body>
 </html>
