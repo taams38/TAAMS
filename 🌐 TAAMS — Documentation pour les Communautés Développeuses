@@ -1,0 +1,219 @@
+Guide officiel pour créer une application autour du protocole autonome TAAMS
+1. Introduction
+TAAMS est un protocole autonome, immuable et sans propriétaire.
+Toute personne, groupe ou communauté peut créer sa propre interface, son propre site, sa propre application mobile ou desktop.
+
+Cette documentation explique :
+
+comment lire les données du contrat
+
+comment interagir avec les fonctions publiques
+
+comment afficher l’état du protocole
+
+comment gérer les inscriptions, le burn, le staking, la gouvernance
+
+comment créer une interface cohérente et universelle
+
+Aucune autorisation n’est nécessaire.
+Aucune équipe centrale n’existe.
+TAAMS est un protocole ouvert.
+
+2. Accès au Contrat
+Adresse du contrat TAAMS (Polygon)
+Code
+0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef
+Type de contrat
+ERC‑20 étendu + modules internes (staking, burn, BL2P, airdrop, gouvernance).
+
+Owner
+Code
+0x0000000000000000000000000000000000000000
+→ Le contrat est totalement autonome.
+
+3. Fonctions essentielles pour une application
+3.1 Lecture des données globales
+Total supply
+Code
+function totalSupply() public view returns (uint256)
+Balance d’un utilisateur
+Code
+function balanceOf(address account) public view returns (uint256)
+Burn total effectué
+Code
+function totalBurned() public view returns (uint256)
+Nombre d’inscrits à l’Ignition
+Code
+function ignitionParticipants() public view returns (uint256)
+Seuil d’activation
+Toujours 1000 (codé en dur ou paramétré dans le contrat).
+
+3.2 Ignition Airdrop
+Vérifier si un utilisateur est inscrit
+Code
+function isRegisteredForIgnition(address user) public view returns (bool)
+S’inscrire à l’Ignition
+Code
+function registerForIgnition() public
+Vérifier si l’airdrop est déclenchable
+Code
+function canTriggerIgnition() public view returns (bool)
+Déclencher l’airdrop (si 1000 inscrits)
+Code
+function triggerIgnitionAirdrop() public
+3.3 Burn
+Burn automatique (interne au contrat)
+Aucune action requise par l’utilisateur.
+
+Burn manuel (si l’utilisateur veut brûler ses tokens)
+Code
+function burn(uint256 amount) public
+3.4 BL2P (token interne)
+Lire le solde BL2P
+Code
+function bl2pBalanceOf(address user) public view returns (uint256)
+Lire la maturité BL2P
+Code
+function bl2pMaturity(address user) public view returns (uint256)
+Convertir BL2P en TAAMS (si mature)
+Code
+function convertBL2P() public
+3.5 Staking
+Staker des tokens
+Code
+function stake(uint256 amount) public
+Retirer son stake
+Code
+function unstake() public
+Lire l’état du staking
+Code
+function stakedBalance(address user) public view returns (uint256)
+3.6 Gouvernance
+Créer une proposition
+Code
+function createProposal(string memory description) public
+Voter
+Code
+function commitVote(uint256 proposalId, bytes32 commitment) public
+function revealVote(uint256 proposalId, bool support) public
+Lire une proposition
+Code
+function getProposal(uint256 id) public view returns (...)
+4. Structure d’une Application TAAMS
+Une application TAAMS doit afficher :
+
+1. État global
+total supply
+
+total burned
+
+nombre d’inscrits
+
+progression vers les 1000
+
+état de l’airdrop (dormant / prêt / déclenché)
+
+2. Profil utilisateur
+balance TAAMS
+
+balance BL2P
+
+maturité BL2P
+
+staking actif
+
+statut d’inscription Ignition
+
+historique des burn personnels
+
+3. Actions possibles
+s’inscrire à l’Ignition
+
+brûler des tokens
+
+staker / unstaker
+
+convertir BL2P
+
+voter
+
+4. Narratif / Philosophie
+Chaque communauté peut afficher sa propre interprétation du protocole.
+
+5. Exemple de Flux d’Interface
+Page d’accueil
+état du protocole
+
+compteur d’inscrits
+
+burn total
+
+bouton “S’inscrire à l’Ignition”
+
+Page utilisateur
+balance
+
+staking
+
+BL2P
+
+burn manuel
+
+conversion BL2P
+
+Page gouvernance
+propositions
+
+votes
+
+résultats
+
+Page documentation
+philosophie
+
+manifeste
+
+règles immuables
+
+6. Recommandations pour les Communautés
+1. Pas de site officiel
+TAAMS n’a pas de site central.
+Chaque communauté peut créer le sien.
+
+2. Pas de leader
+Aucune autorité n’existe.
+Chaque communauté est libre.
+
+3. Pas de mise à jour du contrat
+Le protocole est figé.
+Les apps doivent s’adapter au contrat, pas l’inverse.
+
+4. Transparence totale
+Toutes les données sont on‑chain.
+Aucune base de données privée n’est nécessaire.
+
+5. Liberté totale d’interprétation
+Chaque communauté peut créer :
+
+son design
+
+son narratif
+
+son style
+
+ses rituels
+
+ses extensions off‑chain
+
+7. Comment TAAMS survivra aux générations
+Grâce à cette documentation :
+
+n’importe qui peut recréer une interface
+
+n’importe qui peut relancer une communauté
+
+n’importe qui peut comprendre le protocole
+
+même dans 100 ans
+
+TAAMS est conçu pour être immortel.
