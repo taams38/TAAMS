@@ -3,294 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taams-Protocol • Interface</title>
+    <title>Taams Protocol • DApp</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
         
-        :root {
-            --primary: #6366f1;
-        }
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
         
-        body {
-            font-family: 'Inter', system_ui, sans-serif;
-        }
-        
-        .font-display {
-            font-family: 'Space Grotesk', 'Inter', sans-serif;
-            font-weight: 600;
-        }
-
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .section-header {
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: -.025em;
+        
+        .nav-tab {
+            transition: all 0.2s ease;
         }
-
-        .metric-value {
-            font-size: 1.75rem;
-            font-weight: 700;
-            line-height: 1;
+        
+        .nav-tab.active {
+            background-color: #18181b;
+            color: white;
+            border-bottom: 3px solid #6366f1;
         }
-
+        
+        .metric-card {
+            transition: transform 0.2s ease;
+        }
+        
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        
         .contract-address {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 0.75rem;
-        }
-
-        .nav-active {
-            background-color: rgba(99, 102, 241, 0.1);
-            color: #6366f1;
-            border-radius: 8px;
-        }
-
-        .metric-card {
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .metric-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .taams-gradient {
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
     <!-- Navbar -->
-    <nav class="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-lg sticky top-0 z-50">
-        <div class="max-w-screen-xl mx-auto px-6">
+    <nav class="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-6">
             <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-x-3">
-                    <div class="w-9 h-9 bg-white rounded-2xl flex items-center justify-center">
-                        <span class="text-zinc-950 font-bold text-2xl">T</span>
+                <div class="flex items-center gap-x-4">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 bg-white rounded-2xl flex items-center justify-center">
+                            <span class="text-zinc-950 font-bold text-2xl">T</span>
+                        </div>
+                        <div>
+                            <span class="font-display text-3xl font-semibold tracking-tighter">Taams</span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="font-display text-2xl font-semibold tracking-tighter">Taams</span>
-                        <span class="text-zinc-400 text-sm font-medium">Protocol</span>
+                    <div class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-semibold rounded-2xl flex items-center gap-x-1.5 border border-emerald-500/30">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>RENONCÉ</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-x-2">
-                    <!-- Wallet Connect -->
+                <div class="flex items-center gap-x-3">
                     <button onclick="connectWallet()" 
-                            class="flex items-center gap-x-2 px-4 py-2.5 bg-white text-zinc-900 rounded-2xl text-sm font-semibold hover:bg-zinc-100 transition-colors"
+                            class="flex items-center gap-x-2 px-5 py-2.5 bg-white hover:bg-zinc-100 transition-all text-zinc-900 rounded-2xl text-sm font-semibold"
                             id="connect-btn">
                         <i class="fa-solid fa-wallet mr-2"></i>
-                        <span id="wallet-text">Connecter Wallet</span>
+                        <span id="wallet-address">Connect Wallet</span>
                     </button>
-                    
-                    <div class="px-3 py-1.5 bg-zinc-900 rounded-2xl text-xs flex items-center gap-x-2 border border-zinc-800">
-                        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                        <span class="text-emerald-400 text-xs font-medium">Polygon</span>
-                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-screen-xl mx-auto px-6 pt-8 pb-12">
+    <div class="max-w-screen-2xl mx-auto px-6 pt-6">
         
         <!-- Header -->
-        <div class="flex items-end justify-between mb-8">
+        <div class="flex items-center justify-between mb-6">
             <div>
-                <div class="flex items-center gap-x-3">
-                    <h1 class="text-5xl font-display font-semibold tracking-tighter">Taams Protocol</h1>
-                    <div class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-semibold rounded-2xl flex items-center gap-x-1.5 border border-emerald-500/20">
-                        <i class="fa-solid fa-check-double"></i>
-                        <span>RENONCÉ</span>
-                    </div>
-                </div>
-                <p class="text-zinc-400 mt-1">Interface communautaire • 100% autonome</p>
+                <h1 class="text-4xl font-display font-semibold tracking-tighter">Taams Protocol</h1>
+                <p class="text-zinc-400">Interface communautaire • Contrat 100% autonome</p>
             </div>
-            
-            <div class="text-right">
-                <div class="text-xs text-zinc-500">CONTRAT VÉRIFIÉ</div>
-                <div class="font-mono text-sm text-zinc-400 mt-0.5">0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef</div>
+            <div class="text-right text-sm">
+                <div class="text-zinc-400">Contract Address</div>
+                <div class="font-mono text-xs text-zinc-300">0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef</div>
             </div>
         </div>
 
-        <!-- Status Bar -->
-        <div class="glass rounded-3xl p-5 mb-8 flex items-center justify-between">
-            <div class="flex items-center gap-x-8">
-                <div>
+        <!-- Tabs -->
+        <div class="flex border-b border-zinc-800 mb-6">
+            <button onclick="showSection('dashboard')" class="nav-tab active px-6 py-3 font-medium flex items-center gap-x-2" id="tab-dashboard">
+                <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+            </button>
+            <button onclick="showSection('airdrop')" class="nav-tab px-6 py-3 font-medium flex items-center gap-x-2" id="tab-airdrop">
+                <i class="fa-solid fa-rocket"></i> <span>Airdrop</span>
+            </button>
+            <button onclick="showSection('burn')" class="nav-tab px-6 py-3 font-medium flex items-center gap-x-2" id="tab-burn">
+                <i class="fa-solid fa-fire-flame-curved"></i> <span>Burn</span>
+            </button>
+            <button onclick="showSection('staking')" class="nav-tab px-6 py-3 font-medium flex items-center gap-x-2" id="tab-staking">
+                <i class="fa-solid fa-lock"></i> <span>Staking</span>
+            </button>
+            <button onclick="showSection('governance')" class="nav-tab px-6 py-3 font-medium flex items-center gap-x-2" id="tab-governance">
+                <i class="fa-solid fa-balance-scale"></i> <span>Gouvernance</span>
+            </button>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="section-dashboard" class="section active">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="glass rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400">Ton solde TAAMS</div>
+                    <div class="text-3xl font-semibold mt-1" id="balance-taams">0.00</div>
+                </div>
+                <div class="glass rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400">Ton solde BL2P</div>
+                    <div class="text-3xl font-semibold mt-1" id="balance-bl2p">0.00</div>
+                </div>
+                <div class="glass rounded-3xl p-5">
                     <div class="text-xs text-zinc-400">Participants Airdrop</div>
-                    <div class="text-3xl font-semibold tabular-nums" id="participants-count">11</div>
-                    <div class="text-xs text-emerald-400">/ 1000</div>
+                    <div class="text-3xl font-semibold mt-1" id="airdrop-participants">11 <span class="text-base font-normal text-zinc-400">/ 1000</span></div>
                 </div>
-                
-                <div class="h-8 w-px bg-zinc-800"></div>
-                
-                <div>
-                    <div class="text-xs text-zinc-400">Statut</div>
-                    <div class="flex items-center gap-x-2">
-                        <span class="font-semibold text-emerald-400">Inscriptions ouvertes</span>
+                <div class="glass rounded-3xl p-5">
+                    <div class="text-xs text-zinc-400">Statut du contrat</div>
+                    <div class="flex items-center gap-x-2 mt-1">
+                        <span class="text-emerald-400 font-semibold">Renoncé</span>
+                        <i class="fa-solid fa-check-circle text-emerald-400"></i>
                     </div>
-                </div>
-            </div>
-            
-            <div class="text-right">
-                <div class="px-4 py-1.5 bg-zinc-900 rounded-2xl text-sm flex items-center gap-x-2 border border-zinc-800">
-                    <i class="fa-solid fa-globe text-emerald-400"></i>
-                    <span class="font-medium">100% Autonome</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <!-- AIRDROP SECTION -->
-            <div class="lg:col-span-5 glass rounded-3xl p-6">
-                <div class="flex items-center justify-between mb-5">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-rocket text-2xl text-violet-400"></i>
-                        <div>
-                            <div class="font-semibold text-xl">Airdrop Ignition</div>
-                            <div class="text-xs text-zinc-400">Phase des 1000 Fondateurs</div>
-                        </div>
+        <!-- AIRDROP -->
+        <div id="section-airdrop" class="section">
+            <div class="glass rounded-3xl p-6 max-w-2xl">
+                <h2 class="text-2xl font-semibold mb-4">Airdrop Ignition</h2>
+                
+                <div class="mb-6">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span>Progression</span>
+                        <span id="airdrop-progress">11 / 1000</span>
+                    </div>
+                    <div class="h-2 bg-zinc-800 rounded-full">
+                        <div class="h-2 bg-violet-500 rounded-full w-[1.1%]" style="width: 1.1%"></div>
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="bg-zinc-900/70 rounded-2xl p-4">
-                        <div class="flex justify-between text-sm mb-1.5">
-                            <span class="text-zinc-400">Progression</span>
-                            <span class="font-medium">11 / 1000</span>
-                        </div>
-                        <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
-                            <div class="h-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 w-[1.1%]" style="width: 1.1%"></div>
-                        </div>
-                    </div>
-
+                <div class="space-y-3">
                     <button onclick="registerForAirdrop()" 
-                            class="w-full py-3.5 bg-white hover:bg-zinc-100 transition-all text-zinc-900 font-semibold rounded-2xl flex items-center justify-center gap-x-2 active:scale-[0.985]">
+                            class="w-full py-3.5 bg-white text-zinc-900 font-semibold rounded-2xl flex items-center justify-center gap-x-2 hover:bg-zinc-100">
                         <i class="fa-solid fa-user-plus"></i>
                         <span>S'inscrire à l'Airdrop</span>
                     </button>
                     
-                    <button onclick="checkAirdropStatus()" 
-                            class="w-full py-3 border border-zinc-700 hover:bg-zinc-900 transition-colors text-sm font-medium rounded-2xl flex items-center justify-center gap-x-2">
-                        <i class="fa-solid fa-sync"></i>
+                    <button onclick="checkMyAirdropStatus()" 
+                            class="w-full py-3 border border-zinc-700 hover:bg-zinc-900 rounded-2xl flex items-center justify-center gap-x-2">
+                        <i class="fa-solid fa-search"></i>
                         <span>Vérifier mon statut</span>
                     </button>
                 </div>
             </div>
+        </div>
 
-            <!-- BURN SECTION -->
-            <div class="lg:col-span-7 glass rounded-3xl p-6">
-                <div class="flex items-center gap-x-3 mb-5">
-                    <i class="fa-solid fa-fire-flame-curved text-2xl text-orange-400"></i>
-                    <div>
-                        <div class="font-semibold text-xl">Burn TAAMS → BL2P</div>
-                        <div class="text-xs text-zinc-400">Obtiens du pouvoir de gouvernance</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-zinc-400 block mb-1.5">Montant à brûler</label>
-                        <div class="flex">
-                            <input type="number" id="burn-amount" value="1000" 
-                                   class="flex-1 bg-zinc-900 border border-zinc-700 rounded-l-2xl px-4 py-3 text-lg focus:outline-none">
-                            <div class="px-4 flex items-center bg-zinc-900 border border-l-0 border-zinc-700 rounded-r-2xl text-sm text-zinc-400">TAAMS</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-end">
-                        <button onclick="burnTokens()" 
-                                class="w-full py-3.5 bg-orange-500 hover:bg-orange-600 transition-colors text-white font-semibold rounded-2xl flex items-center justify-center gap-x-2">
-                            <i class="fa-solid fa-fire"></i>
-                            <span>Brûler &amp; Obtenir BL2P</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- STAKING -->
-            <div class="lg:col-span-6 glass rounded-3xl p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-lock text-2xl text-emerald-400"></i>
-                        <div class="font-semibold text-xl">Staking</div>
-                    </div>
-                    <div class="text-xs px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-2xl">5% APY</div>
-                </div>
-
-                <div class="space-y-3">
-                    <div class="flex gap-3">
-                        <div class="flex-1">
-                            <label class="text-xs text-zinc-400">Montant</label>
-                            <input type="number" value="5000" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 mt-1">
-                        </div>
-                        <div class="flex items-end">
-                            <button class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 transition-colors rounded-2xl font-semibold text-sm">Staker</button>
-                        </div>
-                    </div>
-                    
-                    <div class="text-xs flex justify-between text-zinc-400 px-1">
-                        <div>Ton stake: <span class="font-medium text-white">0</span> TAAMS</div>
-                        <div>Rewards: <span class="font-medium text-emerald-400">0</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- GOVERNANCE -->
-            <div class="lg:col-span-6 glass rounded-3xl p-6">
-                <div class="flex items-center gap-x-3 mb-4">
-                    <i class="fa-solid fa-vote-yea text-2xl text-blue-400"></i>
-                    <div class="font-semibold text-xl">Gouvernance</div>
+        <!-- BURN -->
+        <div id="section-burn" class="section">
+            <div class="glass rounded-3xl p-6 max-w-xl">
+                <h2 class="text-2xl font-semibold mb-4">Burn TAAMS → BL2P</h2>
+                
+                <div class="mb-4">
+                    <label class="text-sm text-zinc-400">Montant à brûler</label>
+                    <input type="number" id="burn-amount" value="1000" 
+                           class="w-full mt-2 bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-xl">
                 </div>
                 
-                <div class="text-sm text-zinc-400 mb-4">
-                    Le contrat étant renoncé, toutes les décisions passent par la gouvernance BL2P.
-                </div>
-                
-                <button onclick="showGovernanceModal()" 
-                        class="w-full py-3 border border-zinc-700 hover:bg-zinc-900 rounded-2xl text-sm font-medium flex items-center justify-center gap-x-2">
-                    <i class="fa-solid fa-balance-scale"></i>
-                    <span>Voir les propositions</span>
+                <button onclick="burnTokens()" 
+                        class="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-2xl flex items-center justify-center gap-x-2">
+                    <i class="fa-solid fa-fire"></i>
+                    <span>Brûler des TAAMS</span>
                 </button>
             </div>
-
         </div>
 
-        <!-- Footer info -->
-        <div class="mt-8 text-center text-xs text-zinc-500">
-            Interface communautaire non officielle • Contrat renoncé • 
-            <a href="https://polygonscan.com/address/0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef" target="_blank" class="underline hover:text-zinc-300">Voir sur Polygonscan</a>
+        <!-- STAKING -->
+        <div id="section-staking" class="section">
+            <div class="glass rounded-3xl p-6 max-w-xl">
+                <h2 class="text-2xl font-semibold mb-4">Staking</h2>
+                <p class="text-zinc-400 mb-4">Fonctionnalité en cours de développement dans cette interface.</p>
+                
+                <div class="space-y-3">
+                    <button class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 rounded-2xl font-semibold">Staker des TAAMS</button>
+                    <button class="w-full py-3 border border-zinc-700 rounded-2xl">Unstake</button>
+                </div>
+            </div>
         </div>
+
+        <!-- GOVERNANCE -->
+        <div id="section-governance" class="section">
+            <div class="glass rounded-3xl p-6">
+                <h2 class="text-2xl font-semibold mb-4">Gouvernance</h2>
+                <p class="text-zinc-400">Le contrat étant renoncé, la gouvernance se fait via les BL2P.</p>
+                <button onclick="alert('Fonctionnalité à venir')" 
+                        class="mt-4 px-6 py-2.5 border border-zinc-700 rounded-2xl text-sm">Voir les propositions</button>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
     <script>
-        let provider;
-        let signer;
-        let userAddress;
-
+        let provider, signer, userAddress;
         const CONTRACT_ADDRESS = "0xbAC8aC29CddD32997D7dDA8cc27DAB261327e1Ef";
-        
-        // ABI minimal (ajoute plus de fonctions si besoin)
+
         const CONTRACT_ABI = [
             "function registerForIgnitionAirdrop() external",
-            "function getIgnitionInfo(address user) external view returns (bool triggered, bool regOpen, uint256 participants, uint256 maxParticipants, bool userRegistered, uint256 userAmount, bool userClaimed)",
+            "function getIgnitionInfo(address) external view returns (bool, bool, uint256, uint256, bool, uint256, bool)",
             "function participateInBurn(uint256 amount) external",
-            "function owner() external view returns (address)",
-            "function balanceOf(address) external view returns (uint256)"
+            "function stake(uint256 amount) external",
+            "function unstake(uint256 amount) external",
+            "function claimStakingReward() external",
+            "function balanceOf(address) external view returns (uint256)",
+            "function owner() external view returns (address)"
         ];
 
         async function connectWallet() {
             if (!window.ethereum) {
-                alert("Veuillez installer MetaMask ou un wallet compatible !");
+                alert("Veuillez installer MetaMask");
                 return;
             }
 
@@ -300,107 +237,99 @@
                 signer = provider.getSigner();
                 userAddress = await signer.getAddress();
 
-                document.getElementById("wallet-text").innerHTML = 
-                    userAddress.substring(0, 6) + "..." + userAddress.substring(38);
+                document.getElementById("wallet-address").innerText = 
+                    userAddress.substring(0,6) + "..." + userAddress.substring(38);
+
+                await updateDashboard();
+            } catch (err) {
+                console.error(err);
+                alert("Erreur de connexion: " + err.message);
+            }
+        }
+
+        async function updateDashboard() {
+            if (!signer || !userAddress) return;
+
+            try {
+                const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
                 
-                // Vérifier le statut de l'airdrop après connexion
-                checkAirdropStatus();
-                
-            } catch (error) {
-                console.error(error);
-                alert("Erreur de connexion au wallet");
+                // TAAMS Balance
+                const balance = await contract.balanceOf(userAddress);
+                document.getElementById("balance-taams").innerText = 
+                    parseFloat(ethers.utils.formatUnits(balance, 18)).toFixed(2);
+
+                // TODO: Add BL2P balance when ABI is complete
+            } catch (e) {
+                console.log("Erreur dashboard:", e);
             }
         }
 
         async function registerForAirdrop() {
-            if (!signer) {
-                alert("Veuillez d'abord connecter votre wallet");
-                return;
-            }
+            if (!signer) { alert("Connecte ton wallet d'abord"); return; }
 
             try {
                 const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-                
                 const tx = await contract.registerForIgnitionAirdrop();
                 await tx.wait();
-                
-                alert("Inscription réussie ! Vous êtes maintenant l'un des Fondateurs.");
-                checkAirdropStatus();
-                
-            } catch (error) {
-                console.error(error);
-                alert("Erreur lors de l'inscription : " + error.message);
+                alert("Inscription réussie !");
+                await updateDashboard();
+            } catch (err) {
+                alert("Erreur: " + err.message);
             }
         }
 
-        async function checkAirdropStatus() {
-            if (!signer || !userAddress) {
-                alert("Connectez votre wallet d'abord");
-                return;
-            }
+        async function checkMyAirdropStatus() {
+            if (!signer || !userAddress) { alert("Connecte ton wallet"); return; }
 
             try {
                 const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
                 const info = await contract.getIgnitionInfo(userAddress);
                 
-                let message = `Participants : ${info.participants} / ${info.maxParticipants}\n`;
-                message += `Inscrit : ${info.userRegistered ? "Oui" : "Non"}\n`;
-                message += `Montant alloué : ${ethers.utils.formatUnits(info.userAmount, 18)} TAAMS\n`;
-                message += `Déjà réclamé : ${info.userClaimed ? "Oui" : "Non"}`;
-                
-                alert(message);
-                
-            } catch (error) {
-                console.error(error);
-                alert("Erreur lors de la récupération des informations");
+                alert(`Participants: ${info[2]} / ${info[3]}\n` +
+                      `Inscrit: ${info[4]}\n` +
+                      `Montant: ${ethers.utils.formatUnits(info[5], 18)} TAAMS\n` +
+                      `Réclamé: ${info[6]}`);
+            } catch (err) {
+                alert("Erreur: " + err.message);
             }
         }
 
         async function burnTokens() {
-            if (!signer) {
-                alert("Connectez votre wallet");
-                return;
-            }
+            if (!signer) { alert("Connecte ton wallet"); return; }
 
             const amount = document.getElementById("burn-amount").value;
-            if (!amount || amount <= 0) {
-                alert("Veuillez entrer un montant valide");
-                return;
-            }
+            if (!amount) return;
 
             try {
                 const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
                 const amountWei = ethers.utils.parseUnits(amount, 18);
-                
                 const tx = await contract.participateInBurn(amountWei);
                 await tx.wait();
-                
-                alert(`${amount} TAAMS brûlés avec succès ! Vous avez reçu du BL2P.`);
-                
-            } catch (error) {
-                console.error(error);
-                alert("Erreur : " + error.message);
+                alert("Burn réussi !");
+            } catch (err) {
+                alert("Erreur: " + err.message);
             }
         }
 
-        function showGovernanceModal() {
-            alert("La gouvernance sera bientôt disponible dans cette interface.\n\nPour l'instant, vous pouvez interagir directement via Polygonscan ou d'autres interfaces communautaires.");
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            // Show selected
+            document.getElementById('section-' + section).classList.add('active');
+
+            // Update active tab
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + section).classList.add('active');
         }
 
-        // Initialisation
-        window.onload = function() {
-            // Vérifier si MetaMask est déjà connecté
+        // Auto-connect if already authorized
+        window.onload = async function() {
             if (window.ethereum) {
-                window.ethereum.request({ method: 'eth_accounts' }).then(accounts => {
-                    if (accounts.length > 0) {
-                        // Auto-connect si déjà autorisé
-                        connectWallet();
-                    }
-                });
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    await connectWallet();
+                }
             }
-            
-            // Mettre à jour le compteur de participants (statique pour l'instant)
-            // Tu peux le rendre dynamique plus tard en appelant getIgnitionInfo
         }
     </script>
 </body>
